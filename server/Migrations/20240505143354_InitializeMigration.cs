@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitializeMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,7 +28,7 @@ namespace server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tasks",
+                name: "assignments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -42,9 +42,9 @@ namespace server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tasks", x => x.Id);
+                    table.PrimaryKey("PK_assignments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_tasks_users_UserId",
+                        name: "FK_assignments_users_UserId",
                         column: x => x.UserId,
                         principalTable: "users",
                         principalColumn: "Id",
@@ -52,8 +52,8 @@ namespace server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_tasks_UserId",
-                table: "tasks",
+                name: "IX_assignments_UserId",
+                table: "assignments",
                 column: "UserId");
         }
 
@@ -61,7 +61,7 @@ namespace server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "tasks");
+                name: "assignments");
 
             migrationBuilder.DropTable(
                 name: "users");

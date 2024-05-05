@@ -12,8 +12,8 @@ using server.Data;
 namespace server.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240503194901_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240505143354_InitializeMigration")]
+    partial class InitializeMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("server.Models.Task", b =>
+            modelBuilder.Entity("server.Models.Assignment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("tasks");
+                    b.ToTable("assignments");
                 });
 
             modelBuilder.Entity("server.Models.User", b =>
@@ -88,7 +88,7 @@ namespace server.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("server.Models.Task", b =>
+            modelBuilder.Entity("server.Models.Assignment", b =>
                 {
                     b.HasOne("server.Models.User", "User")
                         .WithMany()
