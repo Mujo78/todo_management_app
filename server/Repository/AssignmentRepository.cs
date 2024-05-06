@@ -1,43 +1,53 @@
-﻿using server.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using server.Data;
+using server.Interfaces;
 using server.Models;
+using System.Threading.Tasks;
 
 namespace server.Repository
 {
     public class AssignmentRepository : IAssignmentRepository
     {
-        public async Task<bool> AssignmentExists(int taskId)
-        {
-            throw new NotImplementedException();
-        }
 
-        public async Task<bool> AssignmentWithSpecificTitleExists(string title)
+        private readonly ApplicationDBContext db;
+        public AssignmentRepository(ApplicationDBContext db)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task CreateAssignment(Assignment assignment)
-        {
-            throw new NotImplementedException();
+            this.db = db;
         }
 
         public async Task<IEnumerable<Assignment>> GetAllAssignments()
         {
-            throw new NotImplementedException();
+            return await db.Assignments.ToListAsync();
         }
 
-        public async Task<Assignment> GetAssignmentById(int taskId)
+        public async Task<Assignment?> GetAssignmentById(int taskId)
         {
-            throw new NotImplementedException();
+            return await db.Assignments.FirstOrDefaultAsync(n => n.Id == taskId);
+        }
+        public async Task<bool> AssignmentExists(int? taskId, string? title)
+        {
+            return await db.Assignments.AnyAsync(n => n.Id == taskId || n.Title == title);
         }
 
-        public async Task RemoveAssignment(Assignment assignment)
+        public async Task CreateAssignment(Assignment assignment)
         {
-            throw new NotImplementedException();
+            await db.Assignments.AddAsync(assignment);
+            await db.SaveChangesAsync();
         }
 
-        public async Task UpdateAssignment(Assignment assignment)
+
+        public async Task<bool> RemoveAssignment(Assignment assignment)
         {
-            throw new NotImplementedException();
+            db.Assignments.Remove(assignment);
+            var saved = await db.SaveChangesAsync();
+            return saved > 0 ? true : false;
+        }
+
+        public async Task<Assignment> UpdateAssignment(Assignment assignment)
+        {
+            db.Assignments.Update(assignment);
+            await db.SaveChangesAsync();
+            return assignment;
         }
     }
 }
