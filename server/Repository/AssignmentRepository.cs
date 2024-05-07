@@ -24,30 +24,39 @@ namespace server.Repository
         {
             return await db.Assignments.FirstOrDefaultAsync(n => n.Id == taskId);
         }
-        public async Task<bool> AssignmentExists(int? taskId, string? title)
+        public async Task<bool> ExistsById(int taskId)
         {
-            return await db.Assignments.AnyAsync(n => n.Id == taskId || n.Title == title);
+            return await db.Assignments.AnyAsync(n => n.Id == taskId);
         }
 
-        public async Task CreateAssignment(Assignment assignment)
+        public async Task<bool> ExistsByName(string title)
+        {
+            return await db.Assignments.AnyAsync(n => n.Title.ToLower() == title.ToLower());
+        }
+
+        public async Task<bool> CreateAssignment(Assignment assignment)
         {
             await db.Assignments.AddAsync(assignment);
-            await db.SaveChangesAsync();
+            return await Save();
         }
 
 
         public async Task<bool> RemoveAssignment(Assignment assignment)
         {
             db.Assignments.Remove(assignment);
-            var saved = await db.SaveChangesAsync();
-            return saved > 0 ? true : false;
+            return await Save();
         }
 
-        public async Task<Assignment> UpdateAssignment(Assignment assignment)
+        public async Task<bool> UpdateAssignment(Assignment assignment)
         {
             db.Assignments.Update(assignment);
-            await db.SaveChangesAsync();
-            return assignment;
+            return await Save();
+        }
+
+        public async Task<bool> Save()
+        {
+            var saved = await db.SaveChangesAsync();
+            return saved > 0 ? true : false;
         }
     }
 }
