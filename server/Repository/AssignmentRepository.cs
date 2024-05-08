@@ -24,14 +24,19 @@ namespace server.Repository
         {
             return await db.Assignments.FirstOrDefaultAsync(n => n.Id == taskId);
         }
-        public async Task<bool> ExistsById(int taskId)
+        public bool AssignmentExists(int taskId)
         {
-            return await db.Assignments.AnyAsync(n => n.Id == taskId);
+            return db.Assignments.Any(n => n.Id == taskId);
         }
 
-        public async Task<bool> ExistsByName(string title)
+        public bool AssignmentExists(string title)
         {
-            return await db.Assignments.AnyAsync(n => n.Title.ToLower() == title.ToLower());
+            return db.Assignments.Any(n => n.Title.ToLower() == title.ToLower());
+        }
+
+        public bool AssignmentExists(string title, int taskId)
+        {
+            return db.Assignments.Any(n => n.Title.ToLower() == title.ToLower() && n.Id != taskId);
         }
 
         public async Task<bool> CreateAssignment(Assignment assignment)

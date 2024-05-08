@@ -1,7 +1,12 @@
-﻿namespace server.Interfaces
+﻿using server.DTO;
+using server.Models;
+
+namespace server.Interfaces
 {
     public interface IUserRepository
     {
-        Task<bool> EmailAlreadyUsed(string title);
+        bool EmailAlreadyUsed(string title);
+        public Task<bool> Save();
+        Task<User?> Register(RegistrationDTO registrationDTO);
     }
 }

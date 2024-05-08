@@ -12,6 +12,8 @@ namespace server
             CreateMap<Assignment, AssignmentCreateDTO>().ReverseMap();
             CreateMap<Assignment, AssignmentUpdateDTO>().ReverseMap();
 
+
+            CreateMap<User, UserDTO>().ReverseMap();
         }
     }
 }

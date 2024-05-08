@@ -27,12 +27,13 @@ namespace server.Middlewares
         {
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             context.Response.ContentType = "application/json";
-
+            
             var problemDetails = new ProblemDetails()
             {
                 Status = context.Response.StatusCode,
                 Title = "An error occured while processing your request.",
                 Type = ex.GetType().Name,
+                Detail = ex.Message
             };
 
             await context.Response.WriteAsJsonAsync(problemDetails);

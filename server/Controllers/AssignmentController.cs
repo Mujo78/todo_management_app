@@ -19,7 +19,7 @@ namespace server.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<AssignmentDTO>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<AssignmentDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetAll()
         {
@@ -28,7 +28,7 @@ namespace server.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(AssignmentDTO), 200)]
+        [ProducesResponseType(typeof(AssignmentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -44,13 +44,13 @@ namespace server.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(AssignmentDTO), 200)]
+        [ProducesResponseType(typeof(AssignmentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> DeleteAssignment([FromRoute] int id)
         {
-            if (id == 0) return BadRequest();
+            if (id == 0) return BadRequest("Invalid ID sent.");
 
             Assignment? assignment = await repository.GetAssignmentById(id);
 
@@ -63,13 +63,13 @@ namespace server.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(AssignmentDTO), 201)]
+        [ProducesResponseType(typeof(AssignmentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateNewAssignment([FromBody] AssignmentCreateDTO createDTO)
         {
-            var isExists = await repository.ExistsByName(createDTO.Title);
+            var isExists = repository.AssignmentExists(createDTO.Title);
 
             if (isExists) return BadRequest($"Assignment with name: {createDTO.Title} already exists.");
 
@@ -86,7 +86,7 @@ namespace server.Controllers
 
 
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(AssignmentDTO), 201)]
+        [ProducesResponseType(typeof(AssignmentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -97,10 +97,10 @@ namespace server.Controllers
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var isExists = await repository.ExistsById(id);
+            var isExists = repository.AssignmentExists(id);
             if (!isExists) return NotFound("Assignment not found.");
 
-            var isExistsName = await repository.ExistsByName(updateDTO.Title);
+            var isExistsName = repository.AssignmentExists(updateDTO.Title, updateDTO.Id);
             if (isExistsName) return BadRequest($"Assignment with name: {updateDTO.Title} already exists.");
 
 

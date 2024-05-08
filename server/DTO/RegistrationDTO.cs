@@ -6,8 +6,7 @@ namespace server.DTO
     public class RegistrationDTO
     {
         [Required]
-        [MinLength(5)]
-        [MaxLength(255)]
+        [MinLength(5, ErrorMessage = "Name must be at least 5 characters long.")]
         public string Name { get; set; }
 
         [Required]

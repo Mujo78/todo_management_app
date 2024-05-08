@@ -9,9 +9,10 @@ namespace server.Interfaces
         Task<bool> CreateAssignment(Assignment assignment);
         Task<bool> RemoveAssignment(Assignment assignment);
         Task<bool> UpdateAssignment(Assignment assignment);
-        Task<bool> ExistsById(int taskId);
-        Task<bool> ExistsByName(string title);
         Task<bool> Save();
+        bool AssignmentExists(int taskId);
+        bool AssignmentExists(string title);
+        bool AssignmentExists(string title, int taskId);
 
     }
 }
