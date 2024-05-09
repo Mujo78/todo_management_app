@@ -1,4 +1,5 @@
-﻿using server.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using server.Data;
 using server.DTO;
 using server.Interfaces;
 using server.Models;
@@ -16,6 +17,18 @@ namespace server.Repository
         public bool EmailAlreadyUsed(string email)
         {
             return db.Users.Any(n => n.Email.ToLower() == email.ToLower());
+        }
+
+        public async Task<User?> getUserById(int userId)
+        {
+            var user = await db.Users.FirstAsync(n => n.Id == userId);
+
+            return user;
+        }
+
+        public Task<TokenDTO> Login(LoginDTO loginDTO)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<User?> Register(RegistrationDTO registrationDTO)

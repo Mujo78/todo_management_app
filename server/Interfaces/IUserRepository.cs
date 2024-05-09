@@ -8,5 +8,7 @@ namespace server.Interfaces
         bool EmailAlreadyUsed(string title);
         public Task<bool> Save();
         Task<User?> Register(RegistrationDTO registrationDTO);
+        Task<User?> getUserById(int userId);
+        Task<TokenDTO> Login(LoginDTO loginDTO);
     }
 }
