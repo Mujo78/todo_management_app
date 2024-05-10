@@ -5,10 +5,14 @@ namespace server.Interfaces
 {
     public interface IUserRepository
     {
-        bool EmailAlreadyUsed(string title);
         public Task<bool> Save();
         Task<User?> Register(RegistrationDTO registrationDTO);
-        Task<User?> getUserById(int userId);
+        Task<User?> getUser(int userId);
+        Task<User?> getUser(string userEmail);
         Task<TokenDTO> Login(LoginDTO loginDTO);
+        Task<string> CreateRefreshToken(int userId, string tokenId);
+        string CreateAccessToken(User user, string tokenId);
+        string GenerateRefreshToken();
+        bool EmailAlreadyUsed(string title);
     }
 }

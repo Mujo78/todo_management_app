@@ -4,7 +4,7 @@ using server.DTO;
 using server.Interfaces;
 using server.Models;
 
-namespace server.Controllers
+namespace server.Controllers.v1
 {
     [Route("api/assignments/")]
     [ApiController]
