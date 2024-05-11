@@ -21,7 +21,7 @@ namespace server.Repository
         {
             this.db = db;
             this.configuration = configuration;
-            this.secretKey = configuration["ApiSettings:Secret"];
+            this.secretKey = this.configuration["ApiSettings:Secret"];
         }
 
         public bool EmailAlreadyUsed(string email)
@@ -29,9 +29,9 @@ namespace server.Repository
             return db.Users.Any(n => n.Email.ToLower() == email.ToLower());
         }
 
-        public async Task<User?> getUser(int userId)
+        public async Task<User?> getUser(Guid userId)
         {
-            var user = await db.Users.FirstAsync(n => n.Id == userId);
+            var user = await db.Users.FirstAsync(n => n.Id.Equals(userId));
 
             return user;
         }
@@ -50,6 +50,7 @@ namespace server.Repository
                 Name = registrationDTO.Name,
                 Email = registrationDTO.Email,
                 Password = registrationDTO.Password,
+                CreatedAt = DateTime.UtcNow,
             };
 
             await db.Users.AddAsync(user);
@@ -68,11 +69,13 @@ namespace server.Repository
 
             if (!valid) return new() { AccessToken = "" };
 
+            var refreshExists = db.RefreshTokens.FirstOrDefault(r => r.UserId.Equals(user.Id));
+
             var jwtTokenId = $"JTI{Guid.NewGuid()}";
             var accessToken = CreateAccessToken(user, jwtTokenId);
-            var refreshToken = await CreateRefreshToken(user.Id, jwtTokenId);
+            var refreshToken = refreshExists?.Refresh_Token ?? await CreateRefreshToken(user.Id, jwtTokenId);
 
-            TokenDTO token = new TokenDTO()
+            TokenDTO token = new()
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken
@@ -81,7 +84,7 @@ namespace server.Repository
             return token;
         }
 
-        public async Task<string> CreateRefreshToken(int userId, string tokenId)
+        public async Task<string> CreateRefreshToken(Guid userId, string tokenId)
         {
             RefreshToken token = new()
             {
@@ -89,7 +92,7 @@ namespace server.Repository
                 JwtTokenId = tokenId,
                 Refresh_Token = GenerateRefreshToken(),
                 IsValid = true,
-                ExpiresAt = DateTime.UtcNow.AddDays(90)
+                ExpiresAt = DateTime.UtcNow.AddMinutes(5)
             };
 
             await db.RefreshTokens.AddAsync(token);
@@ -122,10 +125,12 @@ namespace server.Repository
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new(JwtRegisteredClaimNames.Jti, tokenId),
-                    new(JwtRegisteredClaimNames.Aud, user.Email),
                     new(JwtRegisteredClaimNames.Sub, user.Email),
+                    new(JwtRegisteredClaimNames.Name, user.Name),
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddMinutes(3),
+                Issuer = configuration.GetValue<string>("ApiSettings:Issuer")!,
+                Audience = configuration.GetValue<string>("ApiSettings:Audience")!,
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             };
 

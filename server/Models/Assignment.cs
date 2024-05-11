@@ -7,12 +7,11 @@ namespace server.Models
     [Table("assignments")]
     public class Assignment
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Key]
+        public Guid Id { get; set; }
 
         [ForeignKey("userId")]
-        public int UserId { get; set; }
-
+        public Guid UserId { get; set; }
         public string Title { get; set; }
 
         public string Description { get; set; } = string.Empty;
@@ -22,6 +21,9 @@ namespace server.Models
         public Priority Priority { get; set; } = Priority.Low;
 
         public Status Status { get; set; } = Status.Open;
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public User User { get; set; }
 

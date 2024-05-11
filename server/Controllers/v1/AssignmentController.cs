@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO;
 using server.Interfaces;
@@ -6,6 +7,7 @@ using server.Models;
 
 namespace server.Controllers.v1
 {
+    [Authorize]
     [Route("api/assignments/")]
     [ApiController]
     public class AssignmentController : ControllerBase
@@ -32,9 +34,9 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> GetAssignment([FromRoute] int id)
+        public async Task<ActionResult> GetAssignment([FromRoute] Guid id)
         {
-            if (id == 0) return BadRequest("Invalid ID sent.");
+            if (id.Equals("")) return BadRequest("Invalid ID sent.");
 
             var assignment = await repository.GetAssignmentById(id);
 
@@ -48,9 +50,9 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> DeleteAssignment([FromRoute] int id)
+        public async Task<ActionResult> DeleteAssignment([FromRoute] Guid id)
         {
-            if (id == 0) return BadRequest("Invalid ID sent.");
+            if (id.Equals("")) return BadRequest("Invalid ID sent.");
 
             Assignment? assignment = await repository.GetAssignmentById(id);
 
@@ -90,10 +92,10 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateExistingAssignment([FromRoute] int id, [FromBody] AssignmentUpdateDTO updateDTO)
+        public async Task<ActionResult> UpdateExistingAssignment([FromRoute] Guid id, [FromBody] AssignmentUpdateDTO updateDTO)
         {
 
-            if (id == 0 || updateDTO.Id != id || updateDTO == null) return BadRequest();
+            if (id.Equals("") || !updateDTO.Id.Equals(id) || updateDTO == null) return BadRequest();
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -103,10 +105,9 @@ namespace server.Controllers.v1
             var isExistsName = repository.AssignmentExists(updateDTO.Title, updateDTO.Id);
             if (isExistsName) return BadRequest($"Assignment with name: {updateDTO.Title} already exists.");
 
-
             Assignment assignmentToUpdate = mapper.Map<Assignment>(updateDTO);
 
-            bool isSuccess = await repository.UpdateAssignment(assignmentToUpdate);
+            var isSuccess = await repository.UpdateAssignment(assignmentToUpdate);
             if (!isSuccess) return BadRequest("Assignment is not saved.");
 
             return Ok(mapper.Map<AssignmentDTO>(assignmentToUpdate));

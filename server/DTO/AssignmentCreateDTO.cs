@@ -7,7 +7,7 @@ namespace server.DTO
     public class AssignmentCreateDTO
     {
         [Required]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         [Required]
         [MinLength(10, ErrorMessage = "Title must be at least 10 characters long.")]
         public string Title { get; set; }

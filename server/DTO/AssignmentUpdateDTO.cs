@@ -7,9 +7,9 @@ namespace server.DTO
     public class AssignmentUpdateDTO
     {
         [Required]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         [Required]
         [MinLength(10, ErrorMessage = "Title must be at least 10 characters long.")]
         public string Title { get; set; }
@@ -22,5 +22,7 @@ namespace server.DTO
         public Priority Priority { get; set; } = Priority.Low;
         [StatusValidation]
         public Status Status { get; set; } = Status.Open;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

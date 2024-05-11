@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using server.Data;
 
@@ -11,9 +12,11 @@ using server.Data;
 namespace server.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240511154224_User-Assignment-Table-Update")]
+    partial class UserAssignmentTableUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,7 +27,7 @@ namespace server.Migrations
 
             modelBuilder.Entity("server.Models.Assignment", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("NewId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -51,19 +54,19 @@ namespace server.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("UserNewId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("NewId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserNewId");
 
                     b.ToTable("assignments");
                 });
 
             modelBuilder.Entity("server.Models.RefreshToken", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("NewId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -81,12 +84,12 @@ namespace server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("UserNewId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("NewId");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex("UserNewId")
                         .IsUnique();
 
                     b.ToTable("refresh_tokens");
@@ -94,7 +97,7 @@ namespace server.Migrations
 
             modelBuilder.Entity("server.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("NewId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -116,7 +119,7 @@ namespace server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("NewId");
 
                     b.ToTable("users");
                 });
@@ -125,7 +128,7 @@ namespace server.Migrations
                 {
                     b.HasOne("server.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserNewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -136,7 +139,7 @@ namespace server.Migrations
                 {
                     b.HasOne("server.Models.User", "User")
                         .WithOne("RefreshToken")
-                        .HasForeignKey("server.Models.RefreshToken", "UserId")
+                        .HasForeignKey("server.Models.RefreshToken", "UserNewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
