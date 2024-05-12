@@ -12,8 +12,8 @@ using server.Data;
 namespace server.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240509173403_refresh-token-initialize")]
-    partial class refreshtokeninitialize
+    [Migration("20240509173403_Refresh-Token-Initialize")]
+    partial class RefreshTokenInitialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

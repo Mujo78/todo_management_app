@@ -10,22 +10,20 @@ namespace server.Controllers.v1
     [Authorize]
     [Route("api/assignments/")]
     [ApiController]
-    public class AssignmentController : ControllerBase
+    public class AssignmentController(IAssignmentRepository repository, IMapper mapper, IUserRepository userRepository) : ControllerBase
     {
-        private IAssignmentRepository repository;
-        private IMapper mapper;
-        public AssignmentController(IAssignmentRepository repository, IMapper mapper)
-        {
-            this.repository = repository;
-            this.mapper = mapper;
-        }
+        private readonly IAssignmentRepository repository = repository;
+        private readonly IUserRepository userRepository = userRepository;
+        private readonly IMapper mapper = mapper;
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<AssignmentDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetAll()
         {
-            IEnumerable<Assignment> assignemnts = await repository.GetAllAssignments();
+            var userId = userRepository.GetUserId();
+
+            IEnumerable<Assignment> assignemnts = await repository.GetAllAssignments(userId);
             return Ok(mapper.Map<IEnumerable<AssignmentDTO>>(assignemnts));
         }
 
@@ -36,10 +34,11 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> GetAssignment([FromRoute] Guid id)
         {
+            var userId = userRepository.GetUserId();
+
             if (id.Equals("")) return BadRequest("Invalid ID sent.");
 
-            var assignment = await repository.GetAssignmentById(id);
-
+            var assignment = await repository.GetAssignmentById(id, userId);
             if (assignment == null) return NotFound("Assignment not found!");
 
             return Ok(mapper.Map<AssignmentDTO>(assignment));
@@ -52,15 +51,16 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> DeleteAssignment([FromRoute] Guid id)
         {
+            var userId = userRepository.GetUserId();
+            
             if (id.Equals("")) return BadRequest("Invalid ID sent.");
 
-            Assignment? assignment = await repository.GetAssignmentById(id);
-
+            Assignment? assignment = await repository.GetAssignmentById(id, userId);
             if (assignment == null) return NotFound("Assignment not found!");
 
             bool deleted = await repository.RemoveAssignment(assignment);
-
             if (!deleted) return BadRequest("Assignment not deleted.");
+
             return Ok(mapper.Map<AssignmentDTO>(assignment));
         }
 
@@ -71,8 +71,9 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateNewAssignment([FromBody] AssignmentCreateDTO createDTO)
         {
-            var isExists = repository.AssignmentExists(createDTO.Title);
+            var userId = userRepository.GetUserId();
 
+            var isExists = repository.AssignmentExists(createDTO.Title, userId);
             if (isExists) return BadRequest($"Assignment with name: {createDTO.Title} already exists.");
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -80,7 +81,6 @@ namespace server.Controllers.v1
             Assignment assignmentToCreate = mapper.Map<Assignment>(createDTO);
 
             bool isSuccess = await repository.CreateAssignment(assignmentToCreate);
-
             if (!isSuccess) return BadRequest("Assignment is not saved.");
 
             return Ok(mapper.Map<AssignmentDTO>(assignmentToCreate));
@@ -94,15 +94,19 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> UpdateExistingAssignment([FromRoute] Guid id, [FromBody] AssignmentUpdateDTO updateDTO)
         {
+            var userId = userRepository.GetUserId();
 
-            if (id.Equals("") || !updateDTO.Id.Equals(id) || updateDTO == null) return BadRequest();
+            if (id.Equals("") || !updateDTO.Id.Equals(id) || !updateDTO.UserId.Equals(userId) || updateDTO == null)
+            {
+                return BadRequest();
+            }
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var isExists = repository.AssignmentExists(id);
+            var isExists = repository.AssignmentExists(id, userId);
             if (!isExists) return NotFound("Assignment not found.");
 
-            var isExistsName = repository.AssignmentExists(updateDTO.Title, updateDTO.Id);
+            var isExistsName = repository.AssignmentExists(updateDTO.Title, updateDTO.Id, userId);
             if (isExistsName) return BadRequest($"Assignment with name: {updateDTO.Title} already exists.");
 
             Assignment assignmentToUpdate = mapper.Map<Assignment>(updateDTO);

@@ -15,30 +15,32 @@ namespace server.Repository
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationDBContext db;
-        private IConfiguration configuration;
-        private string? secretKey;
-        public UserRepository(ApplicationDBContext db, IConfiguration configuration)
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IConfiguration configuration;
+        private readonly string? secretKey;
+        public UserRepository(ApplicationDBContext db, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             this.db = db;
             this.configuration = configuration;
             this.secretKey = this.configuration["ApiSettings:Secret"];
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public bool EmailAlreadyUsed(string email)
         {
-            return db.Users.Any(n => n.Email.ToLower() == email.ToLower());
+            return db.Users.Any(n => n.Email.ToLower().Equals(email.ToLower()));
         }
 
-        public async Task<User?> getUser(Guid userId)
+        public async Task<User?> GetUser(Guid userId)
         {
             var user = await db.Users.FirstAsync(n => n.Id.Equals(userId));
 
             return user;
         }
 
-        public async Task<User?> getUser(string userEmail)
+        public async Task<User?> GetUser(string userEmail)
         {
-            var user = await db.Users.FirstAsync(n => n.Email == userEmail);
+            var user = await db.Users.FirstAsync(n => n.Email.Equals(userEmail));
 
             return user;
         }
@@ -61,7 +63,7 @@ namespace server.Repository
 
         public async Task<TokenDTO> Login(LoginDTO loginDTO)
         {
-            var user = db.Users.FirstOrDefault(u => u.Email == loginDTO.Email);
+            var user = db.Users.FirstOrDefault(u => u.Email.Equals(loginDTO.Email));
 
             if (user == null) return new() { AccessToken = "" };
 
@@ -104,7 +106,7 @@ namespace server.Repository
         public async Task<bool> Save()
         {
             var saved = await db.SaveChangesAsync();
-            return saved > 0 ? true : false;
+            return saved > 0;
         }
 
         public string GenerateRefreshToken()
@@ -125,10 +127,11 @@ namespace server.Repository
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new(JwtRegisteredClaimNames.Jti, tokenId),
-                    new(JwtRegisteredClaimNames.Sub, user.Email),
+                    new("userId", user.Id.ToString()),
+                    new(JwtRegisteredClaimNames.Email, user.Email),
                     new(JwtRegisteredClaimNames.Name, user.Name),
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(3),
+                Expires = DateTime.UtcNow.AddMinutes(20),
                 Issuer = configuration.GetValue<string>("ApiSettings:Issuer")!,
                 Audience = configuration.GetValue<string>("ApiSettings:Audience")!,
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
@@ -139,6 +142,21 @@ namespace server.Repository
 
             return tokenStr;
 
+        }
+
+        public Guid? GetUserId()
+        {
+            var userId = httpContextAccessor?.HttpContext?.User.FindFirstValue("userId");
+
+            if(userId != null)
+            {
+                if(Guid.TryParse(userId, out Guid result))
+                {
+                    return result;
+                }
+            }
+
+            return null;
         }
     }
 }

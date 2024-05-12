@@ -6,37 +6,33 @@ using System.Threading.Tasks;
 
 namespace server.Repository
 {
-    public class AssignmentRepository : IAssignmentRepository
+    public class AssignmentRepository(ApplicationDBContext db) : IAssignmentRepository
     {
 
-        private readonly ApplicationDBContext db;
-        public AssignmentRepository(ApplicationDBContext db)
+        private readonly ApplicationDBContext db = db;
+
+        public async Task<IEnumerable<Assignment>> GetAllAssignments(Guid? userId)
         {
-            this.db = db;
+            return await db.Assignments.Where(a => a.UserId == userId).ToListAsync();
         }
 
-        public async Task<IEnumerable<Assignment>> GetAllAssignments()
+        public async Task<Assignment?> GetAssignmentById(Guid taskId, Guid? userId)
         {
-            return await db.Assignments.ToListAsync();
+            return await db.Assignments.FirstOrDefaultAsync(n => n.Id.Equals(taskId) && n.UserId.Equals(userId));
+        }
+        public bool AssignmentExists(Guid taskId, Guid? userId)
+        {
+            return db.Assignments.Any(n => n.Id.Equals(taskId) && n.UserId.Equals(userId));
         }
 
-        public async Task<Assignment?> GetAssignmentById(Guid taskId)
+        public bool AssignmentExists(string title, Guid? userId)
         {
-            return await db.Assignments.FirstOrDefaultAsync(n => n.Id.Equals(taskId));
-        }
-        public bool AssignmentExists(Guid taskId)
-        {
-            return db.Assignments.Any(n => n.Id.Equals(taskId));
+            return db.Assignments.Any(n => n.Title.ToLower().Equals(title.ToLower()) && n.UserId.Equals(userId));
         }
 
-        public bool AssignmentExists(string title)
+        public bool AssignmentExists(string title, Guid taskId, Guid? userId)
         {
-            return db.Assignments.Any(n => n.Title.ToLower() == title.ToLower());
-        }
-
-        public bool AssignmentExists(string title, Guid taskId)
-        {
-            return db.Assignments.Any(n => n.Title.ToLower() == title.ToLower() && !n.Id.Equals(taskId));
+            return db.Assignments.Any(n => n.Title.ToLower().Equals(title.ToLower()) && !n.Id.Equals(taskId) && n.UserId.Equals(userId));
         }
 
         public async Task<bool> CreateAssignment(Assignment assignment)
@@ -64,7 +60,7 @@ namespace server.Repository
         public async Task<bool> Save()
         {
             var saved = await db.SaveChangesAsync();
-            return saved > 0 ? true : false;
+            return saved > 0;
         }
     }
 }
