@@ -1,23 +1,20 @@
 ﻿using AutoMapper;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO;
 using server.Interfaces;
+using server.Models;
 
 namespace server.Controllers.v1
 {
     [Route("api/users/")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController(IUserRepository repository, IAuthRepository authRepository,  IMapper mapper) : ControllerBase
     {
-        private IUserRepository repository;
-        private IMapper mapper;
-
-        public UserController(IUserRepository repository, IMapper mapper)
-        {
-            this.repository = repository;
-            this.mapper = mapper;
-        }
+        private readonly IUserRepository repository = repository;
+        private readonly IAuthRepository authRepository = authRepository;
+        private readonly IMapper mapper = mapper;
 
         [HttpPost("/registration")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
@@ -45,33 +42,53 @@ namespace server.Controllers.v1
             }
         }
 
-
-        [HttpPost("/login")]
-        [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize]
+        [HttpGet("my-info")]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
+
+        public async Task<ActionResult> GetMyInfo()
         {
-            if (loginDTO == null) return BadRequest("Please provide valid data to login.");
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var userId = authRepository.GetUserId();
+            
+            var user = await repository.GetUser(userId);
+            if (user == null) return NotFound("User not found.");
 
-            try
-            {
-                var tokenToReturn = await repository.Login(loginDTO);
+            return Ok(mapper.Map<UserDTO>(user));
+        }
 
-                if (string.IsNullOrEmpty(tokenToReturn.AccessToken))
-                {
-                    return BadRequest("Incorrect email or password.");
-                }
+        [Authorize]
+        [HttpPut]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-                return Ok(tokenToReturn);
+        public async Task<ActionResult> UpdateMyProfile([FromBody] UserUpdateDTO updateDTO)
+        {
+            var userId = authRepository.GetUserId();
 
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            if (updateDTO == null) return BadRequest();
+            if (!updateDTO.Id.Equals(userId)) return Forbid();
 
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            var userFound = await repository.GetUser(userId);
+            if (userFound == null) return NotFound("User not found.");
+
+            bool emailTaken = repository.EmailAlreadyUsed(updateDTO.Email, userId);
+            if (emailTaken) return BadRequest("Email is already used!");
+
+            userFound.Email = updateDTO.Email;
+            userFound.Name = updateDTO.Name;
+
+            bool isSuccess = await repository.UpdateUser(userFound);
+            if (!isSuccess) return BadRequest("Profile is not updated.");
+
+            return Ok(mapper.Map<UserDTO>(userFound));
         }
     }
 }

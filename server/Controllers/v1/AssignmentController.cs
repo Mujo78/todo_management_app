@@ -10,10 +10,10 @@ namespace server.Controllers.v1
     [Authorize]
     [Route("api/assignments/")]
     [ApiController]
-    public class AssignmentController(IAssignmentRepository repository, IMapper mapper, IUserRepository userRepository) : ControllerBase
+    public class AssignmentController(IAssignmentRepository repository, IMapper mapper, IAuthRepository authRepository) : ControllerBase
     {
         private readonly IAssignmentRepository repository = repository;
-        private readonly IUserRepository userRepository = userRepository;
+        private readonly IAuthRepository authRepository = authRepository;
         private readonly IMapper mapper = mapper;
 
         [HttpGet]
@@ -21,7 +21,7 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetAll()
         {
-            var userId = userRepository.GetUserId();
+            var userId = authRepository.GetUserId();
 
             IEnumerable<Assignment> assignemnts = await repository.GetAllAssignments(userId);
             return Ok(mapper.Map<IEnumerable<AssignmentDTO>>(assignemnts));
@@ -34,7 +34,7 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> GetAssignment([FromRoute] Guid id)
         {
-            var userId = userRepository.GetUserId();
+            var userId = authRepository.GetUserId();
 
             if (id.Equals("")) return BadRequest("Invalid ID sent.");
 
@@ -51,7 +51,7 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> DeleteAssignment([FromRoute] Guid id)
         {
-            var userId = userRepository.GetUserId();
+            var userId = authRepository.GetUserId();
             
             if (id.Equals("")) return BadRequest("Invalid ID sent.");
 
@@ -71,9 +71,9 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateNewAssignment([FromBody] AssignmentCreateDTO createDTO)
         {
-            var userId = userRepository.GetUserId();
+            var userId = authRepository.GetUserId();
 
-            var isExists = repository.AssignmentExists(createDTO.Title, userId);
+            bool isExists = repository.AssignmentExists(createDTO.Title, userId);
             if (isExists) return BadRequest($"Assignment with name: {createDTO.Title} already exists.");
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -94,24 +94,22 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> UpdateExistingAssignment([FromRoute] Guid id, [FromBody] AssignmentUpdateDTO updateDTO)
         {
-            var userId = userRepository.GetUserId();
+            var userId = authRepository.GetUserId();
 
-            if (id.Equals("") || !updateDTO.Id.Equals(id) || !updateDTO.UserId.Equals(userId) || updateDTO == null)
-            {
-                return BadRequest();
-            }
-
+            if (id.Equals("") || updateDTO == null) return BadRequest();
+            if (!updateDTO.Id.Equals(id) || !updateDTO.UserId.Equals(userId)) return BadRequest();
+            
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var isExists = repository.AssignmentExists(id, userId);
+            bool isExists = repository.AssignmentExists(id, userId);
             if (!isExists) return NotFound("Assignment not found.");
 
-            var isExistsName = repository.AssignmentExists(updateDTO.Title, updateDTO.Id, userId);
+            bool isExistsName = repository.AssignmentExists(updateDTO.Title, updateDTO.Id, userId);
             if (isExistsName) return BadRequest($"Assignment with name: {updateDTO.Title} already exists.");
 
             Assignment assignmentToUpdate = mapper.Map<Assignment>(updateDTO);
 
-            var isSuccess = await repository.UpdateAssignment(assignmentToUpdate);
+            bool isSuccess = await repository.UpdateAssignment(assignmentToUpdate);
             if (!isSuccess) return BadRequest("Assignment is not saved.");
 
             return Ok(mapper.Map<AssignmentDTO>(assignmentToUpdate));

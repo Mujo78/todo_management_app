@@ -6,14 +6,11 @@ namespace server.Interfaces
     public interface IUserRepository
     {
         Task<User?> Register(RegistrationDTO registrationDTO);
-        Task<User?> GetUser(Guid userId);
+        Task<User?> GetUser(Guid? userId);
         Task<User?> GetUser(string userEmail);
-        Task<TokenDTO> Login(LoginDTO loginDTO);
-        Task<string> CreateRefreshToken(Guid userId, string tokenId);
+        Task<bool> UpdateUser(User user);
         public Task<bool> Save();
-        Guid? GetUserId();
-        string CreateAccessToken(User user, string tokenId);
-        string GenerateRefreshToken();
-        bool EmailAlreadyUsed(string title);
+        bool EmailAlreadyUsed(string email);
+        bool EmailAlreadyUsed(string email, Guid? userId);
     }
 }
