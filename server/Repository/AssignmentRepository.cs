@@ -56,10 +56,25 @@ namespace server.Repository
             return await Save();
         }
 
+        public async Task<bool> RemoveAllAssignments(Guid? userId)
+        {
+            if (userId == null) return false;
+
+            var assignmentsToDelete = db.Assignments.Where(assignment => assignment.UserId.Equals(userId));
+            if(assignmentsToDelete.Any())
+            {
+                db.Assignments.RemoveRange(assignmentsToDelete);
+                return await Save();
+            }
+
+            return false;
+        }
+
         public async Task<bool> Save()
         {
             var saved = await db.SaveChangesAsync();
             return saved > 0;
         }
+
     }
 }

@@ -56,6 +56,30 @@ namespace server.Repository
             db.Users.Update(user);
             return await Save();
         }
+        public async Task<string> DeleteUser(Guid? userId)
+        {
+            using var transaction = db.Database.BeginTransaction();
+
+            try
+            {
+                var assignmentsToDelete = db.Assignments.Where(assignment => assignment.UserId.Equals(userId));
+                db.Assignments.RemoveRange(assignmentsToDelete);
+
+                var userToDelete = await db.Users.FindAsync(userId);
+                db.Users.Remove(userToDelete);
+
+                await db.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return "User deleted succesfully.";
+            }
+            catch(Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return ex.Message;
+            }
+
+        }
 
         public async Task<bool> Save()
         {

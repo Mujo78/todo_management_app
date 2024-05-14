@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using server.Data;
 using server.DTO;
 using server.Interfaces;
@@ -116,6 +117,15 @@ namespace server.Repository
             }
 
             return null;
+        }
+
+        public async Task<bool> ForgotPassword(string email)
+        {
+            var user = await db.Users.FirstAsync(x => x.Email.Equals(email));
+            if (user == null) return false;
+
+            return true;
+
         }
     }
 }

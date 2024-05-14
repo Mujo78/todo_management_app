@@ -8,6 +8,7 @@ namespace server.Interfaces
         Task<Assignment?> GetAssignmentById(Guid taskId, Guid? userId);
         Task<bool> CreateAssignment(Assignment assignment);
         Task<bool> RemoveAssignment(Assignment assignment);
+        Task<bool> RemoveAllAssignments(Guid? userId);
         Task<bool> UpdateAssignment(Assignment assignment);
         Task<bool> Save();
         bool AssignmentExists(Guid taskId, Guid? userId);

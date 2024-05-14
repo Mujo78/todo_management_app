@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using server.DTO;
 using server.Interfaces;
+using server.Models;
 
 namespace server.Controllers.v1
 {
@@ -36,6 +38,19 @@ namespace server.Controllers.v1
                 return StatusCode(500, ex.Message);
             }
 
+        }
+
+        [HttpPost("forgot-password")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
+        {
+            if(forgotPasswordDTO == null) return BadRequest("Please provide valid email address.");
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            
         }
     }
 }

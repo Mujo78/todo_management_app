@@ -9,6 +9,7 @@ namespace server.Interfaces
         Task<User?> GetUser(Guid? userId);
         Task<User?> GetUser(string userEmail);
         Task<bool> UpdateUser(User user);
+        Task<string> DeleteUser(Guid? userId);
         public Task<bool> Save();
         bool EmailAlreadyUsed(string email);
         bool EmailAlreadyUsed(string email, Guid? userId);

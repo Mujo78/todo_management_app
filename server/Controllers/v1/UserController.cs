@@ -62,8 +62,9 @@ namespace server.Controllers.v1
         [Authorize]
         [HttpPut]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
@@ -89,6 +90,28 @@ namespace server.Controllers.v1
             if (!isSuccess) return BadRequest("Profile is not updated.");
 
             return Ok(mapper.Map<UserDTO>(userFound));
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<ActionResult> DeleteMyProfile()
+        {
+            var userId = authRepository.GetUserId();
+
+            var isSuccess = await repository.DeleteUser(userId);
+            if (isSuccess.Contains("successfully"))
+            {
+                return Ok(isSuccess);
+            }
+
+            return BadRequest(isSuccess);
         }
     }
 }
