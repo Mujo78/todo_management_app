@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using server.DTO;
 using server.Interfaces;
-using server.Models;
 
 namespace server.Controllers.v1
 {
@@ -50,6 +48,7 @@ namespace server.Controllers.v1
             if(forgotPasswordDTO == null) return BadRequest("Please provide valid email address.");
             if(!ModelState.IsValid) return BadRequest(ModelState);
 
+            return Ok();
             
         }
     }

@@ -22,7 +22,7 @@ namespace server.Repository
 
         public async Task<User?> GetUser(Guid? userId)
         {
-            if(userId == null) { return  null; }
+            if (userId == null) { return null; }
 
             var user = await db.Users.FirstAsync(n => n.Id.Equals(userId));
             return user;
@@ -73,12 +73,19 @@ namespace server.Repository
 
                 return "User deleted succesfully.";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync();
                 return ex.Message;
             }
 
+        }
+
+        public async Task<bool> ChangePassword(User user, string newPassword)
+        {
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword, 12);
+            user.Password = hashedPassword;
+            return await Save();
         }
 
         public async Task<bool> Save()

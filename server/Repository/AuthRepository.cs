@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using server.Data;
 using server.DTO;
@@ -126,6 +127,12 @@ namespace server.Repository
 
             return true;
 
+        }
+
+        public async Task<bool> Save()
+        {
+            var saved = await db.SaveChangesAsync();
+            return saved > 0;
         }
     }
 }

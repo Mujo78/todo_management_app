@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO;
 using server.Interfaces;
-using server.Models;
 
 namespace server.Controllers.v1
 {
@@ -90,6 +89,36 @@ namespace server.Controllers.v1
             if (!isSuccess) return BadRequest("Profile is not updated.");
 
             return Ok(mapper.Map<UserDTO>(userFound));
+        }
+
+        [Authorize]
+        [HttpPost("change-password")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
+        {
+            var userId = authRepository.GetUserId();
+
+            if (changePasswordDTO == null) return BadRequest("Please provide valid data for changing password.");
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var user = await repository.GetUser(userId);
+            if (user == null) return NotFound("User not found.");
+
+            if (!BCrypt.Net.BCrypt.Verify(changePasswordDTO.OldPassword, user.Password)) return BadRequest("Wrong old password.");
+            if (!changePasswordDTO.NewPassword.Equals(changePasswordDTO.ConfirmNewPassword))
+            {
+                ModelState.AddModelError("ConfirmPassword", "New password and confirm password must match.");
+                return BadRequest(ModelState);
+            }
+
+            bool isSuccess = await repository.ChangePassword(user, changePasswordDTO.NewPassword);
+            if (!isSuccess) return BadRequest("Password is not changed.");
+
+            return Ok("Password successfully changed.");
         }
 
         [Authorize]
