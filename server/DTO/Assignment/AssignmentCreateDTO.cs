@@ -2,12 +2,10 @@
 using server.Utils.Validations;
 using System.ComponentModel.DataAnnotations;
 
-namespace server.DTO
+namespace server.DTO.Assignment
 {
-    public class AssignmentUpdateDTO
+    public class AssignmentCreateDTO
     {
-        [Required]
-        public Guid Id { get; set; }
         [Required]
         public Guid UserId { get; set; }
         [Required]
@@ -22,7 +20,5 @@ namespace server.DTO
         public Priority Priority { get; set; } = Priority.Low;
         [StatusValidation]
         public Status Status { get; set; } = Status.Open;
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }

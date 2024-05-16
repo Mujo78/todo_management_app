@@ -48,6 +48,7 @@ builder.Services.AddAuthentication(x =>
         ValidAudience = builder.Configuration.GetValue<string>("ApiSettings:Audience")!,
         ValidateAudience = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+        ClockSkew = TimeSpan.Zero
     };
 });
 

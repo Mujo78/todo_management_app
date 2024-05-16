@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using server.DTO;
+using server.DTO.Auth;
 using server.Interfaces;
 
 namespace server.Controllers.v1

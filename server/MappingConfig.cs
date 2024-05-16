@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using server.DTO;
+using server.DTO.Assignment;
+using server.DTO.User;
 using server.Models;
 
 namespace server

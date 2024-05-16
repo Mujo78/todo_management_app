@@ -1,4 +1,4 @@
-﻿namespace server.DTO
+﻿namespace server.DTO.User
 {
     public class UserDTO
     {

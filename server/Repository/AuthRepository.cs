@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using server.Data;
-using server.DTO;
+using server.DTO.Auth;
 using server.Interfaces;
 using server.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -37,11 +37,16 @@ namespace server.Repository
 
             if (!valid) return new() { AccessToken = "" };
 
+            string refreshToken;
             var refreshExists = db.RefreshTokens.FirstOrDefault(r => r.UserId.Equals(user.Id));
+            if(refreshExists != null && refreshExists.IsValid && refreshExists.ExpiresAt > DateTime.Now)
+            {
+                refreshToken = refreshExists.Refresh_Token;
+            }
 
             var jwtTokenId = $"JTI{Guid.NewGuid()}";
             var accessToken = CreateAccessToken(user, jwtTokenId);
-            var refreshToken = refreshExists?.Refresh_Token ?? await CreateRefreshToken(user.Id, jwtTokenId);
+            refreshToken = await CreateRefreshToken(user.Id, jwtTokenId);
 
             TokenDTO token = new()
             {
@@ -52,6 +57,15 @@ namespace server.Repository
             return token;
         }
 
+        public async Task<bool> ForgotPassword(string email)
+        {
+            var user = await db.Users.FirstOrDefaultAsync(x => x.Email.Equals(email));
+            if (user == null) return false;
+
+            return true;
+
+        }
+
         public async Task<string> CreateRefreshToken(Guid userId, string tokenId)
         {
             RefreshToken token = new()
@@ -60,7 +74,7 @@ namespace server.Repository
                 JwtTokenId = tokenId,
                 Refresh_Token = GenerateRefreshToken(),
                 IsValid = true,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(5)
+                ExpiresAt = DateTime.Now.AddMinutes(5)
             };
 
             await db.RefreshTokens.AddAsync(token);
@@ -92,7 +106,7 @@ namespace server.Repository
                     new(JwtRegisteredClaimNames.Email, user.Email),
                     new(JwtRegisteredClaimNames.Name, user.Name),
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(20),
+                Expires = DateTime.Now.AddMinutes(1),
                 Issuer = configuration.GetValue<string>("ApiSettings:Issuer")!,
                 Audience = configuration.GetValue<string>("ApiSettings:Audience")!,
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
@@ -105,10 +119,32 @@ namespace server.Repository
 
         }
 
+
+        public async Task<TokenDTO> RefreshAccessToken(TokenDTO tokenDTO)
+        {
+            var existingRefreshToken = await db.RefreshTokens.FirstOrDefaultAsync(r => r.Refresh_Token.Equals(tokenDTO.RefreshToken) && r.IsValid);
+            if (existingRefreshToken == null) return new TokenDTO();
+
+            var user = await db.Users.FirstOrDefaultAsync(u => u.Id.Equals(existingRefreshToken.UserId));
+            if(user == null) return new TokenDTO();
+
+            var isTokenValid = IsAccessTokenValid(tokenDTO.AccessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
+            if (isTokenValid) return new TokenDTO();
+
+            var jwtTokenId = $"JTI{Guid.NewGuid()}";
+            var newAccessToken = CreateAccessToken(user, jwtTokenId);
+
+            return new TokenDTO()
+            {
+                AccessToken = newAccessToken,
+                RefreshToken = existingRefreshToken.Refresh_Token
+            };
+
+        }
         public Guid? GetUserId()
         {
             var userId = httpContextAccessor?.HttpContext?.User.FindFirstValue("userId");
-
+            
             if (userId != null)
             {
                 if (Guid.TryParse(userId, out Guid result))
@@ -120,13 +156,21 @@ namespace server.Repository
             return null;
         }
 
-        public async Task<bool> ForgotPassword(string email)
+        public bool IsAccessTokenValid(string accessToken, Guid expectedUserId, string jwtTokenId)
         {
-            var user = await db.Users.FirstAsync(x => x.Email.Equals(email));
-            if (user == null) return false;
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(accessToken);
 
-            return true;
+            var userId = token.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+            var tokenId = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
+            return userId != null && tokenId != null && userId.Equals(expectedUserId) && tokenId.Equals(jwtTokenId);
+        }
+
+        private async Task<bool> Logout(RefreshToken token)
+        {
+            db.Remove(token);
+            return await Save();
         }
 
         public async Task<bool> Save()
@@ -134,5 +178,6 @@ namespace server.Repository
             var saved = await db.SaveChangesAsync();
             return saved > 0;
         }
+
     }
 }

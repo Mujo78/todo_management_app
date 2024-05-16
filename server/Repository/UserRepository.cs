@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using server.Data;
-using server.DTO;
+using server.DTO.User;
 using server.Interfaces;
 using server.Models;
 
@@ -24,13 +24,13 @@ namespace server.Repository
         {
             if (userId == null) { return null; }
 
-            var user = await db.Users.FirstAsync(n => n.Id.Equals(userId));
+            var user = await db.Users.FirstOrDefaultAsync(n => n.Id.Equals(userId));
             return user;
         }
 
         public async Task<User?> GetUser(string userEmail)
         {
-            var user = await db.Users.FirstAsync(n => n.Email.Equals(userEmail));
+            var user = await db.Users.FirstOrDefaultAsync(n => n.Email.Equals(userEmail));
 
             return user;
         }

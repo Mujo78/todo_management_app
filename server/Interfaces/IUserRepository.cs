@@ -1,4 +1,4 @@
-﻿using server.DTO;
+﻿using server.DTO.User;
 using server.Models;
 
 namespace server.Interfaces

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using server.DTO;
+using server.DTO.Assignment;
 using server.Interfaces;
 using server.Models;
 

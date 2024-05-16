@@ -2,7 +2,7 @@
 using BCrypt.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using server.DTO;
+using server.DTO.User;
 using server.Interfaces;
 
 namespace server.Controllers.v1

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using server.Utils.Validations;
 
-namespace server.DTO
+namespace server.DTO.User
 {
     public class ChangePasswordDTO
     {
