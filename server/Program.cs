@@ -5,11 +5,10 @@ using server.Data;
 using server.Interfaces;
 using server.Middlewares;
 using server.Repository;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +18,12 @@ builder.Services.AddDbContext<ApplicationDBContext>(opt =>
 {
     var connString = builder.Configuration.GetConnectionString("DefaultSQLConnection");
     opt.UseSqlServer(connString);
+});
+
+builder.Services.AddHangfire(x =>
+{
+    var connString = builder.Configuration.GetConnectionString("DefaultSQLConnection");
+    x.UseSqlServerStorage(connString);
 });
 
 builder.Services.AddControllers();
@@ -67,6 +72,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHangfireDashboard();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();

@@ -37,16 +37,9 @@ namespace server.Repository
 
             if (!valid) return new() { AccessToken = "" };
 
-            string refreshToken;
-            var refreshExists = db.RefreshTokens.FirstOrDefault(r => r.UserId.Equals(user.Id));
-            if(refreshExists != null && refreshExists.IsValid && refreshExists.ExpiresAt > DateTime.Now)
-            {
-                refreshToken = refreshExists.Refresh_Token;
-            }
-
-            var jwtTokenId = $"JTI{Guid.NewGuid()}";
-            var accessToken = CreateAccessToken(user, jwtTokenId);
-            refreshToken = await CreateRefreshToken(user.Id, jwtTokenId);
+            string jwtTokenId = $"JTI{Guid.NewGuid()}";
+            string refreshToken = await CreateRefreshToken(user.Id, jwtTokenId);
+            string accessToken = CreateAccessToken(user, jwtTokenId);
 
             TokenDTO token = new()
             {
@@ -82,8 +75,26 @@ namespace server.Repository
 
             return token.Refresh_Token;
         }
+        public async Task<TokenDTO> RefreshAccessToken(TokenDTO tokenDTO)
+        {
+            var existingRefreshToken = await GetRefreshToken(tokenDTO.RefreshToken);
+            if (existingRefreshToken == null) return new TokenDTO();
 
+            var user = await db.Users.FirstOrDefaultAsync(u => u.Id.Equals(existingRefreshToken.UserId));
+            if(user == null) return new TokenDTO();
 
+            bool isTokenValid = IsAccessTokenValid(tokenDTO.AccessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
+            if (!isTokenValid) return new TokenDTO();
+
+            var newAccessToken = CreateAccessToken(user, existingRefreshToken.JwtTokenId);
+
+            return new TokenDTO()
+            {
+                AccessToken = newAccessToken,
+                RefreshToken = existingRefreshToken.Refresh_Token
+            };
+
+        }
         public string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
@@ -119,28 +130,6 @@ namespace server.Repository
 
         }
 
-
-        public async Task<TokenDTO> RefreshAccessToken(TokenDTO tokenDTO)
-        {
-            var existingRefreshToken = await db.RefreshTokens.FirstOrDefaultAsync(r => r.Refresh_Token.Equals(tokenDTO.RefreshToken) && r.IsValid);
-            if (existingRefreshToken == null) return new TokenDTO();
-
-            var user = await db.Users.FirstOrDefaultAsync(u => u.Id.Equals(existingRefreshToken.UserId));
-            if(user == null) return new TokenDTO();
-
-            var isTokenValid = IsAccessTokenValid(tokenDTO.AccessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
-            if (isTokenValid) return new TokenDTO();
-
-            var jwtTokenId = $"JTI{Guid.NewGuid()}";
-            var newAccessToken = CreateAccessToken(user, jwtTokenId);
-
-            return new TokenDTO()
-            {
-                AccessToken = newAccessToken,
-                RefreshToken = existingRefreshToken.Refresh_Token
-            };
-
-        }
         public Guid? GetUserId()
         {
             var userId = httpContextAccessor?.HttpContext?.User.FindFirstValue("userId");
@@ -164,13 +153,20 @@ namespace server.Repository
             var userId = token.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
             var tokenId = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
-            return userId != null && tokenId != null && userId.Equals(expectedUserId) && tokenId.Equals(jwtTokenId);
+            return userId != null && tokenId != null && new Guid(userId).Equals(expectedUserId) && tokenId.Equals(jwtTokenId);
         }
 
-        private async Task<bool> Logout(RefreshToken token)
+        public async Task<bool> Logout(TokenDTO tokenDTO)
         {
-            db.Remove(token);
+            var refreshToken = await GetRefreshToken(tokenDTO.RefreshToken);
+            if (refreshToken == null) return false;
+
+            db.RefreshTokens.Remove(refreshToken);
             return await Save();
+        }
+        public async Task<RefreshToken?> GetRefreshToken(string tokenId)
+        {
+            return await db.RefreshTokens.FirstOrDefaultAsync(r => r.Refresh_Token == tokenId && r.IsValid && r.ExpiresAt > DateTime.Now);
         }
 
         public async Task<bool> Save()
