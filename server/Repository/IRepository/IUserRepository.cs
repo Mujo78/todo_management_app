@@ -1,7 +1,7 @@
 ﻿using server.DTO.User;
 using server.Models;
 
-namespace server.Interfaces
+namespace server.Repository.IRepository
 {
     public interface IUserRepository
     {

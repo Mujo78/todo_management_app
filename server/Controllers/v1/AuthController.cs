@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using server.DTO.Auth;
-using server.Interfaces;
+using server.Repository.IRepository;
 
 namespace server.Controllers.v1
 {

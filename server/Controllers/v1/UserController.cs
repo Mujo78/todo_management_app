@@ -3,7 +3,7 @@ using BCrypt.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO.User;
-using server.Interfaces;
+using server.Repository.IRepository;
 
 namespace server.Controllers.v1
 {

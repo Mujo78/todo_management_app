@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using server.Data;
 using server.DTO.Auth;
-using server.Interfaces;
 using server.Models;
+using server.Repository.IRepository;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -67,7 +67,7 @@ namespace server.Repository
                 JwtTokenId = tokenId,
                 Refresh_Token = GenerateRefreshToken(),
                 IsValid = true,
-                ExpiresAt = DateTime.Now.AddMinutes(5)
+                ExpiresAt = DateTime.Now.AddMinutes(120)
             };
 
             await db.RefreshTokens.AddAsync(token);
@@ -117,7 +117,7 @@ namespace server.Repository
                     new(JwtRegisteredClaimNames.Email, user.Email),
                     new(JwtRegisteredClaimNames.Name, user.Name),
                 }),
-                Expires = DateTime.Now.AddMinutes(1),
+                Expires = DateTime.Now.AddMinutes(20),
                 Issuer = configuration.GetValue<string>("ApiSettings:Issuer")!,
                 Audience = configuration.GetValue<string>("ApiSettings:Audience")!,
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
