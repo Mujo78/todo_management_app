@@ -5,13 +5,9 @@ using server.Repository.IRepository;
 
 namespace server.Repository
 {
-    public class AssignmentRepository : Repository<Assignment>,IAssignmentRepository
+    public class AssignmentRepository(ApplicationDBContext db) : Repository<Assignment>(db),IAssignmentRepository
     {
-        private readonly ApplicationDBContext db;
-        public AssignmentRepository(ApplicationDBContext db): base(db)
-        {
-            this.db = db;
-        }
+        private readonly ApplicationDBContext db = db;
 
         public async Task<IEnumerable<Assignment>> GetAllAssignments(Guid? userId)
         {
@@ -22,17 +18,17 @@ namespace server.Repository
         {
             return await db.Assignments.AsNoTracking().FirstOrDefaultAsync(n => n.Id.Equals(taskId) && n.UserId.Equals(userId));
         }
-        public bool AssignmentExists(Guid taskId, Guid userId)
+        public bool AssignmentExists(Guid taskId, Guid? userId)
         {
             return db.Assignments.Any(n => n.Id.Equals(taskId) && n.UserId.Equals(userId));
         }
 
-        public bool AssignmentExists(string title, Guid userId)
+        public bool AssignmentExists(string title, Guid? userId)
         {
             return db.Assignments.Any(n => n.Title.ToLower().Equals(title.ToLower()) && n.UserId.Equals(userId));
         }
 
-        public bool AssignmentExists(string title, Guid taskId, Guid userId)
+        public bool AssignmentExists(string title, Guid taskId, Guid? userId)
         {
             return db.Assignments.Any(n => n.Title.ToLower().Equals(title.ToLower()) && !n.Id.Equals(taskId) && n.UserId.Equals(userId));
         }

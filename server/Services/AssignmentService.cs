@@ -35,12 +35,22 @@ namespace server.Services
             return assignment == null ? throw new NotFoundException("Assignment not found.") : mapper.Map<AssignmentDTO>(assignment);
         }
 
-        public async Task<bool> CreateAssignmentAsync(Assignment assignment)
+        public async Task<AssignmentDTO> CreateAssignmentAsync(AssignmentCreateDTO assignmentDTO)
         {
-            assignment.CreatedAt = DateTime.Now;
-            assignment.UpdatedAt = DateTime.Now;
+            var userId = authRepository.GetUserId();
+            if (!assignmentDTO.UserId.Equals(userId)) throw new BadRequestException("Invalid ID sent.");
 
-            return await repository.CreateAsync(assignment);
+            bool isExists = repository.AssignmentExists(assignmentDTO.Title, userId);
+            if (isExists) throw new ConflictException($"Assignment with name: '{assignmentDTO.Title}' already exists.");
+
+            Assignment assignmentToCreate = mapper.Map<Assignment>(assignmentDTO);
+
+            assignmentToCreate.CreatedAt = DateTime.Now;
+            assignmentToCreate.UpdatedAt = DateTime.Now;
+
+            bool isSuccess = await repository.CreateAsync(assignmentToCreate);
+
+            return isSuccess ? mapper.Map<AssignmentDTO>(assignmentToCreate) : throw new Exception("Assignment not created.");
         }
 
         public async Task<bool> DeleteAllAssignmentsAsync()
@@ -52,9 +62,10 @@ namespace server.Services
             return result;
         }
 
-        public async Task<bool> DeleteAssignmentAsync(Assignment assignment)
+        public async Task<bool> DeleteAssignmentAsync(Guid Id)
         {
             var userId = authRepository.GetUserId();
+            var assignment = await repository.GetAssignmentById(Id, userId) ?? throw new NotFoundException("Assignment not found.");
             if (!assignment.UserId.Equals(userId)) throw new ForbidException("You do not have permission to access this resource.");
             
             bool result = await repository.RemoveAsync(assignment);
@@ -63,10 +74,24 @@ namespace server.Services
             return result;
         }
 
-        public async Task<bool> UpdateAssignmentAsync(Assignment assignment)
+        public async Task<AssignmentDTO> UpdateAssignmentAsync(Guid taskId, AssignmentUpdateDTO updateDTO)
         {
-            assignment.UpdatedAt = DateTime.Now;
-            return await repository.UpdateAsync(assignment);
+            var userId = authRepository.GetUserId();
+            
+            if (taskId.Equals("") || updateDTO == null || !updateDTO.Id.Equals(taskId)) throw new BadRequestException("Invalid ID sent.");
+            if (!updateDTO.UserId.Equals(userId)) throw new ForbidException("You do not have permission to access this resource.");
+
+            bool isExists = repository.AssignmentExists(taskId, userId);
+            if (!isExists) throw new NotFoundException("Assignment not found.");
+
+            bool isExistsName = repository.AssignmentExists(updateDTO.Title, updateDTO.Id, userId);
+            if (isExistsName) throw new ConflictException($"Assignment with name: '{updateDTO.Title}' already exists.");
+
+            Assignment assignmentToUpdate = mapper.Map<Assignment>(updateDTO);
+            assignmentToUpdate.UpdatedAt = DateTime.Now;
+
+            bool result = await repository.UpdateAsync(assignmentToUpdate);
+            return result ? mapper.Map<AssignmentDTO>(assignmentToUpdate) : throw new Exception("Assignment not updated.");
         }
     }
 }

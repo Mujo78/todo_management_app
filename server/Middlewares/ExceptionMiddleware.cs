@@ -44,6 +44,11 @@ namespace server.Middlewares
             };
             switch (ex)
             {
+                case BadRequestException:
+                    statusCode = StatusCodes.Status400BadRequest;
+                    problemDetails.Status = statusCode;
+                    problemDetails.Title = "Bad request.";
+                    break;
                 case NotFoundException:
                    statusCode = StatusCodes.Status404NotFound;
                     problemDetails.Status = statusCode;
@@ -58,6 +63,11 @@ namespace server.Middlewares
                     statusCode = StatusCodes.Status403Forbidden;
                     problemDetails.Status = statusCode;
                     problemDetails.Title = "Forbidden";
+                    break;
+                case NoContentException:
+                    statusCode = StatusCodes.Status204NoContent;
+                    problemDetails.Status = statusCode;
+                    problemDetails.Title = "No content";
                     break;
                 default:
                     statusCode = StatusCodes.Status500InternalServerError;
