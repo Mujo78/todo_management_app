@@ -7,17 +7,11 @@ using server.Services.IService;
 
 namespace server.Services
 {
-    public class AssignmentService : IAssignmentService
+    public class AssignmentService(IAssignmentRepository repository, IAuthRepository authRepository, IMapper mapper) : IAssignmentService
     {
-        private readonly IAssignmentRepository repository;
-        private readonly IAuthRepository authRepository;
-        private readonly IMapper mapper;
-        public AssignmentService(IAssignmentRepository repository, IAuthRepository authRepository, IMapper mapper)
-        {
-            this.repository = repository;
-            this.authRepository = authRepository;
-            this.mapper = mapper;
-        }
+        private readonly IAssignmentRepository repository = repository;
+        private readonly IAuthRepository authRepository = authRepository;
+        private readonly IMapper mapper = mapper;
 
         public async Task<IEnumerable<AssignmentDTO>> GetAllAssignmentsAsync()
         {

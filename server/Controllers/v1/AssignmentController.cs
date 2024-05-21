@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO.Assignment;
 using server.Exceptions;
-using server.Models;
-using server.Repository.IRepository;
 using server.Services.IService;
 
 namespace server.Controllers.v1
@@ -12,12 +9,9 @@ namespace server.Controllers.v1
     [Authorize]
     [Route("api/assignments/")]
     [ApiController]
-    public class AssignmentController(IAssignmentService assignmentService, IAssignmentRepository repository, IMapper mapper, IAuthRepository authRepository) : ControllerBase
+    public class AssignmentController(IAssignmentService assignmentService) : ControllerBase
     {
         private readonly IAssignmentService assignmentService = assignmentService;
-        private readonly IAssignmentRepository repository = repository;
-        private readonly IAuthRepository authRepository = authRepository;
-        private readonly IMapper mapper = mapper;
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<AssignmentDTO>), StatusCodes.Status200OK)]
@@ -53,7 +47,7 @@ namespace server.Controllers.v1
         public async Task<ActionResult> DeleteAssignment([FromRoute] Guid Id)
         {
             if (Id.Equals("")) throw new BadRequestException("Invalid ID sent.");
-            
+
             await assignmentService.DeleteAssignmentAsync(Id);
             return Ok(Id);
         }
@@ -80,7 +74,7 @@ namespace server.Controllers.v1
         public async Task<ActionResult> CreateNewAssignment([FromBody] AssignmentCreateDTO createDTO)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-           
+
             var newAssignment = await assignmentService.CreateAssignmentAsync(createDTO);
             return Ok(newAssignment);
         }

@@ -6,7 +6,7 @@ using server.Repository.IRepository;
 
 namespace server.Repository
 {
-    public class UserRepository(ApplicationDBContext db) : IUserRepository
+    public class UserRepository(ApplicationDBContext db) : Repository<User>(db), IUserRepository
     {
         private readonly ApplicationDBContext db = db;
 
@@ -22,19 +22,15 @@ namespace server.Repository
 
         public async Task<User?> GetUser(Guid? userId)
         {
-            if (userId == null) { return null; }
-
-            var user = await db.Users.FirstOrDefaultAsync(n => n.Id.Equals(userId));
-            return user;
+            return await db.Users.FirstOrDefaultAsync(n => n.Id.Equals(userId));
         }
 
         public async Task<User?> GetUser(string userEmail)
         {
-            var user = await db.Users.FirstOrDefaultAsync(n => n.Email.Equals(userEmail));
-
-            return user;
+            return await db.Users.FirstOrDefaultAsync(n => n.Email.Equals(userEmail));
         }
 
+        /*
         public async Task<User?> Register(RegistrationDTO registrationDTO)
         {
             User user = new()
@@ -56,6 +52,8 @@ namespace server.Repository
             db.Users.Update(user);
             return await Save();
         }
+        */
+
         public async Task<string> DeleteUser(Guid? userId)
         {
             using var transaction = db.Database.BeginTransaction();
@@ -79,19 +77,6 @@ namespace server.Repository
                 return ex.Message;
             }
 
-        }
-
-        public async Task<bool> ChangePassword(User user, string newPassword)
-        {
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword, 12);
-            user.Password = hashedPassword;
-            return await Save();
-        }
-
-        public async Task<bool> Save()
-        {
-            var saved = await db.SaveChangesAsync();
-            return saved > 0;
         }
 
     }
