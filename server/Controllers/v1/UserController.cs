@@ -1,21 +1,15 @@
-﻿using AutoMapper;
-using BCrypt.Net;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO.User;
-using server.Repository.IRepository;
 using server.Services.IService;
 
 namespace server.Controllers.v1
 {
     [Route("api/users/")]
     [ApiController]
-    public class UserController(IUserService userService, IUserRepository repository, IAuthRepository authRepository) : ControllerBase
+    public class UserController(IUserService userService) : ControllerBase
     {
-
         private readonly IUserService userService = userService;
-        private readonly IUserRepository repository = repository;
-        private readonly IAuthRepository authRepository = authRepository;
 
         [HttpPost("/registration")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
@@ -90,15 +84,8 @@ namespace server.Controllers.v1
 
         public async Task<ActionResult> DeleteMyProfile()
         {
-            var userId = authRepository.GetUserId();
-
-            var isSuccess = await repository.DeleteUser(userId);
-            if (isSuccess.Contains("successfully"))
-            {
-                return Ok(isSuccess);
-            }
-
-            return BadRequest(isSuccess);
+            var result = await userService.DeleteMyProfile();
+            return Ok(result);
         }
     }
 }

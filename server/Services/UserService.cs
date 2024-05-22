@@ -72,5 +72,13 @@ namespace server.Services
 
             return mapper.Map<UserDTO>(userFound);
         }
+
+        public async Task<string> DeleteMyProfile()
+        {
+            var userId = authRepository.GetUserId();
+            
+            var user = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
+            return await repository.DeleteUser(user);
+        }
     }
 }

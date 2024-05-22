@@ -27,6 +27,17 @@ namespace server.Repository
             this.httpContextAccessor = httpContextAccessor;
         }
 
+        public async Task<User?> GetUser(string userEmail)
+        {
+            return await db.Users.FirstOrDefaultAsync(n => n.Email.Equals(userEmail));
+        }
+
+        public async Task<User?> GetUser(Guid userId)
+        {
+            return await db.Users.FirstOrDefaultAsync(n => n.Id.Equals(userId));
+        }
+
+        /*
         public async Task<TokenDTO> Login(LoginDTO loginDTO)
         {
             var user = db.Users.FirstOrDefault(u => u.Email.Equals(loginDTO.Email));
@@ -49,6 +60,7 @@ namespace server.Repository
 
             return token;
         }
+        */
 
         public async Task<bool> ForgotPassword(string email)
         {
@@ -59,29 +71,21 @@ namespace server.Repository
 
         }
 
-        public async Task<string> CreateRefreshToken(Guid userId, string tokenId)
+        public async Task<bool> CreateRefreshToken(RefreshToken token)
         {
-            RefreshToken token = new()
-            {
-                UserId = userId,
-                JwtTokenId = tokenId,
-                Refresh_Token = GenerateRefreshToken(),
-                IsValid = true,
-                ExpiresAt = DateTime.Now.AddMinutes(120)
-            };
-
             await db.RefreshTokens.AddAsync(token);
-            await db.SaveChangesAsync();
-
-            return token.Refresh_Token;
+            return await Save();
         }
+
+        /*
+
         public async Task<TokenDTO> RefreshAccessToken(TokenDTO tokenDTO)
         {
             var existingRefreshToken = await GetRefreshToken(tokenDTO.RefreshToken);
             if (existingRefreshToken == null) return new TokenDTO();
 
             var user = await db.Users.FirstOrDefaultAsync(u => u.Id.Equals(existingRefreshToken.UserId));
-            if(user == null) return new TokenDTO();
+            if (user == null) return new TokenDTO();
 
             bool isTokenValid = IsAccessTokenValid(tokenDTO.AccessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
             if (!isTokenValid) return new TokenDTO();
@@ -95,6 +99,9 @@ namespace server.Repository
             };
 
         }
+        */
+
+        /*
         public string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
@@ -129,11 +136,12 @@ namespace server.Repository
             return tokenStr;
 
         }
+        */
 
         public Guid? GetUserId()
         {
             var userId = httpContextAccessor?.HttpContext?.User.FindFirstValue("userId");
-            
+
             if (userId != null)
             {
                 if (Guid.TryParse(userId, out Guid result))
@@ -145,6 +153,7 @@ namespace server.Repository
             return null;
         }
 
+        /*
         public bool IsAccessTokenValid(string accessToken, Guid expectedUserId, string jwtTokenId)
         {
             var handler = new JwtSecurityTokenHandler();
@@ -155,12 +164,11 @@ namespace server.Repository
 
             return userId != null && tokenId != null && new Guid(userId).Equals(expectedUserId) && tokenId.Equals(jwtTokenId);
         }
+        */
 
-        public async Task<bool> Logout(TokenDTO tokenDTO)
+
+        public async Task<bool> Logout(RefreshToken refreshToken)
         {
-            var refreshToken = await GetRefreshToken(tokenDTO.RefreshToken);
-            if (refreshToken == null) return false;
-
             db.RefreshTokens.Remove(refreshToken);
             return await Save();
         }

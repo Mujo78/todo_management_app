@@ -1,13 +1,11 @@
-﻿using server.DTO.User;
-using server.Models;
+﻿using server.Models;
 
 namespace server.Repository.IRepository
 {
     public interface IUserRepository: IRepository<User>
     {
         Task<User?> GetUser(Guid? userId);
-        Task<User?> GetUser(string userEmail);
-        Task<string> DeleteUser(Guid? userId);
+        Task<string> DeleteUser(User user);
         bool EmailAlreadyUsed(string email);
         bool EmailAlreadyUsed(string email, Guid? userId);
     }
