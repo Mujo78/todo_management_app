@@ -22,8 +22,6 @@ namespace server.Controllers.v1
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var tokenToReturn = await authService.Login(loginDTO);
-            if (string.IsNullOrEmpty(tokenToReturn.RefreshToken)) throw new BadRequestException("Incorrect email or password.");
-
             return Ok(tokenToReturn);
         }
 
@@ -50,8 +48,7 @@ namespace server.Controllers.v1
         public async Task<ActionResult> GetAccessTokenWithRefreshAction([FromBody] TokenDTO tokenDTO)
         {
             if (tokenDTO == null) return BadRequest("Invalid data provided.");
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
+            
             var tokenResponse = await authService.RefreshAccessToken(tokenDTO);
             return Ok(tokenResponse);
         }
@@ -64,7 +61,7 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Logout([FromBody] TokenDTO tokenDTO)
         {
-            if (tokenDTO == null || string.IsNullOrEmpty(tokenDTO.RefreshToken)) throw new BadRequestException("Invalid refresh token provided.");
+            if (tokenDTO == null || string.IsNullOrEmpty(tokenDTO.RefreshToken)) throw new BadRequestException("Invalid token provided.");
             await authService.Logout(tokenDTO);
             return Ok("Logged out successfully.");
         }

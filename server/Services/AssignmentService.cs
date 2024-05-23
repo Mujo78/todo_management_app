@@ -7,15 +7,15 @@ using server.Services.IService;
 
 namespace server.Services
 {
-    public class AssignmentService(IAssignmentRepository repository, IAuthRepository authRepository, IMapper mapper) : IAssignmentService
+    public class AssignmentService(IAssignmentRepository repository, IAuthService authService, IMapper mapper) : IAssignmentService
     {
         private readonly IAssignmentRepository repository = repository;
-        private readonly IAuthRepository authRepository = authRepository;
+        private readonly IAuthService authService = authService;
         private readonly IMapper mapper = mapper;
 
         public async Task<IEnumerable<AssignmentDTO>> GetAllAssignmentsAsync()
         {
-            var userId = authRepository.GetUserId();
+            var userId = authService.GetUserId();
 
             var assignments = await repository.GetAllAssignments(userId);
             return mapper.Map<IEnumerable<AssignmentDTO>>(assignments);
@@ -23,7 +23,7 @@ namespace server.Services
 
         public async Task<AssignmentDTO?> GetAssignmentAsync(Guid taskId)
         {
-            var userId = authRepository.GetUserId();
+            var userId = authService.GetUserId();
             var assignment = await repository.GetAssignmentById(taskId, userId);
 
             return assignment == null ? throw new NotFoundException("Assignment not found.") : mapper.Map<AssignmentDTO>(assignment);
@@ -31,7 +31,7 @@ namespace server.Services
 
         public async Task<AssignmentDTO> CreateAssignmentAsync(AssignmentCreateDTO assignmentDTO)
         {
-            var userId = authRepository.GetUserId();
+            var userId = authService.GetUserId();
             if (!assignmentDTO.UserId.Equals(userId)) throw new BadRequestException("Invalid ID sent.");
 
             bool isExists = repository.AssignmentExists(assignmentDTO.Title, userId);
@@ -49,7 +49,7 @@ namespace server.Services
 
         public async Task<bool> DeleteAllAssignmentsAsync()
         {
-            var userId = authRepository.GetUserId();
+            var userId = authService.GetUserId();
             bool result = await repository.RemoveAllAssignments(userId);
 
             if (!result) throw new Exception("Assignments not deleted.");
@@ -58,7 +58,7 @@ namespace server.Services
 
         public async Task<bool> DeleteAssignmentAsync(Guid Id)
         {
-            var userId = authRepository.GetUserId();
+            var userId = authService.GetUserId();
             var assignment = await repository.GetAssignmentById(Id, userId) ?? throw new NotFoundException("Assignment not found.");
             if (!assignment.UserId.Equals(userId)) throw new ForbidException("You do not have permission to access this resource.");
             
@@ -70,7 +70,7 @@ namespace server.Services
 
         public async Task<AssignmentDTO> UpdateAssignmentAsync(Guid taskId, AssignmentUpdateDTO updateDTO)
         {
-            var userId = authRepository.GetUserId();
+            var userId = authService.GetUserId();
             
             if (taskId.Equals("") || updateDTO == null || !updateDTO.Id.Equals(taskId)) throw new BadRequestException("Invalid ID sent.");
             if (!updateDTO.UserId.Equals(userId)) throw new ForbidException("You do not have permission to access this resource.");

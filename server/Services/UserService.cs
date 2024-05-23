@@ -8,22 +8,22 @@ using BCrypt.Net;
 
 namespace server.Services
 {
-    public class UserService(IUserRepository repository, IAuthRepository authRepository, IMapper mapper) : IUserService
+    public class UserService(IUserRepository repository, IAuthService authService, IMapper mapper) : IUserService
     {
         private readonly IUserRepository repository = repository;
-        private readonly IAuthRepository authRepository = authRepository;
+        private readonly IAuthService authService = authService;
         private readonly IMapper mapper = mapper;
 
         public async Task<UserDTO> GetMyProfileInfo()
         {
-            var userId = authRepository.GetUserId();
+            var userId = authService.GetUserId();
             
             var myInfo = await repository.GetUser(userId);
             return myInfo == null ? throw new NotFoundException("User not found.") : mapper.Map<UserDTO>(myInfo);
         }
         public async Task<bool> ChangePassword(ChangePasswordDTO changePasswordDTO)
         {
-            var userId = authRepository.GetUserId();
+            var userId = authService.GetUserId();
             var user = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
 
             if (!BCrypt.Net.BCrypt.Verify(changePasswordDTO.OldPassword, user.Password))
@@ -57,7 +57,7 @@ namespace server.Services
 
         public async Task<UserDTO> UpdateUser(UserUpdateDTO updateDTO)
         {
-            var userId = authRepository.GetUserId();
+            var userId = authService.GetUserId();
             if (!updateDTO.Id.Equals(userId)) throw new ForbidException("You are not authorize to access these resources.");
 
             var userFound = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
@@ -75,7 +75,7 @@ namespace server.Services
 
         public async Task<string> DeleteMyProfile()
         {
-            var userId = authRepository.GetUserId();
+            var userId = authService.GetUserId();
             
             var user = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
             return await repository.DeleteUser(user);

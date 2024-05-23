@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using server.Data;
+﻿using server.Data;
 using server.Repository.IRepository;
 
 namespace server.Repository

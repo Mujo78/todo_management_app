@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using server.DTO.Auth;
 using server.Models;
 using server.Repository.IRepository;
@@ -10,18 +9,19 @@ using System.Security.Cryptography;
 using server.Exceptions;
 using System.Text;
 
-
 namespace server.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IAuthRepository repository;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IConfiguration configuration;
         private readonly string? secretKey;
 
-        public AuthService(IAuthRepository repository, IConfiguration configuration)
+        public AuthService(IAuthRepository repository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             this.repository = repository;
+            this.httpContextAccessor = httpContextAccessor;
             this.configuration = configuration;
             secretKey = this.configuration["ApiSettings:Secret"];
         }
@@ -42,6 +42,8 @@ namespace server.Services
                 AccessToken = accessToken,
                 RefreshToken = refreshToken
             };
+
+            if (string.IsNullOrEmpty(token.RefreshToken)) throw new BadRequestException("Incorrect email or password.");
 
             return token;
         }
@@ -70,7 +72,6 @@ namespace server.Services
         public async Task<TokenDTO> RefreshAccessToken(TokenDTO tokenDTO)
         {
             var existingRefreshToken = await repository.GetRefreshToken(tokenDTO.RefreshToken) ?? throw new NotFoundException("Invalid token provided.");
-
             var user = await repository.GetUser(existingRefreshToken.UserId) ?? throw new NotFoundException("User not found.");
 
             bool isTokenValid = IsAccessTokenValid(tokenDTO.AccessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
@@ -129,6 +130,21 @@ namespace server.Services
             var tokenId = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
             return userId != null && tokenId != null && new Guid(userId).Equals(expectedUserId) && tokenId.Equals(jwtTokenId);
+        }
+
+        public Guid? GetUserId()
+        {
+            var userId = httpContextAccessor?.HttpContext?.User.FindFirstValue("userId");
+
+            if (userId != null)
+            {
+                if (Guid.TryParse(userId, out Guid result))
+                {
+                    return result;
+                }
+            }
+
+            return null;
         }
     }
 }

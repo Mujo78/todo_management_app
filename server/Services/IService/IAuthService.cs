@@ -9,6 +9,7 @@ namespace server.Services.IService
         Task<bool> Logout(TokenDTO tokenDTO);
         Task<string> CreateRefreshToken(Guid userId, string tokenId);
         Task<TokenDTO> RefreshAccessToken(TokenDTO tokenDTO);
+        Guid? GetUserId();
         public bool IsAccessTokenValid(string accesToken, Guid exprectedUserId, string jwtTokenId);
         string CreateAccessToken(User user, string tokenId);
         string GenerateRefreshToken();
