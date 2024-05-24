@@ -1,11 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Models;
+using Asp.Versioning.ApiExplorer;
 
 namespace server
 {
-    public class SwaggerConfigurationOptions : IConfigureOptions<SwaggerGenOptions>
+    public class SwaggerConfigurationOptions(IApiVersionDescriptionProvider provider) : IConfigureOptions<SwaggerGenOptions>
     {
+        private readonly IApiVersionDescriptionProvider provider = provider;
+
         public void Configure(SwaggerGenOptions options)
         {
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -34,6 +37,16 @@ namespace server
                     new List<string>()
                 }
             });
+
+            foreach(var desc in provider.ApiVersionDescriptions)
+            {
+                options.SwaggerDoc(desc.GroupName, new OpenApiInfo
+                {
+                    Version = desc.ApiVersion.ToString(),
+                    Title = $"ToDo Management API {desc.ApiVersion}",
+                    Description = "API to manage your tasks",
+                });
+            }
         }
     }
 }

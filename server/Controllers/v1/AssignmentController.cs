@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO.Assignment;
 using server.Exceptions;
@@ -7,7 +8,8 @@ using server.Services.IService;
 namespace server.Controllers.v1
 {
     [Authorize]
-    [Route("api/assignments/")]
+    [Route("api/v{version:apiVersion}/assignments/")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class AssignmentController(IAssignmentService assignmentService) : ControllerBase
     {

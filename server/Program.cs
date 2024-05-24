@@ -8,27 +8,31 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Hangfire;
+using Hangfire.SqlServer;
 using server.Repository.IRepository;
 using server.Services.IService;
 using server.Services;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Asp.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+var connString = builder.Configuration.GetConnectionString("DefaultSQLConnection");
 builder.Services.AddDbContext<ApplicationDBContext>(opt =>
 {
-    var connString = builder.Configuration.GetConnectionString("DefaultSQLConnection");
     opt.UseSqlServer(connString);
 });
 
 builder.Services.AddHangfire(x =>
 {
-    var connString = builder.Configuration.GetConnectionString("DefaultSQLConnection");
-    x.UseSqlServerStorage(connString);
+    x.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer().UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(connString);
 });
+
+builder.Services.AddHangfireServer();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,8 +45,21 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+builder.Services.TryAddSingleton<ITokenCleanupService, TokenCleanupService>();
+
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
+
+builder.Services.AddApiVersioning(opt =>
+{
+    opt.AssumeDefaultVersionWhenUnspecified = true;
+    opt.DefaultApiVersion = new ApiVersion(1, 0);
+    opt.ReportApiVersions = true;
+}).AddMvc().AddApiExplorer(opt =>
+{
+    opt.GroupNameFormat = "'v'VVV";
+    opt.SubstituteApiVersionInUrl = true;
+});
 
 builder.Services.AddAuthentication(x =>
 {
@@ -80,7 +97,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(opt => {
+        opt.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDo_API_V1");
+    });
 }
 
 app.UseHangfireDashboard();
@@ -90,5 +109,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+var tokenCleanupService = app.Services.GetRequiredService<ITokenCleanupService>();
+RecurringJob.AddOrUpdate("TokenCleanupJob", () => tokenCleanupService.CleanupInvalidTokens(), "* * * * *");
 
 app.Run();

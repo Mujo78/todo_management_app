@@ -1,17 +1,19 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO.User;
 using server.Services.IService;
 
 namespace server.Controllers.v1
 {
-    [Route("api/users/")]
+    [Route("api/v{version:apiVersion}/users/")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class UserController(IUserService userService) : ControllerBase
     {
         private readonly IUserService userService = userService;
 
-        [HttpPost("/registration")]
+        [HttpPost("registration")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]

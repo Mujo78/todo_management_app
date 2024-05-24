@@ -10,6 +10,6 @@ namespace server.Repository.IRepository
         Task<bool> CreateRefreshToken(RefreshToken token);
         Task<RefreshToken?> GetRefreshToken(string tokenId);
         Task<bool> Logout(RefreshToken refreshToken);
-        public Task<bool> Save();
+        Task<bool> Save();
     }
 }

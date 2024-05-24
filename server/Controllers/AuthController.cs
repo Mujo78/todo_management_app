@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using server.DTO.Auth;
 using server.Exceptions;
 using server.Services.IService;
 
-namespace server.Controllers.v1
+namespace server.Controllers
 {
     [Route("api/auth")]
+    [ApiVersionNeutral]
     [ApiController]
     public class AuthController(IAuthService authService) : ControllerBase
     {
@@ -48,7 +50,7 @@ namespace server.Controllers.v1
         public async Task<ActionResult> GetAccessTokenWithRefreshAction([FromBody] TokenDTO tokenDTO)
         {
             if (tokenDTO == null) return BadRequest("Invalid data provided.");
-            
+
             var tokenResponse = await authService.RefreshAccessToken(tokenDTO);
             return Ok(tokenResponse);
         }

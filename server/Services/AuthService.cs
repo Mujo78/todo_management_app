@@ -62,7 +62,7 @@ namespace server.Services
                 JwtTokenId = tokenId,
                 Refresh_Token = GenerateRefreshToken(),
                 IsValid = true,
-                ExpiresAt = DateTime.Now.AddMinutes(120)
+                ExpiresAt = DateTime.Now.AddMinutes(1)
             };
 
             bool result = await repository.CreateRefreshToken(token);
@@ -100,7 +100,7 @@ namespace server.Services
                     new(JwtRegisteredClaimNames.Email, user.Email),
                     new(JwtRegisteredClaimNames.Name, user.Name),
                 }),
-                Expires = DateTime.Now.AddMinutes(20),
+                Expires = DateTime.Now.AddMinutes(1),
                 Issuer = configuration.GetValue<string>("ApiSettings:Issuer")!,
                 Audience = configuration.GetValue<string>("ApiSettings:Audience")!,
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
