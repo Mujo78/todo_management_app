@@ -5,13 +5,15 @@ using server.Models;
 using server.Repository.IRepository;
 using server.Services.IService;
 using BCrypt.Net;
+using server.Utils.Email;
 
 namespace server.Services
 {
-    public class UserService(IUserRepository repository, IAuthService authService, IMapper mapper) : IUserService
+    public class UserService(IUserRepository repository, IAuthService authService, IMailService mailService, IMapper mapper) : IUserService
     {
         private readonly IUserRepository repository = repository;
         private readonly IAuthService authService = authService;
+        private readonly IMailService mailService = mailService;
         private readonly IMapper mapper = mapper;
 
         public async Task<UserDTO> GetMyProfileInfo()
@@ -47,11 +49,22 @@ namespace server.Services
             {
                 Name = registrationDTO.Name,
                 Email = registrationDTO.Email,
+                EmailConfirmed = false,
                 Password = BCrypt.Net.BCrypt.HashPassword(registrationDTO.Password, 12),
                 CreatedAt = DateTime.Now,
             };
 
             await repository.CreateAsync(user);
+
+            MailData data = new()
+            {
+                EmailToId = user.Email,
+                EmailToName = user.Name,
+                EmailSubject = "Email Verification",
+                EmailBody = "Verify your email address.",
+            };
+
+            await mailService.SendMailAsync(data);
             return mapper.Map<UserDTO>(user);
         }
 

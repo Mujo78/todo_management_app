@@ -8,13 +8,13 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Hangfire;
-using Hangfire.SqlServer;
 using server.Repository.IRepository;
 using server.Services.IService;
 using server.Services;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Asp.Versioning;
+using server.Utils.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +34,8 @@ builder.Services.AddHangfire(x =>
 
 builder.Services.AddHangfireServer();
 
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddScoped<IAssignmentRepository, AssignmentRepository>();
@@ -46,6 +48,7 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.TryAddSingleton<ITokenCleanupService, TokenCleanupService>();
+builder.Services.AddTransient<IMailService, MailService>();
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
