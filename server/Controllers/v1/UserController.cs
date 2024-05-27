@@ -14,7 +14,7 @@ namespace server.Controllers.v1
         private readonly IUserService userService = userService;
 
         [HttpPost("registration")]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -23,8 +23,8 @@ namespace server.Controllers.v1
             if (registrationDTO == null) return BadRequest("Please provide valid data for registration.");
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = await userService.Register(registrationDTO);
-            return Ok(user);
+            await userService.Register(registrationDTO);
+            return Ok("Please check your inbox, for verification email.");
         }
 
         [Authorize]

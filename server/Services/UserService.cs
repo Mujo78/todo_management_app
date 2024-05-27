@@ -5,7 +5,6 @@ using server.Models;
 using server.Repository.IRepository;
 using server.Services.IService;
 using BCrypt.Net;
-using server.Utils.Email;
 
 namespace server.Services
 {
@@ -40,7 +39,7 @@ namespace server.Services
             return await repository.SaveAsync();
         }
 
-        public async Task<UserDTO> Register(RegistrationDTO registrationDTO)
+        public async Task<bool> Register(RegistrationDTO registrationDTO)
         {
             bool emailTaken = repository.EmailAlreadyUsed(registrationDTO.Email);
             if (emailTaken) throw new ConflictException("Email is already used!");
@@ -54,18 +53,16 @@ namespace server.Services
                 CreatedAt = DateTime.Now,
             };
 
-            await repository.CreateAsync(user);
-
-            MailData data = new()
+            try
             {
-                EmailToId = user.Email,
-                EmailToName = user.Name,
-                EmailSubject = "Email Verification",
-                EmailBody = "Verify your email address.",
-            };
-
-            await mailService.SendMailAsync(data);
-            return mapper.Map<UserDTO>(user);
+                await repository.CreateAsync(user);
+                await mailService.SendVerificationMailAsync(user.Email, user.Name);
+                
+                return true;
+            }catch (Exception)
+            {
+                return false;
+            }
         }
 
         public async Task<UserDTO> UpdateUser(UserUpdateDTO updateDTO)
@@ -92,6 +89,11 @@ namespace server.Services
             
             var user = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
             return await repository.DeleteUser(user);
+        }
+
+        public Task<bool> VerifyEmail(string email)
+        {
+            throw new NotImplementedException();
         }
     }
 }

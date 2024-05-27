@@ -3,16 +3,12 @@ using server.Models;
 
 namespace server.Data
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : DbContext(options)
     {
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
-        {
-
-        }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<UserToken> UserTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

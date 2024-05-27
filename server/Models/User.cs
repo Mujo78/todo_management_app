@@ -14,5 +14,6 @@ namespace server.Models
         public bool EmailConfirmed { get; set; } = false;
         public DateTime CreatedAt { get; set; }
         public RefreshToken RefreshToken { get; set; }
+        public ICollection<UserToken> UserTokens { get; set; }
     }
 }
