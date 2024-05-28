@@ -2,6 +2,7 @@
 using server.Data;
 using server.Models;
 using server.Repository.IRepository;
+using server.Utils.Enums;
 
 namespace server.Repository
 {
@@ -24,29 +25,52 @@ namespace server.Repository
             return await db.Users.FirstOrDefaultAsync(n => n.Id.Equals(userId));
         }
 
-       public async Task<string> DeleteUser(User user)
+        public async Task DeleteUser(User user)
         {
-            using var transaction = db.Database.BeginTransaction();
+            var assignmentsToDelete = db.Assignments.Where(assignment => assignment.UserId.Equals(user.Id));
+            db.Assignments.RemoveRange(assignmentsToDelete);
 
-            try
-            {
-                var assignmentsToDelete = db.Assignments.Where(assignment => assignment.UserId.Equals(user.Id));
-                db.Assignments.RemoveRange(assignmentsToDelete);
-                
-                db.Users.Remove(user);
+            var tokensToDelete = db.UserTokens.Where(token => token.UserId.Equals(user.Id));
+            db.UserTokens.RemoveRange(tokensToDelete);
 
-                await db.SaveChangesAsync();
-                await transaction.CommitAsync();
+            db.Users.Remove(user);
 
-                return "User deleted succesfully.";
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
-                return ex.Message;
-            }
-
+            await db.SaveChangesAsync();
         }
 
+        public async Task CreateUserAsync(User user, string token)
+        {
+            var newUser = await db.Users.AddAsync(user);
+
+            await db.UserTokens.AddAsync(new()
+            {
+                UserId = newUser.Entity.Id,
+                Token = token,
+                TokenType = TokenType.EmailVerification,
+                CreatedAt = DateTime.Now,
+                ExpiresAt = DateTime.Now.AddHours(6),
+            });
+
+            await db.SaveChangesAsync();
+        }
+
+        public bool IsUserTokenValid(UserToken token)
+        {
+            return token.ExpiresAt > DateTime.Now;
+        }
+
+        public async Task<UserToken?> GetUserToken(string token)
+        {
+           return await db.UserTokens.FirstOrDefaultAsync(n => n.Token.Equals(token));
+        }
+
+        public async Task VerifyEmailAddress(User user, UserToken token)
+        {
+            user.EmailConfirmed = true;
+            db.Users.Update(user);
+
+            db.UserTokens.Remove(token);
+            await db.SaveChangesAsync();
+        }
     }
 }

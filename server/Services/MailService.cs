@@ -1,7 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using server.Models;
 using server.Services.IService;
 using server.Utils.Email;
 
@@ -40,7 +39,7 @@ namespace server.Services
             await mailClient.DisconnectAsync(true);
         }
 
-        public async Task<bool> SendVerificationMailAsync(string email, string name)
+        public async Task<bool> SendVerificationMailAsync(string email, string name, string token)
         {
             try
             {
@@ -49,21 +48,37 @@ namespace server.Services
                     EmailToId = email,
                     EmailToName = name,
                     EmailSubject = "Email Verification",
-                    EmailBody = "Verify your email address with the button below, or with the link.",
+                    EmailBody = $"Verify your email address with the button below, or with the link. Token: {token}",
                 };
 
                 await SendMailAsync(data);
                 return true;
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                return false;
+                throw new Exception(ex.Message);
             }
         }
 
-        public Task<bool> SendWelcomeMailAsync(string email, string name)
+        public async Task<bool> SendWelcomeMailAsync(string email, string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                MailData data = new()
+                {
+                    EmailToId = email,
+                    EmailToName = name,
+                    EmailSubject = "Welcome Message",
+                    EmailBody = $"Dear {name}, \n Welcome to the ToDo Management System.",
+                };
+
+                await SendMailAsync(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

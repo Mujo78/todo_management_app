@@ -31,7 +31,7 @@ namespace server.Services
             var user = await repository.GetUser(loginDTO.Email) ?? throw new NotFoundException("User not found.");
 
             bool isValid = BCrypt.Net.BCrypt.Verify(loginDTO.Password, user.Password);
-            if (!isValid) throw new BadRequestException("Incorrect email or password.");
+            if (!isValid || !user.EmailConfirmed) throw new BadRequestException("Incorrect email or password.");
 
             string jwtTokenId = $"JTI{Guid.NewGuid()}";
             string refreshToken = await CreateRefreshToken(user.Id, jwtTokenId);

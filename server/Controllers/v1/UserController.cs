@@ -89,5 +89,17 @@ namespace server.Controllers.v1
             var result = await userService.DeleteMyProfile();
             return Ok(result);
         }
+
+        [HttpPatch("verify/{token}")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<ActionResult> VerifyEmail([FromRoute] string token)
+        {
+            await userService.VerifyEmail(token);
+            return Ok("Successfully verified email address.");
+        }
     }
 }

@@ -5,11 +5,15 @@ using server.Models;
 using server.Repository.IRepository;
 using server.Services.IService;
 using BCrypt.Net;
+using server.Data;
+using server.Utils.Enums;
+using Newtonsoft.Json.Linq;
 
 namespace server.Services
 {
-    public class UserService(IUserRepository repository, IAuthService authService, IMailService mailService, IMapper mapper) : IUserService
+    public class UserService(ApplicationDBContext db, IUserRepository repository, IAuthService authService, IMailService mailService, IMapper mapper) : IUserService
     {
+        private readonly ApplicationDBContext db = db;
         private readonly IUserRepository repository = repository;
         private readonly IAuthService authService = authService;
         private readonly IMailService mailService = mailService;
@@ -18,7 +22,7 @@ namespace server.Services
         public async Task<UserDTO> GetMyProfileInfo()
         {
             var userId = authService.GetUserId();
-            
+
             var myInfo = await repository.GetUser(userId);
             return myInfo == null ? throw new NotFoundException("User not found.") : mapper.Map<UserDTO>(myInfo);
         }
@@ -41,6 +45,7 @@ namespace server.Services
 
         public async Task<bool> Register(RegistrationDTO registrationDTO)
         {
+            using var transaction = db.Database.BeginTransaction();
             bool emailTaken = repository.EmailAlreadyUsed(registrationDTO.Email);
             if (emailTaken) throw new ConflictException("Email is already used!");
 
@@ -55,13 +60,18 @@ namespace server.Services
 
             try
             {
-                await repository.CreateAsync(user);
-                await mailService.SendVerificationMailAsync(user.Email, user.Name);
-                
+                string verificationToken = Guid.NewGuid().ToString();
+                await repository.CreateUserAsync(user, verificationToken);
+                await transaction.CommitAsync();
+
+                await mailService.SendVerificationMailAsync(user.Email, user.Name, verificationToken);
+
                 return true;
-            }catch (Exception)
+            }
+            catch (Exception ex)
             {
-                return false;
+                await transaction.RollbackAsync();
+                throw new Exception(ex.Message);
             }
         }
 
@@ -86,14 +96,45 @@ namespace server.Services
         public async Task<string> DeleteMyProfile()
         {
             var userId = authService.GetUserId();
-            
+            using var transaction = db.Database.BeginTransaction();
+
             var user = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
-            return await repository.DeleteUser(user);
+
+            try
+            {
+                await repository.DeleteUser(user);
+                await transaction.CommitAsync();
+
+                return "User deleted succesfully.";
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<bool> VerifyEmail(string email)
+        public async Task VerifyEmail(string verificationToken)
         {
-            throw new NotImplementedException();
+            var token = await repository.GetUserToken(verificationToken) ?? throw new NotFoundException("Invalid token provided. Token not found.");
+
+            bool isValid = repository.IsUserTokenValid(token);
+            if (!isValid) throw new BadRequestException("Invalid token provided.");
+
+            var user = await repository.GetUser(token.UserId) ?? throw new NotFoundException("User not found.");
+            using var transaction = db.Database.BeginTransaction();
+
+            try
+            {
+                await repository.VerifyEmailAddress(user, token);
+                await mailService.SendWelcomeMailAsync(user.Email, user.Name);
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
