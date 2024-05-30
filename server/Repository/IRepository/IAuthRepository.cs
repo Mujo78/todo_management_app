@@ -6,7 +6,6 @@ namespace server.Repository.IRepository
     {
         Task<User?> GetUser(string userEmail);
         Task<User?> GetUser(Guid userId);
-        Task<bool> ForgotPassword(string email);
         Task<bool> CreateRefreshToken(RefreshToken token);
         Task<RefreshToken?> GetRefreshToken(string tokenId);
         Task<bool> Logout(RefreshToken refreshToken);

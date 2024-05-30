@@ -24,6 +24,21 @@ namespace server.Repository
         {
             return await db.Users.FirstOrDefaultAsync(n => n.Id.Equals(userId));
         }
+        public async Task<User?> GetUser(string userEmail)
+        {
+            return await db.Users.FirstOrDefaultAsync(n => n.Email.Equals(userEmail));
+        }
+
+        public Task<bool> ResetPassword(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task CreateResetPasswordToken(UserToken token)
+        {
+            await db.UserTokens.AddAsync(token);
+            await db.SaveChangesAsync();
+        }
 
         public async Task DeleteUser(User user)
         {

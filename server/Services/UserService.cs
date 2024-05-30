@@ -7,7 +7,6 @@ using server.Services.IService;
 using BCrypt.Net;
 using server.Data;
 using server.Utils.Enums;
-using Newtonsoft.Json.Linq;
 
 namespace server.Services
 {
@@ -91,6 +90,31 @@ namespace server.Services
             await repository.UpdateAsync(userFound);
 
             return mapper.Map<UserDTO>(userFound);
+        }
+
+        public async Task ForgotPassword(string email)
+        {
+            var user = await repository.GetUser(email) ?? throw new NotFoundException("User not found.");
+
+            UserToken token = new()
+            {
+                UserId = user.Id,
+                Token = Guid.NewGuid().ToString(),
+                TokenType = TokenType.PasswordReset,
+                ExpiresAt = DateTime.Now.AddHours(2),
+                CreatedAt = DateTime.Now,
+            };
+
+            try
+            {
+                await repository.CreateResetPasswordToken(token);
+                await mailService.SendForgotPasswordMailAsync(user.Email, user.Name, token.Token);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
 
         public async Task<string> DeleteMyProfile()

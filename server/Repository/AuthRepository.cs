@@ -19,15 +19,6 @@ namespace server.Repository
             return await db.Users.FirstOrDefaultAsync(n => n.Id.Equals(userId));
         }
 
-        public async Task<bool> ForgotPassword(string email)
-        {
-            var user = await db.Users.FirstOrDefaultAsync(x => x.Email.Equals(email));
-            if (user == null) return false;
-
-            return true;
-
-        }
-
         public async Task<bool> CreateRefreshToken(RefreshToken token)
         {
             await db.RefreshTokens.AddAsync(token);
@@ -49,6 +40,5 @@ namespace server.Repository
             var saved = await db.SaveChangesAsync();
             return saved > 0;
         }
-
     }
 }

@@ -27,20 +27,6 @@ namespace server.Controllers
             return Ok(tokenToReturn);
         }
 
-        [HttpPost("forgot-password")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
-        {
-            if (forgotPasswordDTO == null) return BadRequest("Please provide valid email address.");
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            return Ok();
-
-        }
-
         [HttpPost("refresh")]
         [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

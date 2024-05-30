@@ -1,7 +1,9 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using server.DTO.Auth;
 using server.DTO.User;
+using server.Services;
 using server.Services.IService;
 
 namespace server.Controllers.v1
@@ -25,6 +27,20 @@ namespace server.Controllers.v1
 
             await userService.Register(registrationDTO);
             return Ok("Please check your inbox, for verification email.");
+        }
+
+        [HttpPost("forgot-password")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
+        {
+            if (forgotPasswordDTO == null) return BadRequest("Please provide valid email address.");
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            await userService.ForgotPassword(forgotPasswordDTO.Email);
+            return Ok("Check your email inbox to proceede with restarting your password.");
         }
 
         [Authorize]

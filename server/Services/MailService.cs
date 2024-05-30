@@ -1,6 +1,7 @@
 ﻿using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Newtonsoft.Json.Linq;
 using server.Services.IService;
 using server.Utils.Email;
 
@@ -10,10 +11,6 @@ namespace server.Services
     {
         private readonly MailSettings _settings = settings.Value;
 
-        public Task<bool> SendDeleteMailAsync(MailData mailData)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task SendMailAsync(MailData mailData)
         {
@@ -37,6 +34,31 @@ namespace server.Services
             await mailClient.AuthenticateAsync(_settings.UserName, _settings.Password);
             await mailClient.SendAsync(emailMessage);
             await mailClient.DisconnectAsync(true);
+        }
+        public Task<bool> SendDeleteMailAsync(MailData mailData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> SendForgotPasswordMailAsync(string email, string name, string token)
+        {
+            try
+            {
+                MailData data = new()
+                {
+                    EmailToId = email,
+                    EmailToName = name,
+                    EmailSubject = "Password Reset Request",
+                    EmailBody = $"Reset your password by clicking on the button below or with link provided. Link: {token}",
+                };
+
+                await SendMailAsync(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<bool> SendVerificationMailAsync(string email, string name, string token)
