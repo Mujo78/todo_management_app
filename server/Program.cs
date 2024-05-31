@@ -114,6 +114,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 var tokenCleanupService = app.Services.GetRequiredService<ITokenCleanupService>();
-RecurringJob.AddOrUpdate("TokenCleanupJob", () => tokenCleanupService.CleanupInvalidTokens(), "* * * * *");
+RecurringJob.AddOrUpdate("RefreshTokenCleanupJob", () => tokenCleanupService.CleanupInvalidRefreshTokens(), "* * * * *");
+RecurringJob.AddOrUpdate("UserTokenCleanupJob", () => tokenCleanupService.CleanupInvalidUserTokens(), "* * * * *");
+
 
 app.Run();

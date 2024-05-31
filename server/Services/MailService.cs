@@ -1,7 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using Newtonsoft.Json.Linq;
 using server.Services.IService;
 using server.Utils.Email;
 
@@ -35,9 +34,25 @@ namespace server.Services
             await mailClient.SendAsync(emailMessage);
             await mailClient.DisconnectAsync(true);
         }
-        public Task<bool> SendDeleteMailAsync(MailData mailData)
+        public async Task<bool> SendDeleteMailAsync(string email, string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                MailData data = new()
+                {
+                    EmailToId = email,
+                    EmailToName = name,
+                    EmailSubject = "Goodbye Email",
+                    EmailBody = $"You have successfully deleted your profile",
+                };
+
+                await SendMailAsync(data);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<bool> SendForgotPasswordMailAsync(string email, string name, string token)

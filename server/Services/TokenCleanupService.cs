@@ -9,7 +9,7 @@ namespace server.Services
     {
         private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
 
-        public async Task CleanupInvalidTokens()
+        public async Task CleanupInvalidRefreshTokens()
         {
             using var scope = _serviceScopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
@@ -24,18 +24,46 @@ namespace server.Services
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task CleanupInvalidUserTokens()
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+
+            var invalidTokens = await GetInvalidUserTokens(dbContext);
+
+            foreach (var invalidToken in invalidTokens)
+            {
+                DeleteUserToken(dbContext, invalidToken);
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public bool IsRefreshTokenValid(RefreshToken refreshToken)
         {
             return refreshToken.IsValid && refreshToken.ExpiresAt > DateTime.Now;
         }
-
-        public void DeleteRefreshToken(ApplicationDBContext db, RefreshToken token)
+        public bool IsUserTokenValid(UserToken userToken)
         {
-            db.Remove(token);
+            return userToken.ExpiresAt > DateTime.Now;
         }
-        public async Task<IEnumerable<RefreshToken>> GetInvalidRefreshTokens(ApplicationDBContext db)
+
+        private static void DeleteRefreshToken(ApplicationDBContext db, RefreshToken token)
+        {
+            db.RefreshTokens.Remove(token);
+        }
+        private static void DeleteUserToken(ApplicationDBContext db, UserToken userToken)
+        {
+            db.UserTokens.Remove(userToken);
+        }
+        private static async Task<IEnumerable<RefreshToken>> GetInvalidRefreshTokens(ApplicationDBContext db)
         {
             return await db.RefreshTokens.Where(r => r.IsValid && r.ExpiresAt < DateTime.Now).ToListAsync();
+        }
+
+        private static async Task<IEnumerable<UserToken>> GetInvalidUserTokens(ApplicationDBContext db)
+        {
+            return await db.UserTokens.Where(r => r.ExpiresAt < DateTime.Now).ToListAsync();
         }
     }
 }

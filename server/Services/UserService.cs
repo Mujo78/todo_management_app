@@ -117,19 +117,18 @@ namespace server.Services
 
         }
 
-        public async Task<string> DeleteMyProfile()
+        public async Task DeleteMyProfile()
         {
             var userId = authService.GetUserId();
-            using var transaction = db.Database.BeginTransaction();
-
             var user = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
 
+            using var transaction = db.Database.BeginTransaction();
+            
             try
             {
                 await repository.DeleteUser(user);
+                await mailService.SendDeleteMailAsync(user.Email, user.Name);
                 await transaction.CommitAsync();
-
-                return "User deleted succesfully.";
             }
             catch (Exception ex)
             {
@@ -140,17 +139,12 @@ namespace server.Services
 
         public async Task VerifyEmail(string verificationToken)
         {
-            var token = await repository.GetUserToken(verificationToken) ?? throw new NotFoundException("Invalid token provided. Token not found.");
-
-            bool isValid = repository.IsUserTokenValid(token);
-            if (!isValid) throw new BadRequestException("Invalid token provided.");
-
-            var user = await repository.GetUser(token.UserId) ?? throw new NotFoundException("User not found.");
+            var (user, userToken) = await ValidateUserAndUserToken(verificationToken);
             using var transaction = db.Database.BeginTransaction();
 
             try
             {
-                await repository.VerifyEmailAddress(user, token);
+                await repository.VerifyEmailAddress(user, userToken);
                 await mailService.SendWelcomeMailAsync(user.Email, user.Name);
                 await transaction.CommitAsync();
             }
@@ -159,6 +153,39 @@ namespace server.Services
                 await transaction.RollbackAsync();
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task ResetPassword(string token, ResetPasswordDTO resetPasswordDTO)
+        {
+            if (!resetPasswordDTO.NewPassword.Equals(resetPasswordDTO.ConfirmNewPassword))
+                throw new BadRequestException("New password and confirm password must match.");
+
+            var (user, userToken) = await ValidateUserAndUserToken(token);
+            using var transaction = db.Database.BeginTransaction();
+
+            try
+            {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(resetPasswordDTO.NewPassword, 12);
+                await repository.ResetPassword(user, userToken);
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<(User user, UserToken userToken)> ValidateUserAndUserToken(string token)
+        {
+            var userToken = await repository.GetUserToken(token) ?? throw new NotFoundException("Invalid token provided. Token not found.");
+
+            bool isValid = repository.IsUserTokenValid(userToken);
+            if (!isValid) throw new BadRequestException("Invalid token provided.");
+
+            var user = await repository.GetUser(userToken.UserId) ?? throw new NotFoundException("User not found.");
+
+            return (user, userToken);
         }
     }
 }

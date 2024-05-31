@@ -3,14 +3,9 @@ using server.Exceptions;
 
 namespace server.Middlewares
 {
-    public class ExceptionMiddleware
+    public class ExceptionMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate next;
-
-        public ExceptionMiddleware(RequestDelegate next)
-        {
-            this.next = next;
-        }
+        private readonly RequestDelegate next = next;
 
         public async Task InvokeAsync(HttpContext context)
         {
@@ -24,7 +19,7 @@ namespace server.Middlewares
             }
         }
 
-        private async Task ProcessException(HttpContext context, Exception ex)
+        private static async Task ProcessException(HttpContext context, Exception ex)
         {
             var(statusCode, problemDetails) = HandleException(ex);
 
@@ -34,7 +29,7 @@ namespace server.Middlewares
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
 
-        private (int statusCode, ProblemDetails problemDetails) HandleException(Exception ex)
+        private static (int statusCode, ProblemDetails problemDetails) HandleException(Exception ex)
         {
             int statusCode;
             var problemDetails = new ProblemDetails()

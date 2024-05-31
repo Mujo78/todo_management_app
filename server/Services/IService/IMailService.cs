@@ -8,6 +8,6 @@ namespace server.Services.IService
         Task<bool> SendVerificationMailAsync(string email, string name, string token);
         Task<bool> SendWelcomeMailAsync(string email, string name);
         Task<bool> SendForgotPasswordMailAsync(string email, string name, string token);
-        Task<bool> SendDeleteMailAsync(MailData mailData);
+        Task<bool> SendDeleteMailAsync(string email, string name);
     }
 }

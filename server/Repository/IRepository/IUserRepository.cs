@@ -9,7 +9,7 @@ namespace server.Repository.IRepository
         Task<User?> GetUser(string userEmail);
         Task<UserToken?> GetUserToken(string token);
         Task VerifyEmailAddress(User user, UserToken token);
-        Task<bool> ResetPassword(string email);
+        Task ResetPassword(User user, UserToken token);
         Task CreateResetPasswordToken(UserToken token);
         Task DeleteUser(User user);
         bool EmailAlreadyUsed(string email);

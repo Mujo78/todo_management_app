@@ -29,9 +29,12 @@ namespace server.Repository
             return await db.Users.FirstOrDefaultAsync(n => n.Email.Equals(userEmail));
         }
 
-        public Task<bool> ResetPassword(string email)
+        public async Task ResetPassword(User user, UserToken token)
         {
-            throw new NotImplementedException();
+            db.Users.Update(user);
+
+            db.UserTokens.Remove(token);
+            await db.SaveChangesAsync();
         }
 
         public async Task CreateResetPasswordToken(UserToken token)
@@ -63,7 +66,7 @@ namespace server.Repository
                 Token = token,
                 TokenType = TokenType.EmailVerification,
                 CreatedAt = DateTime.Now,
-                ExpiresAt = DateTime.Now.AddHours(6),
+                ExpiresAt = DateTime.Now.AddHours(24),
             });
 
             await db.SaveChangesAsync();

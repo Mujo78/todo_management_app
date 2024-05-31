@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO.Auth;
 using server.DTO.User;
-using server.Services;
 using server.Services.IService;
 
 namespace server.Controllers.v1
@@ -41,6 +40,20 @@ namespace server.Controllers.v1
 
             await userService.ForgotPassword(forgotPasswordDTO.Email);
             return Ok("Check your email inbox to proceede with restarting your password.");
+        }
+
+        [HttpPatch("reset-password/{token}")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> ResetPassword([FromRoute] string token, [FromBody] ResetPasswordDTO resetPasswordDTO)
+        {
+            if (resetPasswordDTO == null) return BadRequest("Please provide valid data to change password.");
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            await userService.ResetPassword(token, resetPasswordDTO);
+            return Ok("Password successfully changed.");
         }
 
         [Authorize]
@@ -102,8 +115,8 @@ namespace server.Controllers.v1
 
         public async Task<ActionResult> DeleteMyProfile()
         {
-            var result = await userService.DeleteMyProfile();
-            return Ok(result);
+            await userService.DeleteMyProfile();
+            return Ok("Profile succesfully deleted.");
         }
 
         [HttpPatch("verify/{token}")]
