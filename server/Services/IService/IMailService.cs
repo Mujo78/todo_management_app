@@ -5,9 +5,9 @@ namespace server.Services.IService
     public interface IMailService
     {
         Task SendMailAsync(MailData mailData);
-        Task<bool> SendVerificationMailAsync(string email, string name, string token);
-        Task<bool> SendWelcomeMailAsync(string email, string name);
-        Task<bool> SendForgotPasswordMailAsync(string email, string name, string token);
-        Task<bool> SendDeleteMailAsync(string email, string name);
+        Task SendVerificationMailAsync(string email, string name, string token);
+        Task SendWelcomeMailAsync(string email, string name);
+        Task SendForgotPasswordMailAsync(string email, string name, string token);
+        Task SendDeleteMailAsync(string email, string name);
     }
 }

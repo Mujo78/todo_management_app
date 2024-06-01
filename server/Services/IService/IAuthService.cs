@@ -6,12 +6,8 @@ namespace server.Services.IService
     public interface IAuthService
     {
         Task<TokenDTO> Login(LoginDTO loginDTO);
-        Task<bool> Logout(TokenDTO tokenDTO);
-        Task<string> CreateRefreshToken(Guid userId, string tokenId);
+        Task Logout(TokenDTO tokenDTO);
         Task<TokenDTO> RefreshAccessToken(TokenDTO tokenDTO);
         Guid? GetUserId();
-        public bool IsAccessTokenValid(string accesToken, Guid exprectedUserId, string jwtTokenId);
-        string CreateAccessToken(User user, string tokenId);
-        string GenerateRefreshToken();
     }
 }

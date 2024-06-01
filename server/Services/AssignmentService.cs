@@ -31,14 +31,13 @@ namespace server.Services
 
         public async Task<AssignmentDTO> CreateAssignmentAsync(AssignmentCreateDTO assignmentDTO)
         {
-            var userId = authService.GetUserId();
-            if (!assignmentDTO.UserId.Equals(userId)) throw new BadRequestException("Invalid ID sent.");
-
+            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");
             bool isExists = repository.AssignmentExists(assignmentDTO.Title, userId);
             if (isExists) throw new ConflictException($"Assignment with name: '{assignmentDTO.Title}' already exists.");
 
             Assignment assignmentToCreate = mapper.Map<Assignment>(assignmentDTO);
 
+            assignmentToCreate.UserId = userId;
             assignmentToCreate.CreatedAt = DateTime.Now;
             assignmentToCreate.UpdatedAt = DateTime.Now;
 
@@ -47,16 +46,15 @@ namespace server.Services
             return isSuccess ? mapper.Map<AssignmentDTO>(assignmentToCreate) : throw new Exception("Assignment not created.");
         }
 
-        public async Task<bool> DeleteAllAssignmentsAsync()
+        public async Task DeleteAllAssignmentsAsync()
         {
             var userId = authService.GetUserId();
             bool result = await repository.RemoveAllAssignments(userId);
 
             if (!result) throw new Exception("Assignments not deleted.");
-            return result;
         }
 
-        public async Task<bool> DeleteAssignmentAsync(Guid Id)
+        public async Task DeleteAssignmentAsync(Guid Id)
         {
             var userId = authService.GetUserId();
             var assignment = await repository.GetAssignmentById(Id, userId) ?? throw new NotFoundException("Assignment not found.");
@@ -64,8 +62,6 @@ namespace server.Services
             
             bool result = await repository.RemoveAsync(assignment);
             if (!result) throw new Exception("Assignment not deleted.");
-
-            return result;
         }
 
         public async Task<AssignmentDTO> UpdateAssignmentAsync(Guid taskId, AssignmentUpdateDTO updateDTO)

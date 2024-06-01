@@ -10,7 +10,6 @@ namespace server.Services
     {
         private readonly MailSettings _settings = settings.Value;
 
-
         public async Task SendMailAsync(MailData mailData)
         {
             MimeMessage emailMessage = new();
@@ -34,7 +33,7 @@ namespace server.Services
             await mailClient.SendAsync(emailMessage);
             await mailClient.DisconnectAsync(true);
         }
-        public async Task<bool> SendDeleteMailAsync(string email, string name)
+        public async Task SendDeleteMailAsync(string email, string name)
         {
             try
             {
@@ -47,7 +46,6 @@ namespace server.Services
                 };
 
                 await SendMailAsync(data);
-                return true;
             }
             catch (Exception ex)
             {
@@ -55,7 +53,7 @@ namespace server.Services
             }
         }
 
-        public async Task<bool> SendForgotPasswordMailAsync(string email, string name, string token)
+        public async Task SendForgotPasswordMailAsync(string email, string name, string token)
         {
             try
             {
@@ -68,7 +66,6 @@ namespace server.Services
                 };
 
                 await SendMailAsync(data);
-                return true;
             }
             catch (Exception ex)
             {
@@ -76,7 +73,7 @@ namespace server.Services
             }
         }
 
-        public async Task<bool> SendVerificationMailAsync(string email, string name, string token)
+        public async Task SendVerificationMailAsync(string email, string name, string token)
         {
             try
             {
@@ -89,7 +86,6 @@ namespace server.Services
                 };
 
                 await SendMailAsync(data);
-                return true;
             }
             catch(Exception ex)
             {
@@ -97,7 +93,7 @@ namespace server.Services
             }
         }
 
-        public async Task<bool> SendWelcomeMailAsync(string email, string name)
+        public async Task SendWelcomeMailAsync(string email, string name)
         {
             try
             {
@@ -110,7 +106,6 @@ namespace server.Services
                 };
 
                 await SendMailAsync(data);
-                return true;
             }
             catch (Exception ex)
             {

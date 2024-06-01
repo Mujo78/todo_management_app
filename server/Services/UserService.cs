@@ -25,7 +25,7 @@ namespace server.Services
             var myInfo = await repository.GetUser(userId);
             return myInfo == null ? throw new NotFoundException("User not found.") : mapper.Map<UserDTO>(myInfo);
         }
-        public async Task<bool> ChangePassword(ChangePasswordDTO changePasswordDTO)
+        public async Task ChangePassword(ChangePasswordDTO changePasswordDTO)
         {
             var userId = authService.GetUserId();
             var user = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
@@ -39,10 +39,11 @@ namespace server.Services
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordDTO.NewPassword, 12);
             user.Password = hashedPassword;
-            return await repository.SaveAsync();
+            bool isSuccess = await repository.SaveAsync();
+            if (!isSuccess) throw new Exception("Password not changed.");
         }
 
-        public async Task<bool> Register(RegistrationDTO registrationDTO)
+        public async Task Register(RegistrationDTO registrationDTO)
         {
             using var transaction = db.Database.BeginTransaction();
             bool emailTaken = repository.EmailAlreadyUsed(registrationDTO.Email);
@@ -61,11 +62,9 @@ namespace server.Services
             {
                 string verificationToken = Guid.NewGuid().ToString();
                 await repository.CreateUserAsync(user, verificationToken);
-                await transaction.CommitAsync();
-
                 await mailService.SendVerificationMailAsync(user.Email, user.Name, verificationToken);
-
-                return true;
+                
+                await transaction.CommitAsync();
             }
             catch (Exception ex)
             {

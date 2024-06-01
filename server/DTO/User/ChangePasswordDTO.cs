@@ -6,16 +6,16 @@ namespace server.DTO.User
     public class ChangePasswordDTO
     {
         [Required(ErrorMessage = "Old password is required.")]
-        public string OldPassword { get; set; }
+        public required string OldPassword { get; set; }
 
         [Required(ErrorMessage = "New password is required.")]
         [PasswordValidation]
-        public string NewPassword { get; set; }
+        public required string NewPassword { get; set; }
 
         [Required(ErrorMessage = "Confirm new password is required.")]
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
         [PasswordValidation]
-        public string ConfirmNewPassword { get; set; }
+        public required string ConfirmNewPassword { get; set; }
 
     }
 }

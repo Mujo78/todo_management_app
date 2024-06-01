@@ -7,10 +7,10 @@ namespace server.DTO.User
         [Required]
         public Guid Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public required string Email { get; set; }
         public bool EmailConfirmed { get; set; }
         public DateTime CreatedAt { get; set; }
     }

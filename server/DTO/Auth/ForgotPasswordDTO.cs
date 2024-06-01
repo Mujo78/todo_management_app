@@ -6,6 +6,6 @@ namespace server.DTO.Auth
     {
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public required string Email { get; set; }
     }
 }

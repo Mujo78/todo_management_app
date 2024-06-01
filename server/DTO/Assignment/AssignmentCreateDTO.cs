@@ -7,10 +7,8 @@ namespace server.DTO.Assignment
     public class AssignmentCreateDTO
     {
         [Required]
-        public Guid UserId { get; set; }
-        [Required]
         [MinLength(10, ErrorMessage = "Title must be at least 10 characters long.")]
-        public string Title { get; set; }
+        public required string Title { get; set; }
         public string Description { get; set; } = string.Empty;
         [Required]
         [DataType(DataType.DateTime, ErrorMessage = "Invalid date!")]

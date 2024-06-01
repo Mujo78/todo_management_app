@@ -48,10 +48,17 @@ namespace server.Services
             return token;
         }
 
-        public async Task<bool> Logout(TokenDTO tokenDTO)
+        public async Task Logout(TokenDTO tokenDTO)
         {
             var refreshToken = await repository.GetRefreshToken(tokenDTO.RefreshToken) ?? throw new NotFoundException("Invalid token provided.");
-            return await repository.Logout(refreshToken);
+            try
+            {
+                await repository.Logout(refreshToken);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<string> CreateRefreshToken(Guid userId, string tokenId)
@@ -62,7 +69,7 @@ namespace server.Services
                 JwtTokenId = tokenId,
                 Refresh_Token = GenerateRefreshToken(),
                 IsValid = true,
-                ExpiresAt = DateTime.Now.AddMinutes(1)
+                ExpiresAt = DateTime.Now.AddDays(7)
             };
 
             bool result = await repository.CreateRefreshToken(token);
@@ -100,7 +107,7 @@ namespace server.Services
                     new(JwtRegisteredClaimNames.Email, user.Email),
                     new(JwtRegisteredClaimNames.Name, user.Name),
                 }),
-                Expires = DateTime.Now.AddMinutes(1),
+                Expires = DateTime.Now.AddHours(1),
                 Issuer = configuration.GetValue<string>("ApiSettings:Issuer")!,
                 Audience = configuration.GetValue<string>("ApiSettings:Audience")!,
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
