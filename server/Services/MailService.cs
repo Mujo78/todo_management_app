@@ -6,11 +6,12 @@ using server.Utils.Email;
 
 namespace server.Services
 {
-    public class MailService(IOptions<MailSettings> settings) : IMailService
+    public class MailService(IOptions<MailSettings> settings, IConfiguration configuration) : IMailService
     {
         private readonly MailSettings _settings = settings.Value;
+        private readonly IConfiguration configuration = configuration;
 
-        public async Task SendMailAsync(MailData mailData)
+        public async Task SendMailAsync(MailData mailData, BodyBuilder emailBodyBuilder)
         {
             MimeMessage emailMessage = new();
             MailboxAddress emailFrom = new(_settings.SenderName, _settings.SenderEmail);
@@ -19,11 +20,6 @@ namespace server.Services
             emailMessage.To.Add(emailTo);
 
             emailMessage.Subject = mailData.EmailSubject;
-
-            BodyBuilder emailBodyBuilder = new()
-            {
-                TextBody = mailData.EmailBody
-            };
 
             emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
@@ -41,11 +37,18 @@ namespace server.Services
                 {
                     EmailToId = email,
                     EmailToName = name,
-                    EmailSubject = "Goodbye Email",
-                    EmailBody = $"You have successfully deleted your profile",
+                    EmailSubject = "Profile Deleted",
+                    EmailBody = "Your account has been successfully deleted from the ToDo Management System. We're sad to see you leave, but we understand that sometimes priorities change.",
                 };
-
-                await SendMailAsync(data);
+                string filePath = Directory.GetCurrentDirectory() + "\\Utils\\Email\\Views\\DeleteProfile.html";
+                string emailTemplateText = File.ReadAllText(filePath);
+                
+                BodyBuilder emailBodyBuilder = new()
+                {
+                    HtmlBody = emailTemplateText,
+                    TextBody = data.EmailBody
+                };
+                await SendMailAsync(data, emailBodyBuilder);
             }
             catch (Exception ex)
             {
@@ -57,15 +60,30 @@ namespace server.Services
         {
             try
             {
+                string verificationLink = configuration["URL"] + $"password-reset/{token}";
+
                 MailData data = new()
                 {
                     EmailToId = email,
                     EmailToName = name,
                     EmailSubject = "Password Reset Request",
-                    EmailBody = $"Reset your password by clicking on the button below or with link provided. Link: {token}",
+                    EmailBody = $"Hi {name},\nForgot your password?\n" +
+                    $"We received a request to reset the password for your account\n" +
+                    $"To reset your password, click on the button below:\n" +
+                    $"{verificationLink}",
                 };
+                string filePath = Directory.GetCurrentDirectory() + "\\Utils\\Email\\Views\\ForgotPassword.html";
+                string emailTemplateText = File.ReadAllText(filePath);
 
-                await SendMailAsync(data);
+                emailTemplateText = emailTemplateText.Replace("{{Name}}", data.EmailToName);
+                emailTemplateText = emailTemplateText.Replace("{{Link}}", verificationLink);
+
+                BodyBuilder emailBodyBuilder = new()
+                {
+                    HtmlBody = emailTemplateText,
+                    TextBody = data.EmailBody
+                };
+                await SendMailAsync(data, emailBodyBuilder);
             }
             catch (Exception ex)
             {
@@ -77,17 +95,31 @@ namespace server.Services
         {
             try
             {
+                string verificationLink = configuration["URL"] + $"verify-email/{token}";
+
                 MailData data = new()
                 {
                     EmailToId = email,
                     EmailToName = name,
                     EmailSubject = "Email Verification",
-                    EmailBody = $"Verify your email address with the button below, or with the link. Token: {token}",
+                    EmailBody = $"Verify your email address with with the link: {verificationLink}",
                 };
 
-                await SendMailAsync(data);
+                string filePath = Directory.GetCurrentDirectory() + "\\Utils\\Email\\Views\\VerifyEmail.html";
+                string emailTemplateText = File.ReadAllText(filePath);
+
+                emailTemplateText = emailTemplateText.Replace("{{Name}}", data.EmailToName);
+                emailTemplateText = emailTemplateText.Replace("{{VerificationLink}}", verificationLink);
+
+                BodyBuilder emailBodyBuilder = new()
+                {
+                    HtmlBody = emailTemplateText,
+                    TextBody = data.EmailBody
+                };
+
+                await SendMailAsync(data, emailBodyBuilder);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -102,10 +134,20 @@ namespace server.Services
                     EmailToId = email,
                     EmailToName = name,
                     EmailSubject = "Welcome Message",
-                    EmailBody = $"Dear {name}, \n Welcome to the ToDo Management System.",
+                    EmailBody =
+                        $"Welcome to the ToDo Management System.\n\n" +
+                        $"We are happy to have you on board. Within the system, you can create, update, delete and see all of your future plans and goals that you are ready to successfully accomplish. \n\n" +
+                        $"Don't hesitate to get in touch if you have any questions. We will always get back to you. :)",
                 };
+                string filePath = Directory.GetCurrentDirectory() + "\\Utils\\Email\\Views\\Welcome.html";
+                string emailTemplateText = File.ReadAllText(filePath);
 
-                await SendMailAsync(data);
+                BodyBuilder emailBodyBuilder = new()
+                {
+                    HtmlBody = emailTemplateText,
+                    TextBody = data.EmailBody
+                };
+                await SendMailAsync(data, emailBodyBuilder);
             }
             catch (Exception ex)
             {

@@ -1,10 +1,11 @@
-﻿using server.Utils.Email;
+﻿using MimeKit;
+using server.Utils.Email;
 
 namespace server.Services.IService
 {
     public interface IMailService
     {
-        Task SendMailAsync(MailData mailData);
+        Task SendMailAsync(MailData mailData, BodyBuilder bodyBuilder);
         Task SendVerificationMailAsync(string email, string name, string token);
         Task SendWelcomeMailAsync(string email, string name);
         Task SendForgotPasswordMailAsync(string email, string name, string token);
