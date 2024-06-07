@@ -12,12 +12,15 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fontsource/poppins": "^5.0.14",
+    "@hookform/resolvers": "^3.6.0",
     "@mui/icons-material": "^5.15.16",
     "@mui/material": "^5.15.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.5",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

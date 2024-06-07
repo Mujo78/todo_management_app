@@ -1,0 +1,68 @@
+import { RemoveRedEye, VisibilityOff } from "@mui/icons-material";
+import { InputAdornment, TextField } from "@mui/material";
+import { useState } from "react";
+import {
+  Control,
+  Controller,
+  FieldValues,
+  Path,
+  PathValue,
+} from "react-hook-form";
+
+type Props<TFieldValues extends FieldValues> = {
+  control: Control<TFieldValues, unknown>;
+  name: Path<TFieldValues>;
+  defaultValue: PathValue<TFieldValues, Path<TFieldValues>> | undefined;
+  error: boolean;
+  label?: string;
+  errorMessage: string | undefined;
+};
+
+const PasswordInput = <TFieldValues extends FieldValues>({
+  control,
+  error,
+  defaultValue,
+  errorMessage,
+  label = "Password",
+  name,
+}: Props<TFieldValues>) => {
+  const [toggle, setToggle] = useState<boolean>(false);
+
+  const handleToggle = () => {
+    setToggle((toggle) => !toggle);
+  };
+
+  return (
+    <Controller
+      control={control}
+      name={name}
+      defaultValue={defaultValue}
+      render={({ field }) => (
+        <TextField
+          {...field}
+          variant="standard"
+          label={label}
+          required
+          type={toggle ? "password" : "text"}
+          margin="normal"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                position="end"
+                sx={{ cursor: "pointer" }}
+                onClick={handleToggle}
+              >
+                {toggle ? <RemoveRedEye /> : <VisibilityOff />}
+              </InputAdornment>
+            ),
+          }}
+          fullWidth
+          error={error}
+          helperText={errorMessage ? errorMessage : ""}
+        />
+      )}
+    />
+  );
+};
+
+export default PasswordInput;

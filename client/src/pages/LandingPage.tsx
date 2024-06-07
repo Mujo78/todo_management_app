@@ -40,7 +40,7 @@ const LandingPage = () => {
             <Tab value="signup" icon={<HowToReg />} aria-label="signup" />
           </Tabs>
         </Box>
-        <Box mb="auto" mx="auto" flexShrink="initial">
+        <Box my="auto" mx="auto" width="50%" flexShrink="initial">
           {currentTab === "login" && <LoginForm />}
           {currentTab === "signup" && <SignupForm />}
         </Box>
@@ -51,7 +51,7 @@ const LandingPage = () => {
         alignItems="center"
         justifyContent="center"
         color="white"
-        bgcolor="primary.light"
+        bgcolor="primary.dark"
       >
         <Info />
       </Stack>
