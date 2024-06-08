@@ -1,7 +1,7 @@
 import { Box, Stack, Tab, Tabs } from "@mui/material";
 import { Login, HowToReg } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "../components/hooks/useQuery";
+import { useQuery } from "../hooks/useQuery";
 import LoginForm from "../components/Landing/LoginForm";
 import SignupForm from "../components/Landing/SignupForm";
 import Info from "../components/Landing/Info";

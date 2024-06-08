@@ -43,6 +43,7 @@ const SignupForm: React.FC = () => {
               {...field}
               variant="standard"
               label="Name"
+              autoComplete="true"
               required
               fullWidth
               error={!!errors.name}
@@ -60,6 +61,7 @@ const SignupForm: React.FC = () => {
               {...field}
               required
               type="email"
+              autoComplete="true"
               variant="standard"
               label="Email"
               fullWidth

@@ -41,6 +41,7 @@ const LoginForm: React.FC = () => {
               {...field}
               variant="standard"
               label="Email"
+              autoComplete="true"
               required
               type="email"
               fullWidth
