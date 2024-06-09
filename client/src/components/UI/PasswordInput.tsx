@@ -14,6 +14,7 @@ type Props<TFieldValues extends FieldValues> = {
   name: Path<TFieldValues>;
   defaultValue: PathValue<TFieldValues, Path<TFieldValues>> | undefined;
   error: boolean;
+  children?: React.ReactNode;
   label?: string;
   errorMessage: string | undefined;
 };
@@ -21,6 +22,7 @@ type Props<TFieldValues extends FieldValues> = {
 const PasswordInput = <TFieldValues extends FieldValues>({
   control,
   error,
+  children,
   defaultValue,
   errorMessage,
   label = "Password",
@@ -43,7 +45,7 @@ const PasswordInput = <TFieldValues extends FieldValues>({
           variant="standard"
           label={label}
           required
-          type={toggle ? "password" : "text"}
+          type={toggle ? "text" : "password"}
           margin="normal"
           InputProps={{
             endAdornment: (
@@ -58,7 +60,7 @@ const PasswordInput = <TFieldValues extends FieldValues>({
           }}
           fullWidth
           error={error}
-          helperText={errorMessage ? errorMessage : ""}
+          helperText={errorMessage ? errorMessage : children ? children : ""}
         />
       )}
     />

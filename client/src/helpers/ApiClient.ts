@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const baseURL = "https://localhost:7196/api/v1/";
+const baseURL = "https://localhost:7196/";
 
-export const apiClient = axios.create({ baseURL });
-
-export const apiClientAuth = axios.create({ baseURL });
+export const apiClientBase = axios.create({ baseURL });
+export const apiClient = axios.create({ baseURL: baseURL + "api/v1/" });
+export const apiClientAuth = axios.create({ baseURL: baseURL + "api/v1/" });
 
 apiClientAuth.interceptors.request.use(
   (config) => {

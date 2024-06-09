@@ -1,23 +1,32 @@
 import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  FormHelperText,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { loginValidationSchema } from "../../validations/loginValidation";
 import PasswordInput from "../UI/PasswordInput";
-
-type User = {
-  email: string;
-  password: string;
-};
+import useLogin from "../../features/auth/useLogin";
+import { LogindDataType } from "../../features/auth/api";
+import { formatErrorMessage } from "../utils/userUtils";
 
 const LoginForm: React.FC = () => {
-  const { control, formState, handleSubmit } = useForm<User>({
+  const { control, formState, handleSubmit } = useForm<LogindDataType>({
     resolver: yupResolver(loginValidationSchema),
   });
   const { errors } = formState;
 
-  const onSubmit = (value: User) => {
-    console.log(value);
+  const { error, isPending, isError, login } = useLogin();
+
+  const onSubmit = (values: LogindDataType) => {
+    if (!isPending) {
+      login(values);
+    }
   };
 
   return (
@@ -57,9 +66,20 @@ const LoginForm: React.FC = () => {
           defaultValue=""
           error={!!errors.password}
           errorMessage={errors.password?.message}
-        />
-        <Button sx={{ marginTop: "2rem" }} type="submit" variant="contained">
-          Log in
+        >
+          {!errors.password && (
+            <FormHelperText component="span" error={isError}>
+              {formatErrorMessage(error)}
+            </FormHelperText>
+          )}
+        </PasswordInput>
+
+        <Button sx={{ marginTop: "0.5rem" }} type="submit" variant="contained">
+          {isPending ? (
+            <CircularProgress size={30} sx={{ color: "white" }} />
+          ) : (
+            "Log in"
+          )}
         </Button>
       </Stack>
     </Stack>

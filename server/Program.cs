@@ -32,6 +32,16 @@ builder.Services.AddHangfire(x =>
     .UseSqlServerStorage(connString);
 });
 
+var MyAllowAllOrigins = "_myAllowAllOrigins";
+
+builder.Services.AddCors(x =>
+{
+    x.AddPolicy(name: "_myAllowAllOrigins", policy =>
+    {
+        policy.WithOrigins("*").WithHeaders("*").WithMethods("*");
+    });
+});
+
 builder.Services.AddHangfireServer();
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
@@ -106,6 +116,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHangfireDashboard();
+app.UseCors(MyAllowAllOrigins);
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();

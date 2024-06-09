@@ -5,6 +5,8 @@ import {
 } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import AppLayout from "./components/Layout/AppLayout";
+import HomeLayout from "./components/Layout/HomeLayout";
+import HomePage from "./pages/HomePage";
 
 const routes: RouteObject = {
   path: "/",
@@ -13,6 +15,16 @@ const routes: RouteObject = {
     {
       path: "/",
       element: <LandingPage />,
+    },
+    {
+      path: "/",
+      element: <HomeLayout />,
+      children: [
+        {
+          path: "/home",
+          element: <HomePage />,
+        },
+      ],
     },
   ],
 };

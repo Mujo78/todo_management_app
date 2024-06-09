@@ -1,25 +1,32 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Stack, Typography, TextField, Button } from "@mui/material";
 import React from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  Stack,
+  Typography,
+  TextField,
+  Button,
+  FormHelperText,
+  CircularProgress,
+} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { signupValidationSchema } from "../../validations/signupValidation";
 import PasswordInput from "../UI/PasswordInput";
-
-type UserAccount = {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+import { UserAccountDataType } from "../../features/user/api";
+import useSignup from "../../features/user/useSignup";
+import {
+  formatErrorFieldMessage,
+  formatErrorMessage,
+} from "../utils/userUtils";
 
 const SignupForm: React.FC = () => {
-  const { control, formState, handleSubmit } = useForm<UserAccount>({
+  const { control, formState, handleSubmit } = useForm<UserAccountDataType>({
     resolver: yupResolver(signupValidationSchema),
   });
   const { errors } = formState;
+  const { signup, isError, error, isPending } = useSignup();
 
-  const onSubmit = (value: UserAccount) => {
-    console.log(value);
+  const onSubmit = (values: UserAccountDataType) => {
+    signup(values);
   };
 
   return (
@@ -66,7 +73,17 @@ const SignupForm: React.FC = () => {
               label="Email"
               fullWidth
               error={!!errors.email}
-              helperText={errors.email ? errors.email.message : ""}
+              helperText={
+                errors.email ? (
+                  errors.email.message
+                ) : isError && !errors.email ? (
+                  <FormHelperText component="span" error={isError}>
+                    {formatErrorFieldMessage(error, "email")}
+                  </FormHelperText>
+                ) : (
+                  ""
+                )
+              }
             />
           )}
         />
@@ -86,10 +103,20 @@ const SignupForm: React.FC = () => {
           control={control}
           error={!!errors.confirmPassword}
           errorMessage={errors.confirmPassword?.message}
-        />
+        >
+          {!errors.confirmPassword && (
+            <FormHelperText component="span" error={isError}>
+              {formatErrorMessage(error)}
+            </FormHelperText>
+          )}
+        </PasswordInput>
 
-        <Button type="submit" sx={{ marginTop: "2rem" }} variant="contained">
-          Register
+        <Button type="submit" sx={{ marginTop: "0.5rem" }} variant="contained">
+          {isPending ? (
+            <CircularProgress size={30} sx={{ color: "white" }} />
+          ) : (
+            "Register"
+          )}
         </Button>
       </Stack>
     </Stack>

@@ -28,7 +28,7 @@ namespace server.Services
 
         public async Task<TokenDTO> Login(LoginDTO loginDTO)
         {
-            var user = await repository.GetUser(loginDTO.Email) ?? throw new NotFoundException("User not found.");
+            var user = await repository.GetUser(loginDTO.Email) ?? throw new NotFoundException("Account doesn't exists.");
 
             bool isValid = BCrypt.Net.BCrypt.Verify(loginDTO.Password, user.Password);
             if (!isValid || !user.EmailConfirmed) throw new BadRequestException("Incorrect email or password.");
