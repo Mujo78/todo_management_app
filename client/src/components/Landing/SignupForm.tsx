@@ -7,6 +7,7 @@ import {
   Button,
   FormHelperText,
   CircularProgress,
+  Alert,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { signupValidationSchema } from "../../validations/signupValidation";
@@ -17,16 +18,22 @@ import {
   formatErrorFieldMessage,
   formatErrorMessage,
 } from "../utils/userUtils";
+import { Check } from "@mui/icons-material";
 
 const SignupForm: React.FC = () => {
-  const { control, formState, handleSubmit } = useForm<UserAccountDataType>({
-    resolver: yupResolver(signupValidationSchema),
-  });
+  const { control, formState, handleSubmit, reset } =
+    useForm<UserAccountDataType>({
+      resolver: yupResolver(signupValidationSchema),
+    });
   const { errors } = formState;
-  const { signup, isError, error, isPending } = useSignup();
+  const { signup, isError, error, isPending, isSuccess } = useSignup();
 
   const onSubmit = (values: UserAccountDataType) => {
-    signup(values);
+    signup(values, {
+      onSuccess: () => {
+        reset();
+      },
+    });
   };
 
   return (
@@ -110,7 +117,11 @@ const SignupForm: React.FC = () => {
             </FormHelperText>
           )}
         </PasswordInput>
-
+        {isSuccess && (
+          <Alert icon={<Check fontSize="inherit" />} severity="success">
+            Please check your inbox for verification email.
+          </Alert>
+        )}
         <Button type="submit" sx={{ marginTop: "0.5rem" }} variant="contained">
           {isPending ? (
             <CircularProgress size={30} sx={{ color: "white" }} />

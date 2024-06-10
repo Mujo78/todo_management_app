@@ -6,6 +6,7 @@ function useSignup() {
   const {
     mutate: signup,
     isPending,
+    isSuccess,
     isError,
     error,
   } = useMutation<
@@ -17,7 +18,7 @@ function useSignup() {
     mutationFn: UserSignupFn,
   });
 
-  return { signup, error, isError, isPending };
+  return { signup, error, isError, isPending, isSuccess };
 }
 
 export default useSignup;

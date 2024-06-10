@@ -11,3 +11,8 @@ export async function UserSignupFn(signupData: UserAccountDataType) {
   const res = await apiClient.post("/users/registration", signupData);
   return res.data;
 }
+
+export async function VerifyEmailFn(token: string) {
+  const res = await apiClient.patch(`/users/verify/${token}`);
+  return res.data;
+}

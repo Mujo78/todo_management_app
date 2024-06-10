@@ -7,6 +7,7 @@ import LandingPage from "./pages/LandingPage";
 import AppLayout from "./components/Layout/AppLayout";
 import HomeLayout from "./components/Layout/HomeLayout";
 import HomePage from "./pages/HomePage";
+import VerifyEmail from "./pages/VerifyEmail";
 
 const routes: RouteObject = {
   path: "/",
@@ -25,6 +26,10 @@ const routes: RouteObject = {
           element: <HomePage />,
         },
       ],
+    },
+    {
+      path: "/verify-email/:token",
+      element: <VerifyEmail />,
     },
   ],
 };

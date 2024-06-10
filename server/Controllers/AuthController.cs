@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Schema;
 using server.DTO.Auth;
 using server.Exceptions;
 using server.Services.IService;
@@ -14,7 +15,7 @@ namespace server.Controllers
         private readonly IAuthService authService = authService;
 
         [HttpPost("/login")]
-        [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AccessTokenDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -24,7 +25,17 @@ namespace server.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var tokenToReturn = await authService.Login(loginDTO);
-            return Ok(tokenToReturn);
+
+            var options = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                Expires = DateTime.Now.AddDays(7)
+            };
+
+            Response.Cookies.Append("refreshToken", tokenToReturn.RefreshToken, options);
+            
+            return Ok(new AccessTokenDTO() { AccessToken = tokenToReturn.AccessToken});
         }
 
         [HttpPost("refresh")]

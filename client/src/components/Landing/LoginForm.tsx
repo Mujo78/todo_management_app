@@ -81,6 +81,14 @@ const LoginForm: React.FC = () => {
             "Log in"
           )}
         </Button>
+        <Typography
+          component="span"
+          fontSize="small"
+          mx="auto"
+          color="primary.main"
+        >
+          Forgot Password?
+        </Typography>
       </Stack>
     </Stack>
   );
