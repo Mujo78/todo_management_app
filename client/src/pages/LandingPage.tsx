@@ -51,7 +51,7 @@ const LandingPage = () => {
         alignItems="center"
         justifyContent="center"
         color="white"
-        bgcolor="primary.dark"
+        bgcolor="primary.main"
       >
         <Info />
       </Stack>

@@ -8,6 +8,8 @@ import AppLayout from "./components/Layout/AppLayout";
 import HomeLayout from "./components/Layout/HomeLayout";
 import HomePage from "./pages/HomePage";
 import VerifyEmail from "./pages/VerifyEmail";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 const routes: RouteObject = {
   path: "/",
@@ -28,8 +30,16 @@ const routes: RouteObject = {
       ],
     },
     {
+      path: "/forgot-password",
+      element: <ForgotPassword />,
+    },
+    {
       path: "/verify-email/:token",
       element: <VerifyEmail />,
+    },
+    {
+      path: "/password-reset/:token",
+      element: <ResetPassword />,
     },
   ],
 };

@@ -10,7 +10,7 @@ function useVerifyEmail() {
     isError,
     error,
   } = useMutation<unknown, Error | AxiosError<unknown, unknown>, string>({
-    mutationKey: ["signup"],
+    mutationKey: ["verifyEmail"],
     mutationFn: VerifyEmailFn,
   });
 

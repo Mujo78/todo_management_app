@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   List,
@@ -6,11 +7,10 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
 
 const Info: React.FC = () => {
   return (
-    <Stack gap={3} px={2}>
+    <Stack gap={3} px={4}>
       <Typography variant="h5" fontWeight="bold" textAlign="center">
         Welcome to TaskMaster
       </Typography>

@@ -1,7 +1,8 @@
+import React from "react";
 import { Box, Stack } from "@mui/material";
 import { Outlet } from "react-router-dom";
 
-const AppLayout = () => {
+const AppLayout: React.FC = () => {
   return (
     <Stack
       sx={{

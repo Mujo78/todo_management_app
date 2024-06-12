@@ -82,7 +82,9 @@ const LoginForm: React.FC = () => {
           )}
         </Button>
         <Typography
-          component="span"
+          component="a"
+          sx={{ textDecoration: "none" }}
+          href="/forgot-password"
           fontSize="small"
           mx="auto"
           color="primary.main"
