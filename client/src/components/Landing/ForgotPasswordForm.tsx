@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Alert,
   Button,
   CircularProgress,
   FormHelperText,
@@ -14,8 +13,9 @@ import { forgotPasswordValidationSchema } from "../../validations/forgotPassword
 import { yupResolver } from "@hookform/resolvers/yup";
 import useForgotPassword from "../../features/user/useForgotPassword";
 import { useNavigate } from "react-router-dom";
-import { Check } from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import { formatErrorMessage } from "../utils/userUtils";
+import SuccessAlert from "../UI/SuccessAlert";
 
 const ForgotPasswordForm: React.FC = () => {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const ForgotPasswordForm: React.FC = () => {
   return (
     <Stack gap={4}>
       <Typography variant="h4" fontWeight={700} mt={2} textAlign="center">
-        Forgot Password
+        Forgot Your Password?
       </Typography>
       <Stack
         gap={2}
@@ -79,11 +79,9 @@ const ForgotPasswordForm: React.FC = () => {
           )}
         />
 
-        {isSuccess && (
-          <Alert icon={<Check fontSize="inherit" />} severity="success">
-            Please check your inbox for reset password link.
-          </Alert>
-        )}
+        <SuccessAlert isSuccess={isSuccess}>
+          Please check your inbox for reset password link.
+        </SuccessAlert>
 
         <Button sx={{ marginTop: "0.5rem" }} type="submit" variant="contained">
           {isPending ? (
@@ -92,10 +90,10 @@ const ForgotPasswordForm: React.FC = () => {
             "SUBMIT"
           )}
         </Button>
-
         <Button
           onClick={handleNavigate}
           sx={{ marginTop: "0.5rem" }}
+          startIcon={<ArrowBack />}
           variant="outlined"
         >
           Back to Log In page

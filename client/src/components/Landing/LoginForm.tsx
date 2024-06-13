@@ -30,16 +30,16 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={3}>
       <Typography variant="h4" fontWeight={700} mt={2} textAlign="center">
         Log in to You Account
       </Typography>
       <Stack
+        onSubmit={handleSubmit(onSubmit)}
         gap={2}
         component="form"
         width="80%"
         mx="auto"
-        onSubmit={handleSubmit(onSubmit)}
       >
         <Controller
           control={control}
@@ -81,17 +81,17 @@ const LoginForm: React.FC = () => {
             "Log in"
           )}
         </Button>
-        <Typography
-          component="a"
-          sx={{ textDecoration: "none" }}
-          href="/forgot-password"
-          fontSize="small"
-          mx="auto"
-          color="primary.main"
-        >
-          Forgot Password?
-        </Typography>
       </Stack>
+      <Typography
+        component="a"
+        sx={{ textDecoration: "none" }}
+        href="/forgot-password"
+        fontSize="small"
+        mx="auto"
+        color="primary.main"
+      >
+        Forgot Password?
+      </Typography>
     </Stack>
   );
 };

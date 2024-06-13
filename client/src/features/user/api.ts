@@ -32,7 +32,7 @@ export interface ResetPasswordType {
 }
 
 export async function ResetPasswordFn([token, data]: [
-  string,
+  string | undefined,
   ResetPasswordType
 ]) {
   const res = await apiClient.patch(`/users/reset-password/${token}`, data);

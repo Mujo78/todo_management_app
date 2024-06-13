@@ -7,7 +7,6 @@ import {
   Button,
   FormHelperText,
   CircularProgress,
-  Alert,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { signupValidationSchema } from "../../validations/signupValidation";
@@ -18,7 +17,7 @@ import {
   formatErrorFieldMessage,
   formatErrorMessage,
 } from "../utils/userUtils";
-import { Check } from "@mui/icons-material";
+import SuccessAlert from "../UI/SuccessAlert";
 
 const SignupForm: React.FC = () => {
   const { control, formState, handleSubmit, reset } =
@@ -117,11 +116,11 @@ const SignupForm: React.FC = () => {
             </FormHelperText>
           )}
         </PasswordInput>
-        {isSuccess && (
-          <Alert icon={<Check fontSize="inherit" />} severity="success">
-            Please check your inbox for verification email.
-          </Alert>
-        )}
+
+        <SuccessAlert isSuccess={isSuccess}>
+          Please check your inbox for verification email.
+        </SuccessAlert>
+
         <Button type="submit" sx={{ marginTop: "0.5rem" }} variant="contained">
           {isPending ? (
             <CircularProgress size={30} sx={{ color: "white" }} />

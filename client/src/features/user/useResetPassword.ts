@@ -12,7 +12,7 @@ function useResetPassword() {
   } = useMutation<
     unknown,
     Error | AxiosError<unknown, unknown>,
-    [string, ResetPasswordType]
+    [string | undefined, ResetPasswordType]
   >({
     mutationKey: ["resetPassword"],
     mutationFn: ResetPasswordFn,

@@ -160,6 +160,10 @@ namespace server.Services
                 throw new BadRequestException("New password and confirm password must match.");
 
             var (user, userToken) = await ValidateUserAndUserToken(token);
+
+            if (BCrypt.Net.BCrypt.Verify(resetPasswordDTO.NewPassword, user.Password))
+                throw new BadRequestException("New password cannot be the same as the old password.");
+
             using var transaction = db.Database.BeginTransaction();
 
             try

@@ -1,9 +1,9 @@
-import { Alert, CircularProgress, Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useVerifyEmail from "../features/user/useVerifyEmail";
 import { formatErrorMessage } from "../components/utils/userUtils";
-import { Check } from "@mui/icons-material";
+import SuccessAlert from "../components/UI/SuccessAlert";
 
 const VerifyEmail = () => {
   const { token } = useParams();
@@ -47,9 +47,9 @@ const VerifyEmail = () => {
           ) : isError ? (
             <Typography color="red">{formatErrorMessage(error)}</Typography>
           ) : isSuccess ? (
-            <Alert icon={<Check fontSize="inherit" />} severity="success">
+            <SuccessAlert isSuccess={isSuccess}>
               Successfully verified email address.
-            </Alert>
+            </SuccessAlert>
           ) : (
             ""
           )}
