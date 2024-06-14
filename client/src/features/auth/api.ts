@@ -1,4 +1,4 @@
-import { apiClientBase } from "../../helpers/ApiClient";
+import { apiClientBase, apiClientAuth } from "../../helpers/ApiClient";
 
 export interface LogindDataType {
   email: string;
@@ -6,6 +6,15 @@ export interface LogindDataType {
 }
 
 export async function UserLoginFn(loginData: LogindDataType) {
-  const res = await apiClientBase.post("/login", loginData);
+  const res = await apiClientBase.post("/login", loginData, {
+    withCredentials: true,
+  });
+  return res.data;
+}
+
+export async function UserLogoutFn() {
+  const res = await apiClientAuth.delete("/auth/logout", {
+    withCredentials: true,
+  });
   return res.data;
 }

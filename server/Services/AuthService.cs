@@ -48,12 +48,12 @@ namespace server.Services
             return token;
         }
 
-        public async Task Logout(TokenDTO tokenDTO)
+        public async Task Logout(string refreshToken)
         {
-            var refreshToken = await repository.GetRefreshToken(tokenDTO.RefreshToken) ?? throw new NotFoundException("Invalid token provided.");
+            var refreshTokenFounded = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided.");
             try
             {
-                await repository.Logout(refreshToken);
+                await repository.Logout(refreshTokenFounded);
             }
             catch (Exception ex)
             {

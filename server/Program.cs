@@ -34,11 +34,11 @@ builder.Services.AddHangfire(x =>
 
 var MyAllowAllOrigins = "_myAllowAllOrigins";
 
-builder.Services.AddCors(x =>
+builder.Services.AddCors(options =>
 {
-    x.AddPolicy(name: "_myAllowAllOrigins", policy =>
+    options.AddPolicy(name: MyAllowAllOrigins, policy =>
     {
-        policy.WithOrigins("*").WithHeaders("*").WithMethods("*");
+        policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
     });
 });
 
@@ -116,9 +116,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHangfireDashboard();
-app.UseCors(MyAllowAllOrigins);
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
+app.UseCors(MyAllowAllOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 

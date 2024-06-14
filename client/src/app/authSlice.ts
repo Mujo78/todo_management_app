@@ -1,8 +1,7 @@
-import { StateCreator } from "zustand";
+import { StateCreator, create } from "zustand";
 
-interface LoginData {
+export interface LoginData {
   accessToken: string;
-  refreshToken: string | null;
 }
 
 interface AuthState {
@@ -13,14 +12,20 @@ interface AuthState {
   logout: () => void;
 }
 
-export const createAuthSlice: StateCreator<AuthState, [], []> = (set) => ({
+export const authSlice: StateCreator<AuthState, [], []> = (set) => ({
   user: null,
   isAuthenticated: false,
 
   setUser: (user) => {
     localStorage.setItem("user", user.accessToken);
-    document.cookie = `refre`;
     set({ user, isAuthenticated: true });
   },
-  logout: () => set({ user: null, isAuthenticated: false }),
+  logout: () => {
+    localStorage.removeItem("user");
+    set({ user: null, isAuthenticated: false });
+  },
 });
+
+const useAuthStore = create(authSlice);
+
+export default useAuthStore;

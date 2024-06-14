@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Schema;
 using server.DTO.Auth;
@@ -30,6 +31,8 @@ namespace server.Controllers
             {
                 HttpOnly = true,
                 Secure = true,
+                IsEssential = true,
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.Now.AddDays(7)
             };
 
@@ -52,17 +55,34 @@ namespace server.Controllers
             return Ok(tokenResponse);
         }
 
-        [HttpPost("logout")]
+        [Authorize]
+        [HttpDelete("logout")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> Logout([FromBody] TokenDTO tokenDTO)
+        public async Task<ActionResult> Logout()
         {
-            if (tokenDTO == null || string.IsNullOrEmpty(tokenDTO.RefreshToken)) throw new BadRequestException("Invalid token provided.");
-            await authService.Logout(tokenDTO);
-            return Ok("Logged out successfully.");
+            try
+            {
+                string refreshToken = Request.Cookies["refreshToken"]!;
+                if (string.IsNullOrEmpty(refreshToken)) throw new BadRequestException("Invalid token provided.");
+                
+                await authService.Logout(refreshToken);
+                Response.Cookies.Delete("refreshToken", new CookieOptions
+                {
+                    Secure = true,
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                });
+                return Ok("Logged out successfully.");
+
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
     }
