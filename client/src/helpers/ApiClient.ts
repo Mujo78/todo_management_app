@@ -8,7 +8,7 @@ export const apiClientAuth = axios.create({ baseURL: baseURL + "api/" });
 
 apiClientAuth.interceptors.request.use(
   (config) => {
-    const userInStorage = localStorage.getItem("user");
+    const userInStorage = localStorage.getItem("auth");
 
     if (userInStorage) {
       config.headers.Authorization = `Bearer ${userInStorage}`;
@@ -21,5 +21,39 @@ apiClientAuth.interceptors.request.use(
       window.location.href = "/";
     }
     return Promise.reject(error);
+  }
+);
+
+async function RefreshAccessTokenFn() {
+  const res = await apiClientAuth.post(
+    "/auth/refresh",
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+  return res.data;
+}
+
+apiClientAuth.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const newAccessToken = await RefreshAccessTokenFn();
+        localStorage.setItem("auth", newAccessToken);
+
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return apiClientAuth(originalRequest);
+      } catch (error) {
+        localStorage.removeItem("auth");
+        window.location.href = "/";
+      }
+    }
   }
 );

@@ -16,7 +16,7 @@ namespace server.Controllers
         private readonly IAuthService authService = authService;
 
         [HttpPost("/login")]
-        [ProducesResponseType(typeof(AccessTokenDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(LoginDataDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -37,21 +37,29 @@ namespace server.Controllers
             };
 
             Response.Cookies.Append("refreshToken", tokenToReturn.RefreshToken, options);
+
+            LoginDataDTO loginDataDTO = new()
+            {
+                AccessToken = tokenToReturn.AccessToken,
+                User = tokenToReturn.User
+            };
             
-            return Ok(new AccessTokenDTO() { AccessToken = tokenToReturn.AccessToken});
+            return Ok(loginDataDTO);
         }
 
         [HttpPost("refresh")]
-        [ProducesResponseType(typeof(TokenDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AccessTokenDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetAccessTokenWithRefreshAction([FromBody] TokenDTO tokenDTO)
+        public async Task<ActionResult> GetAccessTokenWithRefreshAction()
         {
-            if (tokenDTO == null) return BadRequest("Invalid data provided.");
+            string accessToken = Request.Headers.Authorization.ToString();
+            string refreshToken = Request.Cookies["refreshToken"]!;
+            if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessToken)) throw new BadRequestException("Invalid token provided.");
 
-            var tokenResponse = await authService.RefreshAccessToken(tokenDTO);
+            var tokenResponse = await authService.RefreshAccessToken(refreshToken, accessToken);
             return Ok(tokenResponse);
         }
 
@@ -68,7 +76,7 @@ namespace server.Controllers
             {
                 string refreshToken = Request.Cookies["refreshToken"]!;
                 if (string.IsNullOrEmpty(refreshToken)) throw new BadRequestException("Invalid token provided.");
-                
+
                 await authService.Logout(refreshToken);
                 Response.Cookies.Delete("refreshToken", new CookieOptions
                 {

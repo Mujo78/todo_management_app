@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using server.Exceptions;
 using System.Text;
+using server.DTO.User;
 
 namespace server.Services
 {
@@ -26,7 +27,7 @@ namespace server.Services
             secretKey = this.configuration["ApiSettings:Secret"];
         }
 
-        public async Task<TokenDTO> Login(LoginDTO loginDTO)
+        public async Task<UserTokenDTO> Login(LoginDTO loginDTO)
         {
             var user = await repository.GetUser(loginDTO.Email) ?? throw new NotFoundException("Account doesn't exists.");
 
@@ -37,10 +38,20 @@ namespace server.Services
             string refreshToken = await CreateRefreshToken(user.Id, jwtTokenId);
             string accessToken = CreateAccessToken(user, jwtTokenId);
 
-            TokenDTO token = new()
+            UserDTO userDTO = new()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
+                CreatedAt = DateTime.UtcNow,
+            };
+
+            UserTokenDTO token = new()
             {
                 AccessToken = accessToken,
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken,
+                User = userDTO
             };
 
             if (string.IsNullOrEmpty(token.RefreshToken)) throw new BadRequestException("Incorrect email or password.");
@@ -76,20 +87,19 @@ namespace server.Services
             return result ? token.Refresh_Token : "";
         }
 
-        public async Task<TokenDTO> RefreshAccessToken(TokenDTO tokenDTO)
+        public async Task<AccessTokenDTO> RefreshAccessToken(string refreshToken, string accessToken)
         {
-            var existingRefreshToken = await repository.GetRefreshToken(tokenDTO.RefreshToken) ?? throw new NotFoundException("Invalid token provided.");
+            var existingRefreshToken = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided.");
             var user = await repository.GetUser(existingRefreshToken.UserId) ?? throw new NotFoundException("User not found.");
 
-            bool isTokenValid = IsAccessTokenValid(tokenDTO.AccessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
+            bool isTokenValid = IsAccessTokenValid(accessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
             if (!isTokenValid) throw new BadRequestException("Invalid token provided.");
 
             var newAccessToken = CreateAccessToken(user, existingRefreshToken.JwtTokenId);
 
-            return new TokenDTO()
+            return new AccessTokenDTO()
             {
-                AccessToken = newAccessToken,
-                RefreshToken = existingRefreshToken.Refresh_Token
+                AccessToken = newAccessToken
             };
         }
 

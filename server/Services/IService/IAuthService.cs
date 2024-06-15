@@ -4,9 +4,9 @@ namespace server.Services.IService
 {
     public interface IAuthService
     {
-        Task<TokenDTO> Login(LoginDTO loginDTO);
+        Task<UserTokenDTO> Login(LoginDTO loginDTO);
         Task Logout(string refreshToken);
-        Task<TokenDTO> RefreshAccessToken(TokenDTO tokenDTO);
+        Task<AccessTokenDTO> RefreshAccessToken(string refreshToken, string accessToken);
         Guid? GetUserId();
     }
 }

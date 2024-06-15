@@ -10,6 +10,8 @@ import HomePage from "./pages/HomePage";
 import VerifyEmail from "./pages/VerifyEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import UserRequired from "./helpers/UserRequired";
+import Authorized from "./helpers/Authorized";
 
 const routes: RouteObject = {
   path: "/",
@@ -18,10 +20,12 @@ const routes: RouteObject = {
     {
       path: "/",
       element: <LandingPage />,
+      loader: Authorized,
     },
     {
       path: "/",
       element: <HomeLayout />,
+      loader: UserRequired,
       children: [
         {
           path: "/home",

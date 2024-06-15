@@ -2,8 +2,9 @@ import { redirect } from "react-router-dom";
 
 function UserRequired() {
   const user = localStorage.getItem("user");
+  const auth = localStorage.getItem("auth");
 
-  if (!user) return redirect("/");
+  if (!user && !auth) return redirect("/");
 
   return null;
 }

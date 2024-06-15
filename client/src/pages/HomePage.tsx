@@ -1,6 +1,7 @@
 import { ExitToApp } from "@mui/icons-material";
 import { Box, Button, CircularProgress } from "@mui/material";
 import useLogout from "../features/auth/useLogout";
+import AppNavbar from "../components/UI/AppNavbar";
 
 const HomePage = () => {
   const { userLogout, isPending } = useLogout();
@@ -11,6 +12,7 @@ const HomePage = () => {
 
   return (
     <Box bgcolor="success.primary">
+      <AppNavbar />
       <Button
         onClick={handleLogout}
         startIcon={<ExitToApp />}
