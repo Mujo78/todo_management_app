@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
 
-interface TaskType {
+export interface TaskType {
   id: string;
   userId: string;
   title: string;
@@ -14,8 +14,14 @@ interface TaskType {
 
 interface TasksState {
   tasks: TaskType[];
+
+  setTasks: (tasks: TaskType[]) => void;
 }
 
-export const createAuthSlice: StateCreator<TasksState, [], []> = () => ({
+export const createAuthSlice: StateCreator<TasksState, [], []> = (set) => ({
   tasks: [],
+
+  setTasks: (tasks) => {
+    set({ tasks });
+  },
 });

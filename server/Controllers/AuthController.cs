@@ -55,11 +55,12 @@ namespace server.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetAccessTokenWithRefreshAction()
         {
-            string accessToken = Request.Headers.Authorization.ToString();
+            string accessToken = Request.Headers.Authorization!;
+            string accessTokenModified = accessToken.Replace("Bearer ", string.Empty);
             string refreshToken = Request.Cookies["refreshToken"]!;
-            if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessToken)) throw new BadRequestException("Invalid token provided.");
+            if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessTokenModified)) throw new BadRequestException("Invalid token provided.");
 
-            var tokenResponse = await authService.RefreshAccessToken(refreshToken, accessToken);
+            var tokenResponse = await authService.RefreshAccessToken(refreshToken, accessTokenModified);
             return Ok(tokenResponse);
         }
 

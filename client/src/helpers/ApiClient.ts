@@ -41,19 +41,26 @@ apiClientAuth.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      localStorage.getItem("auth")
+    ) {
       originalRequest._retry = true;
 
       try {
         const newAccessToken = await RefreshAccessTokenFn();
-        localStorage.setItem("auth", newAccessToken);
+        localStorage.setItem("auth", newAccessToken.accessToken);
 
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken.accessToken}`;
         return apiClientAuth(originalRequest);
       } catch (error) {
         localStorage.removeItem("auth");
         window.location.href = "/";
       }
+    } else {
+      localStorage.removeItem("user");
+      window.location.href = "/";
     }
   }
 );

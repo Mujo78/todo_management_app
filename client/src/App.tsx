@@ -12,6 +12,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import UserRequired from "./helpers/UserRequired";
 import Authorized from "./helpers/Authorized";
+import Profile from "./pages/User/Profile";
 
 const routes: RouteObject = {
   path: "/",
@@ -30,6 +31,10 @@ const routes: RouteObject = {
         {
           path: "/home",
           element: <HomePage />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
         },
       ],
     },
