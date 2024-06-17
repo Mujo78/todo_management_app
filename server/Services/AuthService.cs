@@ -92,6 +92,13 @@ namespace server.Services
             var existingRefreshToken = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided.");
             var user = await repository.GetUser(existingRefreshToken.UserId) ?? throw new NotFoundException("User not found.");
 
+            if(!existingRefreshToken.IsValid) httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken", new CookieOptions
+            {
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+            });
+
             bool isTokenValid = IsAccessTokenValid(accessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
             if (!isTokenValid) throw new BadRequestException("Invalid token provided.");
 
@@ -117,7 +124,7 @@ namespace server.Services
                     new(JwtRegisteredClaimNames.Email, user.Email),
                     new(JwtRegisteredClaimNames.Name, user.Name),
                 }),
-                Expires = DateTime.Now.AddHours(1),
+                Expires = DateTime.Now.AddHours(2),
                 Issuer = configuration.GetValue<string>("ApiSettings:Issuer")!,
                 Audience = configuration.GetValue<string>("ApiSettings:Audience")!,
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),

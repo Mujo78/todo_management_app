@@ -13,6 +13,8 @@ import ResetPassword from "./pages/ResetPassword";
 import UserRequired from "./helpers/UserRequired";
 import Authorized from "./helpers/Authorized";
 import Profile from "./pages/User/Profile";
+import AddNewTask from "./pages/Task/AddNewTask";
+import EditTask from "./pages/Task/EditTask";
 
 const routes: RouteObject = {
   path: "/",
@@ -35,6 +37,14 @@ const routes: RouteObject = {
         {
           path: "/profile",
           element: <Profile />,
+        },
+        {
+          path: "/add-task",
+          element: <AddNewTask />,
+        },
+        {
+          path: "/edit-task/:id",
+          element: <EditTask />,
         },
       ],
     },

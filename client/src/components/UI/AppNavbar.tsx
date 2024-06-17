@@ -7,9 +7,10 @@ import {
   MenuItem,
   Toolbar,
   Typography,
+  Link as MUILink,
 } from "@mui/material";
 import useAuthStore from "../../app/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ExitToApp } from "@mui/icons-material";
 import useLogout from "../../features/auth/useLogout";
 
@@ -45,19 +46,18 @@ const AppNavbar: React.FC = () => {
           justifyContent: "space-between",
         }}
       >
-        <Typography
+        <MUILink
+          component={Link}
+          to="/home"
           variant="h6"
-          component="a"
-          href="/home"
           color="info.main"
           sx={{ textDecoration: "none" }}
         >
           TaskMaster
-        </Typography>
+        </MUILink>
         <Typography paragraph my="auto">
           {new Date().toDateString()}
         </Typography>
-
         <div>
           <IconButton
             size="small"
