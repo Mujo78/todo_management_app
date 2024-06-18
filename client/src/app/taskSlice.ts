@@ -12,14 +12,20 @@ export interface TaskType {
   updatedAt: Date;
 }
 
-interface TasksState {
-  tasks: TaskType[];
+export interface AllTasksType {
+  data: TaskType[];
+  pageNumber: number;
+  totalCount: number;
+}
 
-  setTasks: (tasks: TaskType[]) => void;
+interface TasksState {
+  tasks: AllTasksType | null;
+
+  setTasks: (tasks: AllTasksType) => void;
 }
 
 export const createAuthSlice: StateCreator<TasksState, [], []> = (set) => ({
-  tasks: [],
+  tasks: null,
 
   setTasks: (tasks) => {
     set({ tasks });

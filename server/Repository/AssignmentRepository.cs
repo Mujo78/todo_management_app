@@ -2,16 +2,22 @@
 using server.Data;
 using server.Models;
 using server.Repository.IRepository;
+using System.Collections.Generic;
 
 namespace server.Repository
 {
-    public class AssignmentRepository(ApplicationDBContext db) : Repository<Assignment>(db),IAssignmentRepository
+    public class AssignmentRepository(ApplicationDBContext db) : Repository<Assignment>(db), IAssignmentRepository
     {
         private readonly ApplicationDBContext db = db;
 
-        public async Task<IEnumerable<Assignment>> GetAllAssignments(Guid? userId)
+        public async Task<IEnumerable<Assignment>> GetAllAssignments(Guid? userId, string? title, int pageNum, int limit)
         {
-            return await db.Assignments.Where(a => a.UserId == userId).ToListAsync();
+            IQueryable<Assignment> query = db.Assignments.Where(a => a.UserId.Equals(userId));
+            if (!string.IsNullOrEmpty(title))
+            {
+                query = query.Where(a => a.Title.ToLower().Equals(title.ToLower()) || a.Title.Contains(title));
+            }
+            return await query.Skip((pageNum - 1) * limit).Take(limit).ToListAsync();
         }
 
         public async Task<Assignment?> GetAssignmentById(Guid taskId, Guid? userId)
@@ -44,5 +50,14 @@ namespace server.Repository
             return false;
         }
 
+        public async Task<int> GetCountAssignments(Guid? userId, string? title)
+        {
+            IQueryable<Assignment> query = db.Assignments.Where(a => a.UserId.Equals(userId));
+            if (!string.IsNullOrEmpty(title))
+            {
+                query = query.Where(a => a.Title.ToLower().Equals(title.ToLower()) || a.Title.Contains(title));
+            }
+            return await query.CountAsync();
+        }
     }
 }

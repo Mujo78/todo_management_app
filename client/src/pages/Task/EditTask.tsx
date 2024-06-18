@@ -1,7 +1,10 @@
 import { Stack } from "@mui/material";
+import { useParams } from "react-router-dom";
 
 const EditTask = () => {
-  return <Stack>Edit task</Stack>;
+  const { id } = useParams();
+
+  return <Stack>Edit task: {id}</Stack>;
 };
 
 export default EditTask;

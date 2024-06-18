@@ -1,7 +1,7 @@
 export function formatPriority(priority: number) {
-  if (priority === 0) return "Low";
-  else if (priority === 1) return "Medium";
-  else return "High";
+  if (priority === 0) return "success";
+  else if (priority === 1) return "warning";
+  else return "error";
 }
 
 export function formatStatus(status: number) {

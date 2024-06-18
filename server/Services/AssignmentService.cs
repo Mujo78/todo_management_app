@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using server.DTO;
 using server.DTO.Assignment;
 using server.Exceptions;
 using server.Models;
@@ -13,12 +14,21 @@ namespace server.Services
         private readonly IAuthService authService = authService;
         private readonly IMapper mapper = mapper;
 
-        public async Task<IEnumerable<AssignmentDTO>> GetAllAssignmentsAsync()
+        public async Task<PaginationResultDTO<AssignmentDTO>> GetAllAssignmentsAsync(string? title, int pageNum)
         {
             var userId = authService.GetUserId();
+            var limit = 2;
+            var assignments = await repository.GetAllAssignments(userId, title, pageNum, limit);
 
-            var assignments = await repository.GetAllAssignments(userId);
-            return mapper.Map<IEnumerable<AssignmentDTO>>(assignments);
+            var total = await repository.GetCountAssignments(userId, title);
+            var numOfPages = (int)Math.Ceiling(total / (double)limit);
+
+            PaginationResultDTO<AssignmentDTO> resultDTO = new(
+                data: mapper.Map<IEnumerable<AssignmentDTO>>(assignments),
+                pageNum, numOfPages
+                );
+
+            return resultDTO;
         }
 
         public async Task<AssignmentDTO?> GetAssignmentAsync(Guid taskId)
@@ -59,7 +69,7 @@ namespace server.Services
             var userId = authService.GetUserId();
             var assignment = await repository.GetAssignmentById(Id, userId) ?? throw new NotFoundException("Assignment not found.");
             if (!assignment.UserId.Equals(userId)) throw new ForbidException("You do not have permission to access this resource.");
-            
+
             bool result = await repository.RemoveAsync(assignment);
             if (!result) throw new Exception("Assignment not deleted.");
         }
@@ -67,7 +77,7 @@ namespace server.Services
         public async Task<AssignmentDTO> UpdateAssignmentAsync(Guid taskId, AssignmentUpdateDTO updateDTO)
         {
             var userId = authService.GetUserId();
-            
+
             if (taskId.Equals("") || updateDTO == null || !updateDTO.Id.Equals(taskId)) throw new BadRequestException("Invalid ID sent.");
             if (!updateDTO.UserId.Equals(userId)) throw new ForbidException("You do not have permission to access this resource.");
 

@@ -1,14 +1,14 @@
 import { Box, Stack, Tab, Tabs } from "@mui/material";
 import { Login, HowToReg } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "../hooks/useQuery";
+import { useSearchQuery } from "../hooks/useSearchQuery";
 import LoginForm from "../components/Landing/LoginForm";
 import SignupForm from "../components/Landing/SignupForm";
 import Info from "../components/Landing/Info";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const currentTab = useQuery().get("tab") || "login";
+  const currentTab = useSearchQuery().get("tab") || "login";
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     navigate(`?tab=${newValue}`);

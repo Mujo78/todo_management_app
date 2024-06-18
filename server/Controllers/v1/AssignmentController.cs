@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using server.DTO;
 using server.DTO.Assignment;
 using server.Exceptions;
 using server.Services.IService;
@@ -16,12 +17,12 @@ namespace server.Controllers.v1
         private readonly IAssignmentService assignmentService = assignmentService;
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<AssignmentDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginationResultDTO<AssignmentDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult> GetAll([FromQuery(Name = "Name")] string? name, int pageNum = 1)
         {
-            var assignments = await assignmentService.GetAllAssignmentsAsync();
+            var assignments = await assignmentService.GetAllAssignmentsAsync(name, pageNum);
             return Ok(assignments);
         }
 

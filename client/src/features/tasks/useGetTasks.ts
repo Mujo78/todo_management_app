@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { GetMyTasksFn } from "./api";
-import { TaskType } from "../../app/taskSlice";
+import { GetMyTasksFn, ParamsType } from "./api";
+import { AllTasksType } from "../../app/taskSlice";
 
-function useGetTasks() {
+function useGetTasks({ name, pageNum }: ParamsType) {
   const { isError, isPending, isSuccess, error, data } = useQuery<
-    TaskType[],
+    AllTasksType,
     Error | AxiosError<unknown, unknown>
   >({
-    queryKey: ["tasks"],
-    queryFn: GetMyTasksFn,
+    queryKey: ["tasks", name, pageNum],
+    queryFn: () => GetMyTasksFn({ name, pageNum }),
   });
 
   return { data, error, isError, isPending, isSuccess };
