@@ -12,6 +12,14 @@ export interface TaskType {
   updatedAt: Date;
 }
 
+export interface CreateTaskType {
+  title: string;
+  description?: string;
+  dueDate: Date;
+  priority: number;
+  status: number;
+}
+
 export interface AllTasksType {
   data: TaskType[];
   pageNumber: number;

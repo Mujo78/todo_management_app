@@ -17,7 +17,7 @@ namespace server.Services
         public async Task<PaginationResultDTO<AssignmentDTO>> GetAllAssignmentsAsync(string? title, int pageNum)
         {
             var userId = authService.GetUserId();
-            var limit = 2;
+            var limit = 6;
             var assignments = await repository.GetAllAssignments(userId, title, pageNum, limit);
 
             var total = await repository.GetCountAssignments(userId, title);

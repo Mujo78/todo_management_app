@@ -11,6 +11,7 @@ const TaskSearchInput: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (taskName !== "") {
+      query.set("pageNum", "1");
       query.set("name", taskName);
       setTaskName("");
 
