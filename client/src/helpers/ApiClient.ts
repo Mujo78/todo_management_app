@@ -41,7 +41,6 @@ apiClientAuth.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    console.log(error);
     if (
       error.response.status === 401 &&
       !originalRequest._retry &&
@@ -60,8 +59,8 @@ apiClientAuth.interceptors.response.use(
         localStorage.removeItem("user");
         window.location.href = "/";
       }
-    } else {
-      window.location.href = "/";
     }
+
+    return Promise.reject(error);
   }
 );

@@ -19,6 +19,6 @@ export function formatErrorMessage(
   if (isAxiosError(error) && error.response && error.response.status !== 409) {
     return error.response?.data.detail;
   } else {
-    error?.message ?? undefined;
+    return error?.message ?? undefined;
   }
 }

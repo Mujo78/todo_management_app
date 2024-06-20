@@ -57,7 +57,7 @@ const ForgotPasswordForm: React.FC = () => {
           render={({ field }) => (
             <TextField
               {...field}
-              variant="standard"
+              variant="outlined"
               label="Email"
               autoComplete="true"
               required
@@ -83,7 +83,7 @@ const ForgotPasswordForm: React.FC = () => {
           Please check your inbox for reset password link.
         </SuccessAlert>
 
-        <Button sx={{ marginTop: "0.5rem" }} type="submit" variant="contained">
+        <Button sx={{ marginTop: "1rem" }} type="submit" variant="contained">
           {isPending ? (
             <CircularProgress size={30} sx={{ color: "white" }} />
           ) : (

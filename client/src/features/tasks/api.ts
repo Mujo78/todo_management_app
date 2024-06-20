@@ -1,3 +1,4 @@
+import { CreateTaskType } from "../../app/taskSlice";
 import { apiClientAuth } from "../../helpers/ApiClient";
 
 export interface ParamsType {
@@ -12,5 +13,10 @@ export async function GetMyTasksFn({ name, pageNum }: ParamsType) {
       pageNum,
     },
   });
+  return res.data;
+}
+
+export async function CreateTaskFn(values: CreateTaskType) {
+  const res = await apiClientAuth.post("/v1/assignments/", values);
   return res.data;
 }

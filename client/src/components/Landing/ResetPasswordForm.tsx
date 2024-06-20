@@ -63,7 +63,7 @@ const ResetPasswordForm: React.FC = () => {
         Password successfully changed.
       </SuccessAlert>
 
-      <Button sx={{ marginTop: "0.5rem" }} type="submit" variant="contained">
+      <Button type="submit" variant="contained">
         {isPending ? (
           <CircularProgress size={30} sx={{ color: "white" }} />
         ) : (

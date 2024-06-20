@@ -22,15 +22,17 @@ export const addTaskValidationSchema = Yup.object({
     .required("Title is required.")
     .min(10, "Title must be at least 10 characters long."),
   description: Yup.string(),
+
   dueDate: Yup.date()
     .typeError("Invalid date!")
     .required("Due date is required.")
     .test("valid-date", "Date can not be in the past!", (value) => {
-      if (isDate(value) && isAfter(value, new Date())) {
+      if (isDate(value) && !isAfter(value, new Date())) {
         return false;
       }
       return true;
     }),
+
   priority: Yup.number()
     .typeError("Please choose valid priority for your task.")
     .required("Priority is required.")

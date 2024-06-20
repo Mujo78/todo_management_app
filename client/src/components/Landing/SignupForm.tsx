@@ -36,7 +36,7 @@ const SignupForm: React.FC = () => {
   };
 
   return (
-    <Stack gap={2}>
+    <Stack gap={4}>
       <Typography variant="h4" fontWeight={700} textAlign="center">
         Sign up today!
       </Typography>
@@ -44,7 +44,7 @@ const SignupForm: React.FC = () => {
         component="form"
         width="80%"
         mx="auto"
-        gap={2}
+        gap={3}
         onSubmit={handleSubmit(onSubmit)}
       >
         <Controller
@@ -54,7 +54,7 @@ const SignupForm: React.FC = () => {
           render={({ field }) => (
             <TextField
               {...field}
-              variant="standard"
+              variant="outlined"
               label="Name"
               autoComplete="true"
               required
@@ -75,7 +75,7 @@ const SignupForm: React.FC = () => {
               required
               type="email"
               autoComplete="true"
-              variant="standard"
+              variant="outlined"
               label="Email"
               fullWidth
               error={!!errors.email}
@@ -121,7 +121,7 @@ const SignupForm: React.FC = () => {
           Please check your inbox for verification email.
         </SuccessAlert>
 
-        <Button type="submit" sx={{ marginTop: "0.5rem" }} variant="contained">
+        <Button type="submit" variant="contained">
           {isPending ? (
             <CircularProgress size={30} sx={{ color: "white" }} />
           ) : (

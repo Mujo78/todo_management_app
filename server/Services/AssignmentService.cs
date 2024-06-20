@@ -43,7 +43,7 @@ namespace server.Services
         {
             var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");
             bool isExists = repository.AssignmentExists(assignmentDTO.Title, userId);
-            if (isExists) throw new ConflictException($"Assignment with name: '{assignmentDTO.Title}' already exists.");
+            if (isExists) throw new ConflictException($"Assignment with title: '{assignmentDTO.Title}' already exists.");
 
             Assignment assignmentToCreate = mapper.Map<Assignment>(assignmentDTO);
 

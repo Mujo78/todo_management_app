@@ -16,7 +16,7 @@ namespace server.Utils.Validations
 
             if (!Enum.IsDefined(typeof(Status), value))
             {
-                return new ValidationResult("Status must be: Open, In Progress or Completed.");
+                return new ValidationResult("Status must be: Open, Completed or Failed.");
             }
 
             return ValidationResult.Success;

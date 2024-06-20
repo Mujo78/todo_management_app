@@ -1,6 +1,10 @@
 import {
+  Box,
   Button,
+  CircularProgress,
+  FormControl,
   FormHelperText,
+  InputLabel,
   MenuItem,
   Select,
   Stack,
@@ -11,6 +15,13 @@ import { Controller, useForm } from "react-hook-form";
 import { addTaskValidationSchema } from "../../validations/addNewTaskValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateTaskType } from "../../app/taskSlice";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import useCreateTask from "../../features/tasks/useCreateNewTask";
+import SuccessAlert from "../../components/UI/SuccessAlert";
+import { formatErrorFieldMessage } from "../../components/utils/userUtils";
 
 const AddNewTask = () => {
   const { control, formState, handleSubmit, reset } = useForm<CreateTaskType>({
@@ -18,21 +29,25 @@ const AddNewTask = () => {
   });
   const { errors } = formState;
 
-  const onSubmit = () => {};
+  const { createTask, error, isError, isPending, isSuccess } = useCreateTask();
+
+  const onSubmit = (values: CreateTaskType) => {
+    createTask(values, { onSuccess: () => reset() });
+  };
 
   return (
-    <Stack>
-      <Typography variant="h6" fontWeight={400}>
+    <Stack gap={4}>
+      <Typography variant="h5" fontWeight={400}>
         Add a new Task
       </Typography>
       <Stack
         component="form"
         width="100%"
         mx="auto"
-        gap={2}
+        gap={4}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Stack direction="row">
+        <Box display="flex" gap={2} alignItems="center">
           <Controller
             control={control}
             name="title"
@@ -40,17 +55,51 @@ const AddNewTask = () => {
             render={({ field }) => (
               <TextField
                 {...field}
-                variant="standard"
+                variant="outlined"
+                disabled={isPending}
                 label="Title"
+                sx={{
+                  flexGrow: 1,
+                }}
                 autoComplete="true"
                 required
-                fullWidth
-                error={!!errors.title}
-                helperText={errors.title ? errors.title.message : ""}
+                error={!!errors.title || isError}
+                helperText={
+                  errors.title
+                    ? errors.title.message
+                    : isError && !errors.title
+                    ? formatErrorFieldMessage(error, "title")
+                    : ""
+                }
               />
             )}
           />
-        </Stack>
+
+          <Controller
+            control={control}
+            defaultValue={new Date()}
+            name="dueDate"
+            render={({ field }) => (
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DemoContainer components={["DateTimePicker"]}>
+                  <DateTimePicker
+                    disabled={isPending}
+                    slotProps={{
+                      textField: {
+                        error: !!errors.dueDate,
+                        helperText: errors.dueDate
+                          ? errors.dueDate.message
+                          : "",
+                      },
+                    }}
+                    {...field}
+                    label="Due Date and Time"
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+            )}
+          />
+        </Box>
 
         <Controller
           control={control}
@@ -58,11 +107,12 @@ const AddNewTask = () => {
           defaultValue=""
           render={({ field }) => (
             <TextField
+              id="description-textarea"
               {...field}
-              variant="standard"
+              variant="outlined"
+              disabled={isPending}
               label="Description"
               autoComplete="true"
-              required
               minRows={4}
               maxRows={6}
               multiline
@@ -73,19 +123,19 @@ const AddNewTask = () => {
           )}
         />
 
-        <Stack direction="row">
+        <Box display="flex" gap={2}>
           <Controller
             control={control}
             name="priority"
             defaultValue={0}
             render={({ field }) => (
-              <>
+              <FormControl variant="outlined" fullWidth required>
+                <InputLabel id="select-priority-label">Priority</InputLabel>
                 <Select
-                  variant="standard"
-                  autoComplete="true"
-                  required
-                  fullWidth
-                  error={!!errors.description}
+                  labelId="select-priority-label"
+                  aria-label="Priority"
+                  disabled={isPending}
+                  id="select-priority"
                   {...field}
                   label="Priority"
                 >
@@ -93,10 +143,12 @@ const AddNewTask = () => {
                   <MenuItem value={1}>Medium</MenuItem>
                   <MenuItem value={2}>High</MenuItem>
                 </Select>
-                <FormHelperText error={!!errors.description}>
-                  {errors.description ? errors.description.message : ""}
+                <FormHelperText
+                  error={isError || errors.priority !== undefined}
+                >
+                  {errors.priority ? errors.priority.message : ""}
                 </FormHelperText>
-              </>
+              </FormControl>
             )}
           />
 
@@ -105,35 +157,42 @@ const AddNewTask = () => {
             name="status"
             defaultValue={0}
             render={({ field }) => (
-              <>
+              <FormControl variant="outlined" fullWidth error={!!errors.status}>
+                <InputLabel id="select-status-label">Status</InputLabel>
                 <Select
+                  labelId="select-priority-label"
+                  id="simple-select-priority"
                   readOnly
-                  variant="standard"
-                  autoComplete="true"
-                  required
-                  fullWidth
-                  error={!!errors.status}
+                  disabled
                   {...field}
                   label="Status"
                 >
                   <MenuItem value={0}>Open</MenuItem>
-                  <MenuItem value={1}>InProgress</MenuItem>
-                  <MenuItem value={2}>Completed</MenuItem>
+                  <MenuItem value={1}>Completed</MenuItem>
+                  <MenuItem value={2}>Failed</MenuItem>
                 </Select>
                 <FormHelperText error={!!errors.status}>
                   {errors.status ? errors.status.message : ""}
                 </FormHelperText>
-              </>
+              </FormControl>
             )}
           />
-        </Stack>
+        </Box>
+
+        <SuccessAlert isSuccess={isSuccess}>
+          Successfully created a new task.
+        </SuccessAlert>
 
         <Button
-          color="primary"
+          type="submit"
           variant="contained"
           sx={{ width: "fit-content", margin: "0 0 0 auto" }}
         >
-          Save
+          {isPending ? (
+            <CircularProgress size={30} sx={{ color: "white" }} />
+          ) : (
+            "Save"
+          )}
         </Button>
       </Stack>
     </Stack>

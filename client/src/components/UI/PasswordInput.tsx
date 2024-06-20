@@ -42,11 +42,10 @@ const PasswordInput = <TFieldValues extends FieldValues>({
       render={({ field }) => (
         <TextField
           {...field}
-          variant="standard"
+          variant="outlined"
           label={label}
           required
           type={toggle ? "text" : "password"}
-          margin="normal"
           InputProps={{
             endAdornment: (
               <InputAdornment

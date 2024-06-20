@@ -30,7 +30,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <Stack gap={3}>
+    <Stack gap={4}>
       <Typography variant="h4" fontWeight={700} mt={2} textAlign="center">
         Log in to You Account
       </Typography>
@@ -48,7 +48,7 @@ const LoginForm: React.FC = () => {
           render={({ field }) => (
             <TextField
               {...field}
-              variant="standard"
+              variant="outlined"
               label="Email"
               autoComplete="true"
               required
@@ -74,7 +74,7 @@ const LoginForm: React.FC = () => {
           )}
         </PasswordInput>
 
-        <Button sx={{ marginTop: "0.5rem" }} type="submit" variant="contained">
+        <Button type="submit" variant="contained">
           {isPending ? (
             <CircularProgress size={30} sx={{ color: "white" }} />
           ) : (
