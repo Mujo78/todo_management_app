@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { GetMyTasksFn, ParamsType } from "./api";
 import { AllTasksType } from "../../app/taskSlice";
@@ -10,6 +10,7 @@ function useGetTasks({ name, pageNum }: ParamsType) {
   >({
     queryKey: ["tasks", name, pageNum],
     queryFn: () => GetMyTasksFn({ name, pageNum }),
+    placeholderData: keepPreviousData,
   });
 
   return { data, error, isError, isPending, isSuccess };

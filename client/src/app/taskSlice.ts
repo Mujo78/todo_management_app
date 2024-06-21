@@ -1,4 +1,4 @@
-import { StateCreator } from "zustand";
+import { StateCreator, create } from "zustand";
 
 export interface TaskType {
   id: string;
@@ -28,14 +28,36 @@ export interface AllTasksType {
 
 interface TasksState {
   tasks: AllTasksType | null;
+  tasksToAction: string[];
 
   setTasks: (tasks: AllTasksType) => void;
+  addTaskToAction: (taskId: string) => void;
+  removeTaskToAction: (taskId: string) => void;
+  removeAllTaskToAction: () => void;
 }
 
-export const createAuthSlice: StateCreator<TasksState, [], []> = (set) => ({
+export const taskSlice: StateCreator<TasksState, [], []> = (set) => ({
   tasks: null,
+  tasksToAction: [],
 
   setTasks: (tasks) => {
     set({ tasks });
   },
+  addTaskToAction: (taskId) => {
+    set((state) => ({
+      tasksToAction: [...state.tasksToAction, taskId],
+    }));
+  },
+  removeTaskToAction: (taskId) => {
+    set((state) => ({
+      tasksToAction: state.tasksToAction.filter((task) => task !== taskId),
+    }));
+  },
+  removeAllTaskToAction: () => {
+    set({ tasksToAction: [] });
+  },
 });
+
+const useTaskStore = create(taskSlice);
+
+export default useTaskStore;

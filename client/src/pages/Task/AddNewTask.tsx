@@ -23,7 +23,11 @@ import useCreateTask from "../../features/tasks/useCreateNewTask";
 import SuccessAlert from "../../components/UI/SuccessAlert";
 import { formatErrorFieldMessage } from "../../components/utils/userUtils";
 
+import { ArrowBack } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+
 const AddNewTask = () => {
+  const navigate = useNavigate();
   const { control, formState, handleSubmit, reset } = useForm<CreateTaskType>({
     resolver: yupResolver(addTaskValidationSchema),
   });
@@ -35,11 +39,20 @@ const AddNewTask = () => {
     createTask(values, { onSuccess: () => reset() });
   };
 
+  const handleNavigateBack = () => {
+    navigate(-1);
+  };
+
   return (
     <Stack gap={4}>
-      <Typography variant="h5" fontWeight={400}>
-        Add a new Task
-      </Typography>
+      <Box display="flex">
+        <Button color="secondary" onClick={handleNavigateBack}>
+          <ArrowBack />
+        </Button>
+        <Typography variant="h5" fontWeight={400} mx="auto">
+          Add a new Task
+        </Typography>
+      </Box>
       <Stack
         component="form"
         width="100%"

@@ -1,23 +1,20 @@
-import {
-  Alert,
-  Badge,
-  Button,
-  Card,
-  CircularProgress,
-  Stack,
-} from "@mui/material";
+import { Alert, Button, CircularProgress, Stack } from "@mui/material";
 import useGetTasks from "../features/tasks/useGetTasks";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
-import { formatPriority } from "../components/utils/taskUtils";
 import TaskSearchInput from "../components/Task/TaskSearchInput";
-import { format } from "date-fns";
 import { useSearchQuery } from "../hooks/useSearchQuery";
 import PaginationModified from "../components/UI/Pagination";
 import { formatErrorMessage } from "../components/utils/userUtils";
 import InfoIcon from "@mui/icons-material/Info";
+import TaskCard from "../components/Task/TaskCard";
+import { useEffect } from "react";
+import useTaskStore from "../app/taskSlice";
+import { Delete, DeleteSweep, Check } from "@mui/icons-material";
 
 const HomePage = () => {
+  const { setTasks, tasks, tasksToAction, removeAllTaskToAction } =
+    useTaskStore();
   const navigate = useNavigate();
   const query = useSearchQuery();
   const pageNum = query.get("pageNum") || 1;
@@ -31,8 +28,15 @@ const HomePage = () => {
     navigate(path);
   };
 
+  useEffect(() => {
+    if (data && isSuccess) {
+      setTasks(data);
+    }
+  }, [data, isSuccess, setTasks]);
+
   const handlePageChange = (newPage: number) => {
     if (pageNum !== newPage) {
+      removeAllTaskToAction();
       query.set("pageNum", newPage.toString());
       navigate(`/home?${query.toString()}`);
     }
@@ -57,6 +61,23 @@ const HomePage = () => {
           <AddIcon />
         </Button>
       </Stack>
+      <Stack direction="row">
+        {tasksToAction.length > 0 && (
+          <>
+            <Button color="success" variant="contained">
+              <Check />
+            </Button>
+            <Stack flexDirection="row" gap={3} ml="auto">
+              <Button color="error" variant="contained">
+                <Delete />
+              </Button>
+              <Button color="error" variant="contained">
+                <DeleteSweep />
+              </Button>
+            </Stack>
+          </>
+        )}
+      </Stack>
       <Stack gap={2}>
         {isPending ? (
           <Stack alignItems="center" p={6}>
@@ -64,40 +85,18 @@ const HomePage = () => {
           </Stack>
         ) : isError ? (
           <Alert color="error">{formatErrorMessage(error)}</Alert>
-        ) : isSuccess && data?.data && data.data.length === 0 ? (
+        ) : isSuccess && tasks?.data && tasks.data.length === 0 ? (
           <Alert icon={<InfoIcon />} color="secondary">
             No data available.
           </Alert>
         ) : (
-          data?.data?.map((m) => (
-            <Card
-              onClick={() => handleNavigate(`/edit-task/${m.id}`)}
-              key={m.id}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "1.2rem",
-                cursor: "pointer",
-                transition: "all 0.5s",
-                "&:hover": {
-                  backgroundColor: "info.main",
-                },
-              }}
-            >
-              {m.title}
-              <Stack flexDirection="row" alignItems="center" gap={4}>
-                <Badge color={formatPriority(m.priority)} badgeContent="" />
-                {format(m.dueDate, "dd/MM/yyyy - HH:mm")}
-              </Stack>
-            </Card>
-          ))
+          tasks?.data?.map((m) => <TaskCard key={m.id} data={m} />)
         )}
       </Stack>
-      {data?.data && data.data.length > 0 ? (
+      {tasks?.data && tasks.data.length > 0 ? (
         <PaginationModified
           page={Number(pageNum)}
-          total={data?.totalCount}
+          total={tasks?.totalCount}
           handleNavigate={handlePageChange}
         />
       ) : (
