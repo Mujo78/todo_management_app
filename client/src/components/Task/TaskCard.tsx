@@ -10,8 +10,8 @@ interface Props {
 }
 
 const TaskCard: React.FC<Props> = ({ data }) => {
-  const [checked, setChecked] = useState<boolean>(false);
-  const { addTaskToAction, removeTaskToAction, tasksToAction } = useTaskStore();
+  const { addTaskToAction, removeTaskToAction, isChecked } = useTaskStore();
+  const [checked, setChecked] = useState<boolean>(isChecked(data.id));
   const navigate = useNavigate();
 
   const handleNavigate = () => {
@@ -37,7 +37,9 @@ const TaskCard: React.FC<Props> = ({ data }) => {
     []
   );
 
-  console.log(tasksToAction);
+  const isCompleted = data.status === 1;
+  const isFailed = data.status === 2;
+
   return (
     <Card
       onClick={handleNavigate}
@@ -47,15 +49,27 @@ const TaskCard: React.FC<Props> = ({ data }) => {
         alignItems: "center",
         padding: "1.2rem",
         cursor: "pointer",
+        textDecoration: isCompleted || isFailed ? "line-through" : "none",
         transition: "all 0.5s",
+        bgcolor: isCompleted
+          ? "lightgreen"
+          : isFailed
+          ? "#FFCCCB"
+          : "transparent",
         "&:hover": {
-          backgroundColor: "info.main",
+          backgroundColor: isCompleted
+            ? "success.main"
+            : isFailed
+            ? "#f9504d"
+            : "info.main",
         },
       }}
     >
       <Stack direction="row" alignItems="center" gap={2}>
         <Checkbox
           size="small"
+          disabled={isCompleted || isFailed}
+          id={`checkbox-${data.title}`}
           color="primary"
           checked={checked}
           onClick={handleClick}

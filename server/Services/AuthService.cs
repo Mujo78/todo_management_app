@@ -35,7 +35,7 @@ namespace server.Services
             if (!isValid || !user.EmailConfirmed) throw new BadRequestException("Incorrect email or password.");
 
             string jwtTokenId = $"JTI{Guid.NewGuid()}";
-            string refreshToken = await CreateRefreshToken(user.Id, jwtTokenId);
+            string refreshToken = await CreateOrFindRefreshToken(user.Id, jwtTokenId);
             string accessToken = CreateAccessToken(user, jwtTokenId);
 
             UserDTO userDTO = new()
@@ -72,19 +72,30 @@ namespace server.Services
             }
         }
 
-        public async Task<string> CreateRefreshToken(Guid userId, string tokenId)
+        public async Task<string> CreateOrFindRefreshToken(Guid userId, string tokenId)
         {
-            RefreshToken token = new()
-            {
-                UserId = userId,
-                JwtTokenId = tokenId,
-                Refresh_Token = GenerateRefreshToken(),
-                IsValid = true,
-                ExpiresAt = DateTime.Now.AddDays(7)
-            };
+            var refresh_token = await repository.GetRefreshToken(userId);
 
-            bool result = await repository.CreateRefreshToken(token);
-            return result ? token.Refresh_Token : "";
+            if (refresh_token == null)
+            {
+                RefreshToken token = new()
+                {
+                    UserId = userId,
+                    JwtTokenId = tokenId,
+                    Refresh_Token = GenerateRefreshToken(),
+                    IsValid = true,
+                    ExpiresAt = DateTime.Now.AddDays(7)
+                };
+
+                bool result = await repository.CreateRefreshToken(token);
+                return result ? token.Refresh_Token : "";
+
+            }
+            else
+            {
+                return refresh_token.Refresh_Token;
+            }
+
         }
 
         public async Task<AccessTokenDTO> RefreshAccessToken(string refreshToken, string accessToken)
@@ -92,7 +103,7 @@ namespace server.Services
             var existingRefreshToken = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided.");
             var user = await repository.GetUser(existingRefreshToken.UserId) ?? throw new NotFoundException("User not found.");
 
-            if(!existingRefreshToken.IsValid) httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken", new CookieOptions
+            if (!existingRefreshToken.IsValid) httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken", new CookieOptions
             {
                 Secure = true,
                 HttpOnly = true,

@@ -173,8 +173,8 @@ const AddNewTask = () => {
               <FormControl variant="outlined" fullWidth error={!!errors.status}>
                 <InputLabel id="select-status-label">Status</InputLabel>
                 <Select
-                  labelId="select-priority-label"
-                  id="simple-select-priority"
+                  labelId="select-status-label"
+                  id="select-status"
                   readOnly
                   disabled
                   {...field}

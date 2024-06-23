@@ -35,6 +35,11 @@ namespace server.Repository
             return await db.RefreshTokens.FirstOrDefaultAsync(r => r.Refresh_Token == tokenId && r.IsValid && r.ExpiresAt > DateTime.Now);
         }
 
+        public async Task<RefreshToken?> GetRefreshToken(Guid userId)
+        {
+            return await db.RefreshTokens.FirstOrDefaultAsync(r => r.UserId.Equals(userId) && r.IsValid && r.ExpiresAt > DateTime.Now);
+        }
+
         public async Task<bool> Save()
         {
             var saved = await db.SaveChangesAsync();

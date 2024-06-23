@@ -30,16 +30,21 @@ interface TasksState {
   tasks: AllTasksType | null;
   tasksToAction: string[];
 
+  initialize: () => void;
   setTasks: (tasks: AllTasksType) => void;
   addTaskToAction: (taskId: string) => void;
   removeTaskToAction: (taskId: string) => void;
+  isChecked: (taskId: string) => boolean;
   removeAllTaskToAction: () => void;
 }
 
-export const taskSlice: StateCreator<TasksState, [], []> = (set) => ({
+export const taskSlice: StateCreator<TasksState, [], []> = (set, get) => ({
   tasks: null,
   tasksToAction: [],
 
+  initialize: () => {
+    set({ tasks: null, tasksToAction: [] });
+  },
   setTasks: (tasks) => {
     set({ tasks });
   },
@@ -52,6 +57,10 @@ export const taskSlice: StateCreator<TasksState, [], []> = (set) => ({
     set((state) => ({
       tasksToAction: state.tasksToAction.filter((task) => task !== taskId),
     }));
+  },
+  isChecked: (taskId: string) => {
+    const tasksToAction = get().tasksToAction;
+    return tasksToAction.includes(taskId);
   },
   removeAllTaskToAction: () => {
     set({ tasksToAction: [] });

@@ -20,3 +20,8 @@ export async function CreateTaskFn(values: CreateTaskType) {
   const res = await apiClientAuth.post("/v1/assignments/", values);
   return res.data;
 }
+
+export async function DeleteAllTaskFn() {
+  const res = await apiClientAuth.delete("/v1/assignments/");
+  return res.data;
+}

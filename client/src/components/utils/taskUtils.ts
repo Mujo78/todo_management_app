@@ -6,6 +6,6 @@ export function formatPriority(priority: number) {
 
 export function formatStatus(status: number) {
   if (status === 0) return "Open";
-  else if (status === 1) return "InProgress";
-  else return "Completed";
+  else if (status === 1) return "Completed";
+  else return "Failed";
 }

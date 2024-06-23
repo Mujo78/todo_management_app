@@ -1,4 +1,5 @@
-import { Alert, Button, CircularProgress, Stack } from "@mui/material";
+import { useEffect } from "react";
+import { Alert, Button, CircularProgress, Stack, Tooltip } from "@mui/material";
 import useGetTasks from "../features/tasks/useGetTasks";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
@@ -8,13 +9,11 @@ import PaginationModified from "../components/UI/Pagination";
 import { formatErrorMessage } from "../components/utils/userUtils";
 import InfoIcon from "@mui/icons-material/Info";
 import TaskCard from "../components/Task/TaskCard";
-import { useEffect } from "react";
 import useTaskStore from "../app/taskSlice";
-import { Delete, DeleteSweep, Check } from "@mui/icons-material";
+import TaskOptionsHeader from "../components/Task/TaskOptionsHeader";
 
 const HomePage = () => {
-  const { setTasks, tasks, tasksToAction, removeAllTaskToAction } =
-    useTaskStore();
+  const { setTasks, tasks } = useTaskStore();
   const navigate = useNavigate();
   const query = useSearchQuery();
   const pageNum = query.get("pageNum") || 1;
@@ -36,7 +35,6 @@ const HomePage = () => {
 
   const handlePageChange = (newPage: number) => {
     if (pageNum !== newPage) {
-      removeAllTaskToAction();
       query.set("pageNum", newPage.toString());
       navigate(`/home?${query.toString()}`);
     }
@@ -54,30 +52,15 @@ const HomePage = () => {
         <TaskSearchInput />
         <Button
           color="info"
-          size="small"
           variant="contained"
           onClick={() => handleNavigate("/add-task")}
         >
-          <AddIcon />
+          <Tooltip title="Add task">
+            <AddIcon />
+          </Tooltip>
         </Button>
       </Stack>
-      <Stack direction="row">
-        {tasksToAction.length > 0 && (
-          <>
-            <Button color="success" variant="contained">
-              <Check />
-            </Button>
-            <Stack flexDirection="row" gap={3} ml="auto">
-              <Button color="error" variant="contained">
-                <Delete />
-              </Button>
-              <Button color="error" variant="contained">
-                <DeleteSweep />
-              </Button>
-            </Stack>
-          </>
-        )}
-      </Stack>
+      <TaskOptionsHeader />
       <Stack gap={2}>
         {isPending ? (
           <Stack alignItems="center" p={6}>
@@ -85,7 +68,8 @@ const HomePage = () => {
           </Stack>
         ) : isError ? (
           <Alert color="error">{formatErrorMessage(error)}</Alert>
-        ) : isSuccess && tasks?.data && tasks.data.length === 0 ? (
+        ) : isSuccess &&
+          ((tasks?.data && tasks.data.length === 0) || !tasks) ? (
           <Alert icon={<InfoIcon />} color="secondary">
             No data available.
           </Alert>
@@ -100,7 +84,8 @@ const HomePage = () => {
           handleNavigate={handlePageChange}
         />
       ) : (
-        isSuccess && (
+        isSuccess &&
+        name && (
           <Button
             onClick={handleClear}
             color="error"
