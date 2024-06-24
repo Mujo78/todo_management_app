@@ -59,5 +59,10 @@ namespace server.Repository
             }
             return await query.CountAsync();
         }
+
+        public async Task<IEnumerable<Assignment>> GetAssignmentsById(List<Guid> assignmentsIds, Guid? userId)
+        {
+            return await db.Assignments.Where(a => a.UserId.Equals(userId) && assignmentsIds.Contains(a.Id)).ToListAsync();
+        }
     }
 }

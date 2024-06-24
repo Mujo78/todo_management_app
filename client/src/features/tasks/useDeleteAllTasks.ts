@@ -8,7 +8,7 @@ import { formatErrorMessage } from "../../components/utils/userUtils";
 function useDeleteAllTasks() {
   const { initialize } = useTaskStore();
 
-  const { mutate: deleteAllTasks } = useMutation<
+  const { mutate: deleteAllTasks, isPending } = useMutation<
     unknown,
     Error | AxiosError,
     undefined
@@ -24,7 +24,7 @@ function useDeleteAllTasks() {
     },
   });
 
-  return { deleteAllTasks };
+  return { deleteAllTasks, isPending };
 }
 
 export default useDeleteAllTasks;

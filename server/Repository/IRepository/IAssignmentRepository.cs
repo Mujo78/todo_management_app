@@ -5,6 +5,7 @@ namespace server.Repository.IRepository
     public interface IAssignmentRepository: IRepository<Assignment>
     {
         Task<IEnumerable<Assignment>> GetAllAssignments(Guid? userId, string? title, int pageNum, int limit);
+        Task<IEnumerable<Assignment>> GetAssignmentsById(List<Guid> assignmentsIds, Guid? userId);
         Task<int> GetCountAssignments(Guid? userId, string? title);
         Task<Assignment?> GetAssignmentById(Guid taskId, Guid? userId);
         Task<bool> RemoveAllAssignments(Guid? userId);

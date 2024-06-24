@@ -25,3 +25,8 @@ export async function DeleteAllTaskFn() {
   const res = await apiClientAuth.delete("/v1/assignments/");
   return res.data;
 }
+
+export async function MakeTaskFinishedFn(values: string[]) {
+  const res = await apiClientAuth.patch("/v1/assignments/", values);
+  return res.data;
+}

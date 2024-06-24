@@ -5,6 +5,7 @@ using server.Exceptions;
 using server.Models;
 using server.Repository.IRepository;
 using server.Services.IService;
+using server.Utils.Enums;
 
 namespace server.Services
 {
@@ -92,6 +93,30 @@ namespace server.Services
 
             bool result = await repository.UpdateAsync(assignmentToUpdate);
             return result ? mapper.Map<AssignmentDTO>(assignmentToUpdate) : throw new Exception("Assignment not updated.");
+        }
+
+        public async Task MakeAssignmentsCompleted(List<Guid> assignmentsIds)
+        {
+            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");
+            if (assignmentsIds == null || assignmentsIds.Count == 0) throw new BadRequestException("No assignments provided.");
+
+            var assignemnts = await repository.GetAssignmentsById(assignmentsIds, userId);
+            if (assignemnts == null || assignemnts.Count() == 0) throw new NotFoundException("One or more assignments not found with the provided data.");
+
+            foreach (var assignment in assignemnts)
+            {
+                assignment.Status = Status.Completed;
+                assignment.UpdatedAt = DateTime.Now;
+            }
+
+            try
+            {
+                await repository.SaveAsync();
+            }
+            catch ( Exception ex )
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

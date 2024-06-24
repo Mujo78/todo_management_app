@@ -4,22 +4,37 @@ import { Delete, DeleteSweep, Check } from "@mui/icons-material";
 import useTaskStore from "../../app/taskSlice";
 import useDeleteAllTasks from "../../features/tasks/useDeleteAllTasks";
 import { useNavigate } from "react-router-dom";
+import useMakeTasksFinished from "../../features/tasks/useMakeTasksFinished";
 
 const TaskOptionsHeader: React.FC = () => {
   const navigate = useNavigate();
   const { tasksToAction, tasks } = useTaskStore();
 
-  const { deleteAllTasks } = useDeleteAllTasks();
+  const { deleteAllTasks, isPending } = useDeleteAllTasks();
+  const { finishTasks, isPending: isMakingFinished } = useMakeTasksFinished();
+  const isLoading = isMakingFinished || isPending;
 
   const removeAllTasks = () => {
-    deleteAllTasks(undefined, { onSuccess: () => navigate("/home") });
+    if (!isLoading) {
+      deleteAllTasks(undefined, { onSuccess: () => navigate("/home") });
+    }
+  };
+
+  const makeTasksCompleted = () => {
+    if (tasksToAction.length > 0 && !isLoading) {
+      finishTasks(tasksToAction);
+    }
   };
 
   return (
     <Stack direction="row" gap={2}>
       {tasksToAction.length > 0 && (
         <Stack flexDirection="row" flexGrow={1} justifyContent="space-between">
-          <Button color="success" variant="contained">
+          <Button
+            color="success"
+            variant="contained"
+            onClick={makeTasksCompleted}
+          >
             <Tooltip title="Make finished">
               <Check />
             </Tooltip>
