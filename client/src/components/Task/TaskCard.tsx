@@ -1,4 +1,4 @@
-import { Badge, Card, Checkbox, Stack } from "@mui/material";
+import { Badge, Card, Checkbox, Stack, Typography } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useTaskStore, { TaskType } from "../../app/taskSlice";
@@ -65,7 +65,7 @@ const TaskCard: React.FC<Props> = ({ data }) => {
         },
       }}
     >
-      <Stack direction="row" alignItems="center" gap={2}>
+      <Stack direction="row" alignItems="center" width="70%" gap={2}>
         <Checkbox
           size="small"
           disabled={isCompleted || isFailed}
@@ -75,8 +75,19 @@ const TaskCard: React.FC<Props> = ({ data }) => {
           onClick={handleClick}
           onChange={handleChange}
         />
-
-        {data.title}
+        <Typography
+          paragraph
+          component="span"
+          my="auto"
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "100%",
+          }}
+        >
+          {data.title}
+        </Typography>
       </Stack>
       <Stack flexDirection="row" alignItems="center" gap={4}>
         <Badge color={formatPriority(data.priority)} badgeContent="" />

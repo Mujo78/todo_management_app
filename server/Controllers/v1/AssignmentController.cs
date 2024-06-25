@@ -68,6 +68,19 @@ namespace server.Controllers.v1
             return Ok("Assignments successfully deleted.");
         }
 
+        [HttpDelete("selected")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> DeleteSelectedAssignemnts([FromBody] List<Guid> assignmentIds)
+        {
+            await assignmentService.DeleteSelectedAssignmentsAsync(assignmentIds);
+            return Ok("Assignments successfully deleted.");
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(AssignmentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

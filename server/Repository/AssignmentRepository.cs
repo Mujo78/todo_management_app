@@ -39,15 +39,19 @@ namespace server.Repository
             return db.Assignments.Any(n => n.Title.ToLower().Equals(title.ToLower()) && !n.Id.Equals(taskId) && n.UserId.Equals(userId));
         }
 
-        public async Task<bool> RemoveAllAssignments(Guid? userId)
+        public async Task RemoveAllAssignments(Guid? userId)
         {
             var assignmentsToDelete = db.Assignments.Where(assignment => assignment.UserId.Equals(userId));
-            if(assignmentsToDelete.Any())
+            await RemoveSelectedAssignments(assignmentsToDelete);
+        }
+
+        public async Task RemoveSelectedAssignments(IEnumerable<Assignment> assignments)
+        {
+            if (assignments.Any())
             {
-                db.Assignments.RemoveRange(assignmentsToDelete);
-                return await db.SaveChangesAsync() > 0;
+                db.Assignments.RemoveRange(assignments);
+                await db.SaveChangesAsync();
             }
-            return false;
         }
 
         public async Task<int> GetCountAssignments(Guid? userId, string? title)

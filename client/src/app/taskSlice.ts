@@ -36,6 +36,7 @@ interface TasksState {
   removeTaskToAction: (taskId: string) => void;
   isChecked: (taskId: string) => boolean;
   makeTasksFinished: () => void;
+  removeSelectedTasks: () => void;
 }
 
 export const taskSlice: StateCreator<TasksState, [], []> = (set, get) => ({
@@ -68,6 +69,17 @@ export const taskSlice: StateCreator<TasksState, [], []> = (set, get) => ({
     if (tasks) {
       const updated = tasks.data.map((task) =>
         tasksToAction.includes(task.id) ? { ...task, status: 1 } : task
+      );
+
+      set({ tasks: { ...tasks, data: updated }, tasksToAction: [] });
+    }
+  },
+  removeSelectedTasks: () => {
+    const { tasks, tasksToAction } = get();
+
+    if (tasks) {
+      const updated = tasks.data.filter(
+        (task) => !tasksToAction.includes(task.id)
       );
 
       set({ tasks: { ...tasks, data: updated }, tasksToAction: [] });

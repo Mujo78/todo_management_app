@@ -26,6 +26,13 @@ export async function DeleteAllTaskFn() {
   return res.data;
 }
 
+export async function DeleteSelectedTaskFn(values: string[]) {
+  const res = await apiClientAuth.delete("/v1/assignments/selected", {
+    data: values,
+  });
+  return res.data;
+}
+
 export async function MakeTaskFinishedFn(values: string[]) {
   const res = await apiClientAuth.patch("/v1/assignments/", values);
   return res.data;

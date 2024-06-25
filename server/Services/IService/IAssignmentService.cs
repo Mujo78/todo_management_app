@@ -12,5 +12,6 @@ namespace server.Services.IService
         Task MakeAssignmentsCompleted(List<Guid> assignmentsIds);
         Task DeleteAssignmentAsync(Guid taskId);
         Task DeleteAllAssignmentsAsync();
+        Task DeleteSelectedAssignmentsAsync(List<Guid> assignmentsIds);
     }
 }

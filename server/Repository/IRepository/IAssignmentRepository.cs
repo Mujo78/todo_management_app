@@ -8,7 +8,8 @@ namespace server.Repository.IRepository
         Task<IEnumerable<Assignment>> GetAssignmentsById(List<Guid> assignmentsIds, Guid? userId);
         Task<int> GetCountAssignments(Guid? userId, string? title);
         Task<Assignment?> GetAssignmentById(Guid taskId, Guid? userId);
-        Task<bool> RemoveAllAssignments(Guid? userId);
+        Task RemoveAllAssignments(Guid? userId);
+        Task RemoveSelectedAssignments(IEnumerable<Assignment> assignments);
         bool AssignmentExists(Guid taskId, Guid? userId);
         bool AssignmentExists(string title, Guid? userId);
         bool AssignmentExists(string title, Guid taskId, Guid? userId);

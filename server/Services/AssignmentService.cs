@@ -60,9 +60,15 @@ namespace server.Services
         public async Task DeleteAllAssignmentsAsync()
         {
             var userId = authService.GetUserId();
-            bool result = await repository.RemoveAllAssignments(userId);
 
-            if (!result) throw new Exception("Assignments not deleted.");
+            try
+            {
+                await repository.RemoveAllAssignments(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task DeleteAssignmentAsync(Guid Id)
@@ -97,13 +103,9 @@ namespace server.Services
 
         public async Task MakeAssignmentsCompleted(List<Guid> assignmentsIds)
         {
-            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");
-            if (assignmentsIds == null || assignmentsIds.Count == 0) throw new BadRequestException("No assignments provided.");
+            var assignments = await FindAssignmentsByIds(assignmentsIds);
 
-            var assignemnts = await repository.GetAssignmentsById(assignmentsIds, userId);
-            if (assignemnts == null || assignemnts.Count() == 0) throw new NotFoundException("One or more assignments not found with the provided data.");
-
-            foreach (var assignment in assignemnts)
+            foreach (var assignment in assignments)
             {
                 assignment.Status = Status.Completed;
                 assignment.UpdatedAt = DateTime.Now;
@@ -113,10 +115,35 @@ namespace server.Services
             {
                 await repository.SaveAsync();
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task DeleteSelectedAssignmentsAsync(List<Guid> assignmentsIds)
+        {
+            var assignments = await FindAssignmentsByIds(assignmentsIds);
+
+            try
+            {
+                await repository.RemoveSelectedAssignments(assignments);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<Assignment>> FindAssignmentsByIds(List<Guid> assignmentsIds)
+        {
+            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");
+            if (assignmentsIds == null || assignmentsIds.Count == 0) throw new BadRequestException("No assignments provided.");
+
+            var assignments = await repository.GetAssignmentsById(assignmentsIds, userId);
+            if (assignments == null || !assignments.Any()) throw new NotFoundException("One or more assignments not found with the provided data.");
+
+            return assignments;
         }
     }
 }

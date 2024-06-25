@@ -5,6 +5,7 @@ import useTaskStore from "../../app/taskSlice";
 import useDeleteAllTasks from "../../features/tasks/useDeleteAllTasks";
 import { useNavigate } from "react-router-dom";
 import useMakeTasksFinished from "../../features/tasks/useMakeTasksFinished";
+import useDeleteSelectedTasks from "../../features/tasks/useDeleteSelectedTasks";
 
 const TaskOptionsHeader: React.FC = () => {
   const navigate = useNavigate();
@@ -12,11 +13,19 @@ const TaskOptionsHeader: React.FC = () => {
 
   const { deleteAllTasks, isPending } = useDeleteAllTasks();
   const { finishTasks, isPending: isMakingFinished } = useMakeTasksFinished();
-  const isLoading = isMakingFinished || isPending;
+  const { deleteSelectedTasks, isPending: isDeletingSelected } =
+    useDeleteSelectedTasks();
+  const isLoading = isMakingFinished || isPending || isDeletingSelected;
 
   const removeAllTasks = () => {
     if (!isLoading) {
       deleteAllTasks(undefined, { onSuccess: () => navigate("/home") });
+    }
+  };
+
+  const removeSelectedTasks = () => {
+    if (tasksToAction.length > 0 && !isLoading) {
+      deleteSelectedTasks(tasksToAction);
     }
   };
 
@@ -39,7 +48,11 @@ const TaskOptionsHeader: React.FC = () => {
               <Check />
             </Tooltip>
           </Button>
-          <Button color="error" variant="contained">
+          <Button
+            color="error"
+            onClick={removeSelectedTasks}
+            variant="contained"
+          >
             <Tooltip title="Remove selected">
               <Delete />
             </Tooltip>
