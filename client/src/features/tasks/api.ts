@@ -1,4 +1,4 @@
-import { CreateTaskType } from "../../app/taskSlice";
+import { CreateUpdateTaskType, TaskType } from "../../app/taskSlice";
 import { apiClientAuth } from "../../helpers/ApiClient";
 
 export interface ParamsType {
@@ -16,8 +16,23 @@ export async function GetMyTasksFn({ name, pageNum }: ParamsType) {
   return res.data;
 }
 
-export async function CreateTaskFn(values: CreateTaskType) {
+export async function GetTasksByIdFn(taskId: string) {
+  const res = await apiClientAuth.get(`/v1/assignments/${taskId}`);
+  return res.data;
+}
+
+export async function CreateTaskFn(values: CreateUpdateTaskType) {
   const res = await apiClientAuth.post("/v1/assignments/", values);
+  return res.data;
+}
+
+export interface UpdateTaskArgs {
+  taskId: string;
+  values: TaskType;
+}
+
+export async function UpdateTaskFn({ taskId, values }: UpdateTaskArgs) {
+  const res = await apiClientAuth.put(`/v1/assignments/${taskId}`, values);
   return res.data;
 }
 

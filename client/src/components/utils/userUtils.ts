@@ -16,8 +16,14 @@ export function formatErrorFieldMessage(
 export function formatErrorMessage(
   error: Error | AxiosError<unknown, unknown> | null
 ) {
-  if (isAxiosError(error) && error.response && error.response.status !== 409) {
+  if (
+    isAxiosError(error) &&
+    error?.response &&
+    error?.response?.status !== 409
+  ) {
     return error.response?.data.detail;
+  } else if (isAxiosError(error) && error.response?.status === 409) {
+    return undefined;
   } else {
     return error?.message ?? undefined;
   }

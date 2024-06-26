@@ -43,7 +43,7 @@ const routes: RouteObject = {
           element: <AddNewTask />,
         },
         {
-          path: "/edit-task/:id",
+          path: "/edit-task/:taskId",
           element: <EditTask />,
         },
       ],

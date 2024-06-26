@@ -36,7 +36,7 @@ namespace server.Services
         {
             var userId = authService.GetUserId();
             var assignment = await repository.GetAssignmentById(taskId, userId);
-
+            
             return assignment == null ? throw new NotFoundException("Assignment not found.") : mapper.Map<AssignmentDTO>(assignment);
         }
 
@@ -92,7 +92,7 @@ namespace server.Services
             if (!isExists) throw new NotFoundException("Assignment not found.");
 
             bool isExistsName = repository.AssignmentExists(updateDTO.Title, updateDTO.Id, userId);
-            if (isExistsName) throw new ConflictException($"Assignment with name: '{updateDTO.Title}' already exists.");
+            if (isExistsName) throw new ConflictException($"Assignment with title: '{updateDTO.Title}' already exists.");
 
             Assignment assignmentToUpdate = mapper.Map<Assignment>(updateDTO);
             assignmentToUpdate.UpdatedAt = DateTime.Now;

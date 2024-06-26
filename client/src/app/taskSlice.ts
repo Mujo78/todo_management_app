@@ -12,7 +12,7 @@ export interface TaskType {
   updatedAt: Date;
 }
 
-export interface CreateTaskType {
+export interface CreateUpdateTaskType {
   title: string;
   description?: string;
   dueDate: Date;

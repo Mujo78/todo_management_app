@@ -38,6 +38,7 @@ interface Props<TFieldValues extends FieldValues> {
   error: Error | AxiosError<unknown, unknown> | null;
   handleSubmit: UseFormHandleSubmit<TFieldValues>;
   onSubmit: (values: TFieldValues) => void;
+  title: string;
 }
 
 const TaskForm = <TFieldValues extends FieldValues>({
@@ -49,6 +50,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
   error,
   handleSubmit,
   onSubmit,
+  title,
 }: Props<TFieldValues>) => {
   const navigate = useNavigate();
 
@@ -63,7 +65,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
           <ArrowBack />
         </Button>
         <Typography variant="h5" fontWeight={400} mx="auto">
-          Add a new Task
+          {title}
         </Typography>
       </Box>
       <Stack

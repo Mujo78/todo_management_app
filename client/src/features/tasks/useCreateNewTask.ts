@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { CreateTaskFn } from "./api";
 import { AxiosError } from "axios";
-import { CreateTaskType, TaskType } from "../../app/taskSlice";
+import { CreateUpdateTaskType, TaskType } from "../../app/taskSlice";
 import toast from "react-hot-toast";
 
 function useCreateTask() {
@@ -11,7 +11,7 @@ function useCreateTask() {
     isError,
     isSuccess,
     error,
-  } = useMutation<TaskType, Error | AxiosError, CreateTaskType>({
+  } = useMutation<TaskType, Error | AxiosError, CreateUpdateTaskType>({
     mutationKey: ["createTask"],
     mutationFn: CreateTaskFn,
     onSuccess: () => {

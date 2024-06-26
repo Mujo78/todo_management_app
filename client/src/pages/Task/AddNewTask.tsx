@@ -1,20 +1,21 @@
 import { useForm } from "react-hook-form";
 import { addTaskValidationSchema } from "../../validations/addNewTaskValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CreateTaskType } from "../../app/taskSlice";
+import { CreateUpdateTaskType } from "../../app/taskSlice";
 import useCreateTask from "../../features/tasks/useCreateNewTask";
 import SuccessAlert from "../../components/UI/SuccessAlert";
 import TaskForm from "../../components/Task/TaskForm";
 
 const AddNewTask = () => {
-  const { control, formState, handleSubmit, reset } = useForm<CreateTaskType>({
-    resolver: yupResolver(addTaskValidationSchema),
-  });
+  const { control, formState, handleSubmit, reset } =
+    useForm<CreateUpdateTaskType>({
+      resolver: yupResolver(addTaskValidationSchema),
+    });
   const { errors } = formState;
 
   const { createTask, error, isError, isPending, isSuccess } = useCreateTask();
 
-  const onSubmit = (values: CreateTaskType) => {
+  const onSubmit = (values: CreateUpdateTaskType) => {
     createTask(values, { onSuccess: () => reset() });
   };
 
@@ -27,6 +28,7 @@ const AddNewTask = () => {
       isError={isError}
       isPending={isPending}
       onSubmit={onSubmit}
+      title="Add a new Task"
     >
       <SuccessAlert isSuccess={isSuccess}>
         Successfully created a new task.
