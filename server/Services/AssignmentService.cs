@@ -46,6 +46,8 @@ namespace server.Services
             bool isExists = repository.AssignmentExists(assignmentDTO.Title, userId);
             if (isExists) throw new ConflictException($"Assignment with title: '{assignmentDTO.Title}' already exists.");
 
+            assignmentDTO.DueDate = assignmentDTO.DueDate.ToLocalTime();
+
             Assignment assignmentToCreate = mapper.Map<Assignment>(assignmentDTO);
 
             assignmentToCreate.UserId = userId;
@@ -93,6 +95,8 @@ namespace server.Services
 
             bool isExistsName = repository.AssignmentExists(updateDTO.Title, updateDTO.Id, userId);
             if (isExistsName) throw new ConflictException($"Assignment with title: '{updateDTO.Title}' already exists.");
+
+            updateDTO.DueDate = updateDTO.DueDate.ToLocalTime();
 
             Assignment assignmentToUpdate = mapper.Map<Assignment>(updateDTO);
             assignmentToUpdate.UpdatedAt = DateTime.Now;

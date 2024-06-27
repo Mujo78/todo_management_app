@@ -1,3 +1,4 @@
+import { differenceInMinutes } from "date-fns";
 import { StateCreator, create } from "zustand";
 
 export interface TaskType {
@@ -37,6 +38,7 @@ interface TasksState {
   isChecked: (taskId: string) => boolean;
   makeTasksFinished: () => void;
   removeSelectedTasks: () => void;
+  taskForNotification: () => TaskType | undefined;
 }
 
 export const taskSlice: StateCreator<TasksState, [], []> = (set, get) => ({
@@ -83,6 +85,22 @@ export const taskSlice: StateCreator<TasksState, [], []> = (set, get) => ({
       );
 
       set({ tasks: { ...tasks, data: updated }, tasksToAction: [] });
+    }
+  },
+
+  taskForNotification: () => {
+    const { tasks } = get();
+
+    if (tasks?.data) {
+      const taskToFind = tasks.data.find((task) => {
+        return (
+          Number(differenceInMinutes(new Date(task?.dueDate), new Date())) <=
+            15 && task?.status === 0
+        );
+      });
+
+      if (taskToFind) return taskToFind;
+      return undefined;
     }
   },
 });

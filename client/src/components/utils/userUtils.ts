@@ -5,14 +5,29 @@ export function formatErrorFieldMessage(
   key: string
 ) {
   if (isAxiosError(error)) {
-    if (error.response?.data.errors) {
+    if (error.response?.data.errors && error.response?.data.errors[key]) {
       return error.response?.data.errors[key][0];
-    } else if (error?.response?.data.detail.toLowerCase().includes(key)) {
+    } else if (error?.response?.data?.detail?.toLowerCase().includes(key)) {
       return error?.response?.data.detail;
     }
     return "";
   }
 }
+
+export function isErrorForKey(
+  error: Error | AxiosError<unknown, unknown> | null,
+  key: string
+) {
+  if (isAxiosError(error)) {
+    if (error.response?.data.errors && error.response?.data.errors[key]) {
+      return true;
+    } else if (error?.response?.data?.detail?.toLowerCase().includes(key)) {
+      return true;
+    }
+    return false;
+  }
+}
+
 export function formatErrorMessage(
   error: Error | AxiosError<unknown, unknown> | null
 ) {

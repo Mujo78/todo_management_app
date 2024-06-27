@@ -11,6 +11,7 @@ function useGetTasks({ name, pageNum }: ParamsType) {
     queryKey: ["tasks", name, pageNum],
     queryFn: () => GetMyTasksFn({ name, pageNum }),
     placeholderData: keepPreviousData,
+    retry: 1,
   });
 
   return { data, error, isError, isPending, isSuccess };

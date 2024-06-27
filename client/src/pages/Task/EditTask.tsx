@@ -37,7 +37,7 @@ const EditTask = () => {
   }, [data, reset, isSuccess]);
 
   const onSubmit = (data: CreateUpdateTaskType) => {
-    if (taskId && !isError) {
+    if (taskId && !isError && data.status === 0) {
       const values = data as TaskType;
       updateTask({ taskId, values });
     }
@@ -57,6 +57,7 @@ const EditTask = () => {
           isError={isUpdatingError}
           isPending={isUpdating}
           onSubmit={onSubmit}
+          isDisabled={data?.status === 1 || data?.status === 2}
         >
           {isUpdatingSuccess ? (
             <SuccessAlert isSuccess={isUpdatingSuccess}>

@@ -23,7 +23,7 @@ import {
   UseFormHandleSubmit,
 } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { formatErrorFieldMessage } from "../utils/userUtils";
+import { formatErrorFieldMessage, isErrorForKey } from "../utils/userUtils";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -36,6 +36,7 @@ interface Props<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
   isError: boolean;
   error: Error | AxiosError<unknown, unknown> | null;
+  isDisabled?: boolean;
   handleSubmit: UseFormHandleSubmit<TFieldValues>;
   onSubmit: (values: TFieldValues) => void;
   title: string;
@@ -51,6 +52,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
   handleSubmit,
   onSubmit,
   title,
+  isDisabled,
 }: Props<TFieldValues>) => {
   const navigate = useNavigate();
 
@@ -84,14 +86,14 @@ const TaskForm = <TFieldValues extends FieldValues>({
               <TextField
                 {...field}
                 variant="outlined"
-                disabled={isPending}
+                disabled={isPending || isDisabled}
                 label="Title"
                 sx={{
                   flexGrow: 1,
                 }}
                 autoComplete="true"
                 required
-                error={!!errors.title || isError}
+                error={!!errors.title || isErrorForKey(error, "title")}
                 helperText={
                   errors.title
                     ? errors.title.message
@@ -113,13 +115,19 @@ const TaskForm = <TFieldValues extends FieldValues>({
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DemoContainer components={["DateTimePicker"]}>
                   <DateTimePicker
-                    disabled={isPending}
+                    disabled={isPending || isDisabled}
                     slotProps={{
                       textField: {
-                        error: !!errors.dueDate,
-                        helperText:
-                          errors.dueDate &&
-                          (errors.dueDate.message as React.ReactNode),
+                        error:
+                          !!errors.dueDate || isErrorForKey(error, "DueDate"),
+                        helperText: errors.dueDate
+                          ? (errors.dueDate.message as React.ReactNode)
+                          : isError && !errors.dueDate
+                          ? (formatErrorFieldMessage(
+                              error,
+                              "DueDate"
+                            ) as React.ReactNode)
+                          : "",
                       },
                     }}
                     {...field}
@@ -140,7 +148,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
               id="description-textarea"
               {...field}
               variant="outlined"
-              disabled={isPending}
+              disabled={isPending || isDisabled}
               label="Description"
               autoComplete="true"
               minRows={4}
@@ -165,12 +173,17 @@ const TaskForm = <TFieldValues extends FieldValues>({
             name={"priority" as Path<TFieldValues>}
             defaultValue={0 as PathValue<TFieldValues, Path<TFieldValues>>}
             render={({ field }) => (
-              <FormControl variant="outlined" fullWidth required>
+              <FormControl
+                variant="outlined"
+                error={!!errors.priority || isErrorForKey(error, "Priority")}
+                fullWidth
+                required
+              >
                 <InputLabel id="select-priority-label">Priority</InputLabel>
                 <Select
                   labelId="select-priority-label"
                   aria-label="Priority"
-                  disabled={isPending}
+                  disabled={isPending || isDisabled}
                   id="select-priority"
                   {...field}
                   label="Priority"
@@ -179,11 +192,15 @@ const TaskForm = <TFieldValues extends FieldValues>({
                   <MenuItem value={1}>Medium</MenuItem>
                   <MenuItem value={2}>High</MenuItem>
                 </Select>
-                <FormHelperText
-                  error={isError === true || errors.priority !== undefined}
-                >
-                  {errors.priority &&
-                    (errors.priority.message as React.ReactNode)}
+                <FormHelperText>
+                  {errors.priority
+                    ? (errors.priority.message as React.ReactNode)
+                    : isError && !errors.priority
+                    ? (formatErrorFieldMessage(
+                        error,
+                        "Priority"
+                      ) as React.ReactNode)
+                    : ""}
                 </FormHelperText>
               </FormControl>
             )}
@@ -194,7 +211,11 @@ const TaskForm = <TFieldValues extends FieldValues>({
             name={"status" as Path<TFieldValues>}
             defaultValue={0 as PathValue<TFieldValues, Path<TFieldValues>>}
             render={({ field }) => (
-              <FormControl variant="outlined" fullWidth error={!!errors.status}>
+              <FormControl
+                variant="outlined"
+                fullWidth
+                error={!!errors.status || isErrorForKey(error, "Status")}
+              >
                 <InputLabel id="select-status-label">Status</InputLabel>
                 <Select
                   labelId="select-status-label"
@@ -208,8 +229,15 @@ const TaskForm = <TFieldValues extends FieldValues>({
                   <MenuItem value={1}>Completed</MenuItem>
                   <MenuItem value={2}>Failed</MenuItem>
                 </Select>
-                <FormHelperText error={!!errors.status}>
-                  {errors.status && (errors.status.message as React.ReactNode)}
+                <FormHelperText>
+                  {errors.status
+                    ? (errors.status.message as React.ReactNode)
+                    : isError && !errors.status
+                    ? (formatErrorFieldMessage(
+                        error,
+                        "Status"
+                      ) as React.ReactNode)
+                    : ""}
                 </FormHelperText>
               </FormControl>
             )}
@@ -219,7 +247,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
         {children}
 
         <Button
-          type="submit"
+          type={!isDisabled ? "submit" : "button"}
           variant="contained"
           sx={{ width: "fit-content", margin: "0 0 0 auto" }}
         >

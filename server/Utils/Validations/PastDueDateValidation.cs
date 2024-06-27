@@ -15,7 +15,7 @@ namespace server.Utils.Validations
 
             DateTime dueDate = (DateTime)value;
 
-            if(DateTime.Now > dueDate)
+            if(DateTime.UtcNow > dueDate)
             {
                 return new ValidationResult("Date can not be in the past!");
             }
