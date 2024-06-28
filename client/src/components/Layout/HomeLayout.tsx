@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import AppNavbar from "../UI/AppNavbar";
 import { showNotification } from "../utils/notification";
 import useTaskStore from "../../app/taskSlice";
+import AppSidebar from "../UI/AppSidebar";
 
 const HomeLayout: React.FC = () => {
   const { taskForNotification } = useTaskStore();
@@ -18,7 +19,15 @@ const HomeLayout: React.FC = () => {
     <Stack gap={2} height="100vh">
       <AppNavbar />
       <Stack p={3} flexGrow={1}>
-        <Stack mx="auto" flexGrow={1} width="50%">
+        <Stack
+          mx="auto"
+          justifyContent="start"
+          flexDirection="row"
+          gap={5}
+          flexGrow={1}
+          width="60%"
+        >
+          <AppSidebar />
           <Outlet />
         </Stack>
       </Stack>

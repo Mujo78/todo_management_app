@@ -15,6 +15,9 @@ import Authorized from "./helpers/Authorized";
 import Profile from "./pages/User/Profile";
 import AddNewTask from "./pages/Task/AddNewTask";
 import EditTask from "./pages/Task/EditTask";
+import ProfileLayout from "./components/Layout/ProfileLayout";
+import EditProfile from "./pages/User/EditProfile";
+import ChangePassword from "./pages/User/ChangePassword";
 
 const routes: RouteObject = {
   path: "/",
@@ -36,7 +39,21 @@ const routes: RouteObject = {
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: <ProfileLayout />,
+          children: [
+            {
+              path: "",
+              element: <Profile />,
+            },
+            {
+              path: "edit",
+              element: <EditProfile />,
+            },
+            {
+              path: "change-password",
+              element: <ChangePassword />,
+            },
+          ],
         },
         {
           path: "/add-task",

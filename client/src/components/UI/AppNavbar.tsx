@@ -9,13 +9,12 @@ import {
   Typography,
   Link as MUILink,
 } from "@mui/material";
-import useAuthStore from "../../app/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { ExitToApp } from "@mui/icons-material";
 import useLogout from "../../features/auth/useLogout";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const AppNavbar: React.FC = () => {
-  const { auth } = useAuthStore();
   const { userLogout } = useLogout();
 
   const navigate = useNavigate();
@@ -66,7 +65,8 @@ const AppNavbar: React.FC = () => {
             onClick={handleClick}
             color="inherit"
           >
-            {auth?.user.name}
+            Me
+            <ArrowDropDownIcon />
           </IconButton>
           <Menu
             id="menu-appbar"

@@ -61,7 +61,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={4} mx="auto" pt={3} flexGrow={1}>
       <Box display="flex">
         <Button color="secondary" onClick={handleNavigateBack}>
           <ArrowBack />

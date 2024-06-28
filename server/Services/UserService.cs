@@ -7,6 +7,7 @@ using server.Services.IService;
 using BCrypt.Net;
 using server.Data;
 using server.Utils.Enums;
+using server.DTO.Assignment;
 
 namespace server.Services
 {
@@ -18,12 +19,30 @@ namespace server.Services
         private readonly IMailService mailService = mailService;
         private readonly IMapper mapper = mapper;
 
-        public async Task<UserDTO> GetMyProfileInfo()
+        public async Task<MyInfoDTO> GetMyProfileInfo()
         {
             var userId = authService.GetUserId();
+            var myInfo = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
 
-            var myInfo = await repository.GetUser(userId);
-            return myInfo == null ? throw new NotFoundException("User not found.") : mapper.Map<UserDTO>(myInfo);
+            var assignments = db.Assignments.Where(a => a.UserId.Equals(userId)).ToList();
+            var total = assignments.Count;
+            var completed = assignments.Count(a => a.Status == Status.Completed);
+            var failed = assignments.Count(a => a.Status == Status.Failed);
+            var open = assignments.Count(a => a.Status == Status.Open);
+
+            var assignmentCount = new AssignmentCountDTO
+            {
+                Total = total,
+                Completed = completed,
+                Failed = failed,
+                Open = open
+            };
+
+            return new MyInfoDTO
+            {
+                AssignmentCount = assignmentCount,
+                User = mapper.Map<UserDTO>(myInfo)
+            };
         }
         public async Task ChangePassword(ChangePasswordDTO changePasswordDTO)
         {

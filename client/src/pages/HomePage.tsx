@@ -47,7 +47,7 @@ const HomePage = () => {
   };
 
   return (
-    <Stack gap={4} flexGrow={1}>
+    <Stack gap={4} flexGrow={1} width="70%" pt={3}>
       <Stack direction="row">
         <TaskSearchInput />
         <Button

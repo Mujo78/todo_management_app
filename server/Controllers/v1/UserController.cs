@@ -58,7 +58,7 @@ namespace server.Controllers.v1
 
         [Authorize]
         [HttpGet("my-info")]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MyInfoDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
