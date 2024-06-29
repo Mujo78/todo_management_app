@@ -6,5 +6,6 @@ namespace server.DTO.User
     {
         public required UserDTO User { get; set; }
         public required AssignmentCountDTO AssignmentCount { get; set; }
+        public required int Average { get; set; }
     }
 }

@@ -1,39 +1,53 @@
 import React from "react";
-import { Box, Link, Stack, Typography } from "@mui/material";
-import useAuthStore from "../../app/authSlice";
-import { Outlet, Link as RouterLink } from "react-router-dom";
+import { Box, Stack, Typography } from "@mui/material";
+import { Outlet, useLocation } from "react-router-dom";
+import AppLink from "../UI/AppLink";
 
 const ProfileLayout: React.FC = () => {
-  const { auth } = useAuthStore();
+  const location = useLocation().pathname;
 
   return (
     <Stack flexGrow={1}>
-      <Box bgcolor="primary.main" width="auto" height={100} p={3}>
+      <Box
+        bgcolor="primary.main"
+        width="auto"
+        borderRadius={4}
+        height={100}
+        p={3}
+      >
         <Typography color="white" variant="h5">
-          {auth?.user.name}
+          {location === "/profile"
+            ? "Overview"
+            : location.includes("edit")
+            ? "Edit"
+            : location.includes("password") && "Change Password"}
         </Typography>
       </Box>
 
-      <Box
-        p={3}
-        width="100%"
-        flexDirection="row"
-        display="flex"
-        justifyContent="start"
-        gap={3}
-      >
-        <Link to="" underline="none" component={RouterLink}>
-          <Typography variant="button">Overview</Typography>
-        </Link>
-        <Link to="edit" underline="none" component={RouterLink}>
-          <Typography variant="button">Edit</Typography>
-        </Link>
-        <Link to="change-password" underline="none" component={RouterLink}>
-          <Typography variant="button">Change password</Typography>
-        </Link>
-      </Box>
+      <Stack gap={2}>
+        <Box
+          p={3}
+          width="100%"
+          flexDirection="row"
+          display="flex"
+          justifyContent="start"
+          gap={4}
+        >
+          <AppLink to="/profile" underline>
+            Overview
+          </AppLink>
 
-      <Outlet />
+          <AppLink to="/profile/edit" underline>
+            Edit
+          </AppLink>
+
+          <AppLink to="/profile/change-password" underline>
+            Change password
+          </AppLink>
+        </Box>
+
+        <Outlet />
+      </Stack>
     </Stack>
   );
 };

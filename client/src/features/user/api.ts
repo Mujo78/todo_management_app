@@ -1,4 +1,5 @@
-import { apiClient } from "../../helpers/ApiClient";
+import { UserType } from "../../app/authSlice";
+import { apiClient, apiClientAuth } from "../../helpers/ApiClient";
 
 export interface UserAccountDataType {
   name: string;
@@ -36,5 +37,21 @@ export async function ResetPasswordFn([token, data]: [
   ResetPasswordType
 ]) {
   const res = await apiClient.patch(`/users/reset-password/${token}`, data);
+  return res.data;
+}
+
+export interface MyInfoType {
+  user: UserType;
+  assignmentCount: {
+    total: number;
+    completed: number;
+    failed: number;
+    open: number;
+  };
+  average: number;
+}
+
+export async function GetMyInfoFn() {
+  const res = await apiClientAuth("/v1/users/my-info");
   return res.data;
 }

@@ -30,6 +30,8 @@ namespace server.Services
             var failed = assignments.Count(a => a.Status == Status.Failed);
             var open = assignments.Count(a => a.Status == Status.Open);
 
+            var average = (completed + failed + open) / 4;
+
             var assignmentCount = new AssignmentCountDTO
             {
                 Total = total,
@@ -41,7 +43,8 @@ namespace server.Services
             return new MyInfoDTO
             {
                 AssignmentCount = assignmentCount,
-                User = mapper.Map<UserDTO>(myInfo)
+                User = mapper.Map<UserDTO>(myInfo),
+                Average = average
             };
         }
         public async Task ChangePassword(ChangePasswordDTO changePasswordDTO)

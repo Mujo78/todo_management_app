@@ -1,6 +1,6 @@
 import { StateCreator, create } from "zustand";
 
-interface UserType {
+export interface UserType {
   id: string;
   name: string;
   email: string;
