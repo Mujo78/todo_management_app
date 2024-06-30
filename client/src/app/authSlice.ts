@@ -18,11 +18,12 @@ interface AuthState {
   isAuthenticated: boolean;
 
   setUser: (auth: LoginData) => void;
+  updateUserInfo: (data: UserType) => void;
   logout: () => void;
   initialize: () => void;
 }
 
-export const authSlice: StateCreator<AuthState, [], []> = (set) => ({
+export const authSlice: StateCreator<AuthState, [], []> = (set, get) => ({
   auth: null,
   isAuthenticated: false,
 
@@ -30,6 +31,14 @@ export const authSlice: StateCreator<AuthState, [], []> = (set) => ({
     localStorage.setItem("auth", auth.accessToken);
     localStorage.setItem("user", JSON.stringify(auth.user));
     set({ auth, isAuthenticated: true });
+  },
+  updateUserInfo: (data) => {
+    const { auth } = get();
+
+    if (auth) {
+      set({ auth: { ...auth, user: data } });
+      localStorage.setItem("user", JSON.stringify(data));
+    }
   },
   logout: () => {
     localStorage.removeItem("user");

@@ -99,7 +99,7 @@ namespace server.Services
         {
             var userId = authService.GetUserId();
             if (!updateDTO.Id.Equals(userId)) throw new ForbidException("You are not authorize to access these resources.");
-
+            
             var userFound = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
 
             bool emailTaken = repository.EmailAlreadyUsed(updateDTO.Email, userId);

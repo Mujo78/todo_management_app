@@ -19,7 +19,7 @@ const ProfileLayout: React.FC = () => {
           {location === "/profile"
             ? "Overview"
             : location.includes("edit")
-            ? "Edit"
+            ? "Edit Profile"
             : location.includes("password") && "Change Password"}
         </Typography>
       </Box>

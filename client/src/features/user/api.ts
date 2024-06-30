@@ -52,6 +52,16 @@ export interface MyInfoType {
 }
 
 export async function GetMyInfoFn() {
-  const res = await apiClientAuth("/v1/users/my-info");
+  const res = await apiClientAuth.get("/v1/users/my-info");
+  return res.data;
+}
+
+export interface UserProfileUpdateType {
+  name: string;
+  email: string;
+}
+
+export async function UpdateProfileFn(data: UserType) {
+  const res = await apiClientAuth.put("/v1/users/", data);
   return res.data;
 }
