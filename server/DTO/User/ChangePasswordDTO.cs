@@ -13,7 +13,6 @@ namespace server.DTO.User
         public required string NewPassword { get; set; }
 
         [Required(ErrorMessage = "Confirm new password is required.")]
-        [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
         [PasswordValidation]
         public required string ConfirmNewPassword { get; set; }
 

@@ -116,6 +116,12 @@ namespace server.Controllers.v1
         public async Task<ActionResult> DeleteMyProfile()
         {
             await userService.DeleteMyProfile();
+            Response.Cookies.Delete("refreshToken", new CookieOptions
+            {
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+            });
             return Ok("Profile succesfully deleted.");
         }
 

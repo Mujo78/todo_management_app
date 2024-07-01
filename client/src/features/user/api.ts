@@ -65,3 +65,19 @@ export async function UpdateProfileFn(data: UserType) {
   const res = await apiClientAuth.put("/v1/users/", data);
   return res.data;
 }
+
+export interface ChangePasswordType {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
+export async function ChangePasswordFn(data: ChangePasswordType) {
+  const res = await apiClientAuth.post("/v1/users/change-password", data);
+  return res.data;
+}
+
+export async function DeleteMyProfileFn() {
+  const res = await apiClientAuth.delete("/v1/users/");
+  return res.data;
+}

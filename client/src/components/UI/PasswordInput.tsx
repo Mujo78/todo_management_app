@@ -13,7 +13,7 @@ type Props<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues, unknown>;
   name: Path<TFieldValues>;
   defaultValue: PathValue<TFieldValues, Path<TFieldValues>> | undefined;
-  error: boolean;
+  error: boolean | undefined;
   children?: React.ReactNode;
   label?: string;
   errorMessage: string | undefined;

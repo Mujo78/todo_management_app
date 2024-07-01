@@ -51,6 +51,9 @@ namespace server.Repository
             var tokensToDelete = db.UserTokens.Where(token => token.UserId.Equals(user.Id));
             db.UserTokens.RemoveRange(tokensToDelete);
 
+            var refreshToRemove = db.RefreshTokens.Where(refresh => refresh.UserId.Equals(user.Id)).ToList();
+            db.RefreshTokens.RemoveRange(refreshToRemove);
+
             db.Users.Remove(user);
 
             await db.SaveChangesAsync();
