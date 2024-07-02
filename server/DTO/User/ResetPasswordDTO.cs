@@ -5,13 +5,11 @@ namespace server.DTO.User
 {
     public class ResetPasswordDTO
     {
-        [Required(ErrorMessage = "New password is required.")]
+        [Required(ErrorMessage = "The New Password field is required.")]
         [PasswordValidation]
         public required string NewPassword { get; set; }
 
-        [Required(ErrorMessage = "Confirm new password is required.")]
-        [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
-        [PasswordValidation]
+        [Required(ErrorMessage = "The Confirm New Password field is required.")]
         public required string ConfirmNewPassword { get; set; }
 
     }

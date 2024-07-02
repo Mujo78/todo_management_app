@@ -16,6 +16,7 @@ import useSignup from "../../features/user/useSignup";
 import {
   formatErrorFieldMessage,
   formatErrorMessage,
+  isErrorForKey,
 } from "../utils/userUtils";
 import SuccessAlert from "../UI/SuccessAlert";
 
@@ -24,15 +25,17 @@ const SignupForm: React.FC = () => {
     useForm<UserAccountDataType>({
       resolver: yupResolver(signupValidationSchema),
     });
-  const { errors } = formState;
-  const { signup, isError, error, isPending, isSuccess } = useSignup();
+  const { errors, isDirty } = formState;
+  const { signup, error, isPending, isSuccess } = useSignup();
 
   const onSubmit = (values: UserAccountDataType) => {
-    signup(values, {
-      onSuccess: () => {
-        reset();
-      },
-    });
+    if (!isPending && isDirty) {
+      signup(values, {
+        onSuccess: () => {
+          reset();
+        },
+      });
+    }
   };
 
   return (
@@ -59,8 +62,17 @@ const SignupForm: React.FC = () => {
               autoComplete="true"
               required
               fullWidth
-              error={!!errors.name}
-              helperText={errors.name ? errors.name.message : ""}
+              error={!!errors.name || isErrorForKey(error, "Name")}
+              helperText={
+                errors.name
+                  ? errors.name.message
+                  : isErrorForKey(error, "Name") &&
+                    !errors.name && (
+                      <FormHelperText component="span" error>
+                        {formatErrorFieldMessage(error, "Name")}
+                      </FormHelperText>
+                    )
+              }
             />
           )}
         />
@@ -78,13 +90,13 @@ const SignupForm: React.FC = () => {
               variant="outlined"
               label="Email"
               fullWidth
-              error={!!errors.email}
+              error={!!errors.email || isErrorForKey(error, "Email")}
               helperText={
                 errors.email ? (
                   errors.email.message
-                ) : isError && !errors.email ? (
-                  <FormHelperText component="span" error={isError}>
-                    {formatErrorFieldMessage(error, "email")}
+                ) : isErrorForKey(error, "Email") && !errors.email ? (
+                  <FormHelperText component="span" error>
+                    {formatErrorFieldMessage(error, "Email")}
                   </FormHelperText>
                 ) : (
                   ""
@@ -98,23 +110,34 @@ const SignupForm: React.FC = () => {
           name="password"
           defaultValue=""
           control={control}
-          error={!!errors.password}
+          error={!!errors.password || isErrorForKey(error, "Password")}
           errorMessage={errors.password?.message}
-        />
+        >
+          {!errors.password && isErrorForKey(error, "Password") && (
+            <FormHelperText component="span" error>
+              {formatErrorFieldMessage(error, "Password")}
+            </FormHelperText>
+          )}
+        </PasswordInput>
 
         <PasswordInput
           name="confirmPassword"
           defaultValue=""
           label="Confirm Password"
           control={control}
-          error={!!errors.confirmPassword}
+          error={
+            !!errors.confirmPassword || isErrorForKey(error, "ConfirmPassword")
+          }
           errorMessage={errors.confirmPassword?.message}
         >
-          {!errors.confirmPassword && (
-            <FormHelperText component="span" error={isError}>
-              {formatErrorMessage(error)}
-            </FormHelperText>
-          )}
+          {!errors.confirmPassword &&
+            isErrorForKey(error, "ConfirmPassword") && (
+              <FormHelperText component="span" error>
+                {isErrorForKey(error, "ConfirmPassword")
+                  ? formatErrorFieldMessage(error, "ConfirmPassword")
+                  : formatErrorMessage(error)}
+              </FormHelperText>
+            )}
         </PasswordInput>
 
         <SuccessAlert isSuccess={isSuccess}>

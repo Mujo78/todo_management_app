@@ -67,6 +67,8 @@ namespace server.Services
 
         public async Task Register(RegistrationDTO registrationDTO)
         {
+            if (!registrationDTO.Password.Equals(registrationDTO.ConfirmPassword)) throw new BadRequestException("Password and Confirm password must match.");
+
             using var transaction = db.Database.BeginTransaction();
             bool emailTaken = repository.EmailAlreadyUsed(registrationDTO.Email);
             if (emailTaken) throw new ConflictException("Email is already used!");
@@ -85,7 +87,7 @@ namespace server.Services
                 string verificationToken = Guid.NewGuid().ToString();
                 await repository.CreateUserAsync(user, verificationToken);
                 await mailService.SendVerificationMailAsync(user.Email, user.Name, verificationToken);
-                
+
                 await transaction.CommitAsync();
             }
             catch (Exception ex)
@@ -99,7 +101,7 @@ namespace server.Services
         {
             var userId = authService.GetUserId();
             if (!updateDTO.Id.Equals(userId)) throw new ForbidException("You are not authorize to access these resources.");
-            
+
             var userFound = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
 
             bool emailTaken = repository.EmailAlreadyUsed(updateDTO.Email, userId);
@@ -144,7 +146,7 @@ namespace server.Services
             var user = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
 
             using var transaction = db.Database.BeginTransaction();
-            
+
             try
             {
                 await repository.DeleteUser(user);

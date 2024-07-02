@@ -7,7 +7,11 @@ import { useForm } from "react-hook-form";
 import useResetPassword from "../../features/user/useResetPassword";
 import { Button, CircularProgress, FormHelperText, Stack } from "@mui/material";
 import PasswordInput from "../UI/PasswordInput";
-import { formatErrorMessage } from "../utils/userUtils";
+import {
+  formatErrorFieldMessage,
+  formatErrorMessage,
+  isErrorForKey,
+} from "../utils/userUtils";
 import SuccessAlert from "../UI/SuccessAlert";
 
 const ResetPasswordForm: React.FC = () => {
@@ -16,13 +20,12 @@ const ResetPasswordForm: React.FC = () => {
     useForm<ResetPasswordType>({
       resolver: yupResolver(resetPasswordValidationSchema),
     });
-  const { errors } = formState;
+  const { errors, isDirty } = formState;
 
-  const { error, isPending, isError, resetPassword, isSuccess } =
-    useResetPassword();
+  const { error, isPending, resetPassword, isSuccess } = useResetPassword();
 
   const onSubmit = (values: ResetPasswordType) => {
-    if (!isPending && token !== undefined) {
+    if (!isPending && token !== undefined && isDirty) {
       resetPassword([token, values], { onSuccess: () => reset() });
     }
   };
@@ -40,22 +43,35 @@ const ResetPasswordForm: React.FC = () => {
         label="New Password"
         name="newPassword"
         defaultValue=""
-        error={!!errors.newPassword}
+        error={!!errors.newPassword || isErrorForKey(error, "NewPassword")}
         errorMessage={errors.newPassword?.message}
-      />
+      >
+        {!errors.newPassword && isErrorForKey(error, "NewPassword") && (
+          <FormHelperText component="span" error>
+            {formatErrorFieldMessage(error, "NewPassword")}
+          </FormHelperText>
+        )}
+      </PasswordInput>
 
       <PasswordInput
         label="Confirm Password"
         control={control}
         name="confirmNewPassword"
         defaultValue=""
-        error={!!errors.confirmNewPassword}
+        error={
+          !!errors.confirmNewPassword ||
+          isErrorForKey(error, "ConfirmNewPassword")
+        }
         errorMessage={errors.confirmNewPassword?.message}
       >
-        {!errors.confirmNewPassword && (
-          <FormHelperText component="span" error={isError}>
-            {formatErrorMessage(error)}
+        {!errors.confirmNewPassword ? (
+          <FormHelperText component="span" error>
+            {isErrorForKey(error, "ConfirmNewPassword")
+              ? formatErrorFieldMessage(error, "ConfirmNewPassword")
+              : formatErrorMessage(error)}
           </FormHelperText>
+        ) : (
+          ""
         )}
       </PasswordInput>
 

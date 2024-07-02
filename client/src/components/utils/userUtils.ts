@@ -7,7 +7,9 @@ export function formatErrorFieldMessage(
   if (isAxiosError(error)) {
     if (error.response?.data.errors && error.response?.data.errors[key]) {
       return error.response?.data.errors[key][0];
-    } else if (error?.response?.data?.detail?.toLowerCase().includes(key)) {
+    } else if (
+      error?.response?.data?.detail?.toLowerCase().includes(key.toLowerCase())
+    ) {
       return error?.response?.data.detail;
     }
     return "";
@@ -19,9 +21,12 @@ export function isErrorForKey(
   key: string
 ) {
   if (isAxiosError(error)) {
+    console.log(error);
     if (error.response?.data.errors && error.response?.data.errors[key]) {
       return true;
-    } else if (error?.response?.data?.detail?.toLowerCase().includes(key)) {
+    } else if (
+      error?.response?.data?.detail?.toLowerCase().includes(key.toLowerCase())
+    ) {
       return true;
     }
     return false;

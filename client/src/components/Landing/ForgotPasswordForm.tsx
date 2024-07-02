@@ -14,7 +14,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import useForgotPassword from "../../features/user/useForgotPassword";
 import { useNavigate } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
-import { formatErrorMessage } from "../utils/userUtils";
+import {
+  formatErrorFieldMessage,
+  formatErrorMessage,
+  isErrorForKey,
+} from "../utils/userUtils";
 import SuccessAlert from "../UI/SuccessAlert";
 
 const ForgotPasswordForm: React.FC = () => {
@@ -23,13 +27,13 @@ const ForgotPasswordForm: React.FC = () => {
     useForm<ForgotPasswordType>({
       resolver: yupResolver(forgotPasswordValidationSchema),
     });
-  const { errors } = formState;
+  const { errors, isDirty } = formState;
 
   const { error, isPending, isError, forgotPassword, isSuccess } =
     useForgotPassword();
 
   const onSubmit = (values: ForgotPasswordType) => {
-    if (!isPending) {
+    if (!isPending && isDirty) {
       forgotPassword(values, { onSuccess: () => reset() });
     }
   };
@@ -63,13 +67,16 @@ const ForgotPasswordForm: React.FC = () => {
               required
               type="email"
               fullWidth
-              error={!!errors.email}
+              error={!!errors.email || isErrorForKey(error, "Email")}
               helperText={
                 errors.email ? (
                   errors.email.message
-                ) : isError && !errors.email ? (
-                  <FormHelperText component="span" error={isError}>
-                    {formatErrorMessage(error)}
+                ) : !errors.email &&
+                  (isErrorForKey(error, "Email") || isError) ? (
+                  <FormHelperText component="span" error>
+                    {isErrorForKey(error, "Email")
+                      ? formatErrorFieldMessage(error, "Email")
+                      : formatErrorMessage(error)}
                   </FormHelperText>
                 ) : (
                   ""

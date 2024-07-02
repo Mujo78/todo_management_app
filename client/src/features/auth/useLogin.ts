@@ -11,7 +11,6 @@ function useLogin() {
   const {
     mutate: login,
     isPending,
-    isError,
     error,
   } = useMutation<LoginData, Error | AxiosError, LogindDataType>({
     mutationKey: ["login"],
@@ -22,7 +21,7 @@ function useLogin() {
     },
   });
 
-  return { login, error, isError, isPending };
+  return { login, error, isPending };
 }
 
 export default useLogin;

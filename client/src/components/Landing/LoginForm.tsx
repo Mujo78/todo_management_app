@@ -13,18 +13,22 @@ import { loginValidationSchema } from "../../validations/loginValidation";
 import PasswordInput from "../UI/PasswordInput";
 import useLogin from "../../features/auth/useLogin";
 import { LogindDataType } from "../../features/auth/api";
-import { formatErrorMessage } from "../utils/userUtils";
+import {
+  formatErrorFieldMessage,
+  formatErrorMessage,
+  isErrorForKey,
+} from "../utils/userUtils";
 
 const LoginForm: React.FC = () => {
   const { control, formState, handleSubmit } = useForm<LogindDataType>({
     resolver: yupResolver(loginValidationSchema),
   });
-  const { errors } = formState;
+  const { errors, isDirty } = formState;
 
-  const { error, isPending, isError, login } = useLogin();
+  const { error, isPending, login } = useLogin();
 
   const onSubmit = (values: LogindDataType) => {
-    if (!isPending) {
+    if (!isPending && isDirty) {
       login(values);
     }
   };
@@ -54,8 +58,18 @@ const LoginForm: React.FC = () => {
               required
               type="email"
               fullWidth
-              error={!!errors.email}
-              helperText={errors.email ? errors.email.message : ""}
+              error={
+                !!errors.email ||
+                (isErrorForKey(error, "Email") &&
+                  !isErrorForKey(error, "Incorrect"))
+              }
+              helperText={
+                errors.email
+                  ? errors.email.message
+                  : isErrorForKey(error, "Email") &&
+                    !isErrorForKey(error, "Incorrect") &&
+                    formatErrorFieldMessage(error, "Email")
+              }
             />
           )}
         />
@@ -64,12 +78,18 @@ const LoginForm: React.FC = () => {
           control={control}
           name="password"
           defaultValue=""
-          error={!!errors.password}
+          error={
+            !!errors.password ||
+            (isErrorForKey(error, "Password") &&
+              !isErrorForKey(error, "Incorrect"))
+          }
           errorMessage={errors.password?.message}
         >
           {!errors.password && (
-            <FormHelperText component="span" error={isError}>
-              {formatErrorMessage(error)}
+            <FormHelperText component="span" error>
+              {isErrorForKey(error, "Password")
+                ? formatErrorFieldMessage(error, "Password")
+                : formatErrorMessage(error)}
             </FormHelperText>
           )}
         </PasswordInput>

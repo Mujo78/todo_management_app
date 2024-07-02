@@ -17,5 +17,8 @@ namespace server.DTO.User
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
         [PasswordValidation]
         public required string Password { get; set; }
+
+        [Required(ErrorMessage = "The Confirm Password field is required.")]
+        public required string ConfirmPassword { get; set; }
     }
 }
