@@ -1,4 +1,4 @@
-import { Button, CircularProgress, FormHelperText, Stack } from "@mui/material";
+import { FormHelperText, Stack } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { ChangePasswordType } from "../../features/user/api";
 import { changePasswordValidationSchema } from "../../validations/changePassword";
@@ -10,6 +10,7 @@ import {
   formatErrorMessage,
   isErrorForKey,
 } from "../../components/utils/userUtils";
+import LoadingButton from "../../components/UI/LoadingButton";
 
 const ChangePassword = () => {
   const {
@@ -102,17 +103,8 @@ const ChangePassword = () => {
             </FormHelperText>
           )}
       </PasswordInput>
-      <Button
-        type="submit"
-        variant="contained"
-        sx={{ width: "fit-content", marginLeft: "auto" }}
-      >
-        {isPending ? (
-          <CircularProgress size={30} sx={{ color: "white" }} />
-        ) : (
-          "Save changes"
-        )}
-      </Button>
+
+      <LoadingButton isPending={isPending}>Save changes</LoadingButton>
     </Stack>
   );
 };

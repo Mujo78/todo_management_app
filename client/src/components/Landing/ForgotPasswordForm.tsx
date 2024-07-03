@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Button,
-  CircularProgress,
   FormHelperText,
   Stack,
   TextField,
@@ -20,6 +19,7 @@ import {
   isErrorForKey,
 } from "../utils/userUtils";
 import SuccessAlert from "../UI/SuccessAlert";
+import LoadingButton from "../UI/LoadingButton";
 
 const ForgotPasswordForm: React.FC = () => {
   const navigate = useNavigate();
@@ -63,6 +63,7 @@ const ForgotPasswordForm: React.FC = () => {
               {...field}
               variant="outlined"
               label="Email"
+              sx={{ mb: "1rem" }}
               autoComplete="true"
               required
               type="email"
@@ -90,16 +91,11 @@ const ForgotPasswordForm: React.FC = () => {
           Please check your inbox for reset password link.
         </SuccessAlert>
 
-        <Button sx={{ marginTop: "1rem" }} type="submit" variant="contained">
-          {isPending ? (
-            <CircularProgress size={30} sx={{ color: "white" }} />
-          ) : (
-            "SUBMIT"
-          )}
-        </Button>
+        <LoadingButton isPending={isPending} fullWidth>
+          Submit
+        </LoadingButton>
         <Button
           onClick={handleNavigate}
-          sx={{ marginTop: "0.5rem" }}
           startIcon={<ArrowBack />}
           variant="outlined"
         >

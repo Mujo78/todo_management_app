@@ -93,13 +93,13 @@ const TaskForm = <TFieldValues extends FieldValues>({
                 }}
                 autoComplete="true"
                 required
-                error={!!errors.title || isErrorForKey(error, "title")}
+                error={!!errors.title || isErrorForKey(error, "Title")}
                 helperText={
                   errors.title
                     ? errors.title.message
-                    : isError && !errors.title
-                    ? formatErrorFieldMessage(error, "title")
-                    : ""
+                    : isError &&
+                      !errors.title &&
+                      formatErrorFieldMessage(error, "Title")
                 }
               />
             )}

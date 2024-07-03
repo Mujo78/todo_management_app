@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO.Auth;
 using server.DTO.User;
@@ -82,7 +83,7 @@ namespace server.Controllers.v1
         public async Task<ActionResult> UpdateMyProfile([FromBody] UserUpdateDTO updateDTO)
         {
             if (updateDTO == null) return BadRequest();
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var user = await userService.UpdateUser(updateDTO);
             return Ok(user);
@@ -99,7 +100,7 @@ namespace server.Controllers.v1
         {
             if (changePasswordDTO == null) return BadRequest("Please provide valid data for changing password.");
             if (!ModelState.IsValid) return BadRequest(ModelState);
-           
+
             await userService.ChangePassword(changePasswordDTO);
             return Ok("Password successfully changed.");
         }
@@ -115,14 +116,21 @@ namespace server.Controllers.v1
 
         public async Task<ActionResult> DeleteMyProfile()
         {
-            await userService.DeleteMyProfile();
-            Response.Cookies.Delete("refreshToken", new CookieOptions
+            try
             {
-                Secure = true,
-                HttpOnly = true,
-                SameSite = SameSiteMode.None,
-            });
-            return Ok("Profile succesfully deleted.");
+                await userService.DeleteMyProfile();
+                Response.Cookies.Delete("refreshToken", new CookieOptions
+                {
+                    Secure = true,
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                });
+                return Ok("Profile succesfully deleted.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         [HttpPatch("verify/{token}")]

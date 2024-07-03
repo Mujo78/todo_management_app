@@ -1,13 +1,6 @@
 import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  Button,
-  CircularProgress,
-  FormHelperText,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { FormHelperText, Stack, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { loginValidationSchema } from "../../validations/loginValidation";
 import PasswordInput from "../UI/PasswordInput";
@@ -18,6 +11,7 @@ import {
   formatErrorMessage,
   isErrorForKey,
 } from "../utils/userUtils";
+import LoadingButton from "../UI/LoadingButton";
 
 const LoginForm: React.FC = () => {
   const { control, formState, handleSubmit } = useForm<LogindDataType>({
@@ -94,13 +88,9 @@ const LoginForm: React.FC = () => {
           )}
         </PasswordInput>
 
-        <Button type="submit" variant="contained">
-          {isPending ? (
-            <CircularProgress size={30} sx={{ color: "white" }} />
-          ) : (
-            "Log in"
-          )}
-        </Button>
+        <LoadingButton isPending={isPending} fullWidth>
+          Log in
+        </LoadingButton>
       </Stack>
       <Typography
         component="a"

@@ -3,7 +3,10 @@ import { UpdateTaskArgs, UpdateTaskFn } from "./api";
 import { AxiosError } from "axios";
 import { TaskType } from "../../app/taskSlice";
 import toast from "react-hot-toast";
-import { formatErrorMessage } from "../../components/utils/userUtils";
+import {
+  formatErrorMessage,
+  isErrorForKey,
+} from "../../components/utils/userUtils";
 
 function useUpdateTask() {
   const {
@@ -15,11 +18,11 @@ function useUpdateTask() {
   } = useMutation<TaskType, Error | AxiosError, UpdateTaskArgs>({
     mutationKey: ["updateTask"],
     mutationFn: UpdateTaskFn,
-    onSuccess: () => {
-      toast.success("Task successfully updated.");
-    },
     onError: (error) => {
-      if (formatErrorMessage(error) !== undefined) {
+      if (
+        formatErrorMessage(error) !== undefined &&
+        !isErrorForKey(error, "Title")
+      ) {
         toast.error(formatErrorMessage(error));
       }
     },

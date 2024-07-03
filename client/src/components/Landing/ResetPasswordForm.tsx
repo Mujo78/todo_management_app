@@ -5,7 +5,7 @@ import { ResetPasswordType } from "../../features/user/api";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import useResetPassword from "../../features/user/useResetPassword";
-import { Button, CircularProgress, FormHelperText, Stack } from "@mui/material";
+import { FormHelperText, Stack } from "@mui/material";
 import PasswordInput from "../UI/PasswordInput";
 import {
   formatErrorFieldMessage,
@@ -13,6 +13,7 @@ import {
   isErrorForKey,
 } from "../utils/userUtils";
 import SuccessAlert from "../UI/SuccessAlert";
+import LoadingButton from "../UI/LoadingButton";
 
 const ResetPasswordForm: React.FC = () => {
   const { token } = useParams();
@@ -79,13 +80,7 @@ const ResetPasswordForm: React.FC = () => {
         Password successfully changed.
       </SuccessAlert>
 
-      <Button type="submit" variant="contained">
-        {isPending ? (
-          <CircularProgress size={30} sx={{ color: "white" }} />
-        ) : (
-          "Submit"
-        )}
-      </Button>
+      <LoadingButton isPending={isPending}>Submit</LoadingButton>
     </Stack>
   );
 };

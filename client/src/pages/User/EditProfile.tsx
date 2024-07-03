@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Stack, TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { UserProfileUpdateType } from "../../features/user/api";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,6 +10,7 @@ import {
   formatErrorFieldMessage,
   isErrorForKey,
 } from "../../components/utils/userUtils";
+import LoadingButton from "../../components/UI/LoadingButton";
 
 const EditProfile = () => {
   const { auth } = useAuthStore();
@@ -23,7 +24,7 @@ const EditProfile = () => {
     resolver: yupResolver(editProfileValidationSchema),
   });
 
-  const { error, isError, isPending, updateMyProfile } = useUpdateProfile();
+  const { error, isPending, updateMyProfile } = useUpdateProfile();
 
   const onSubmit = (values: UserProfileUpdateType) => {
     if (isDirty) {
@@ -59,8 +60,13 @@ const EditProfile = () => {
             required
             type="text"
             fullWidth
-            error={!!errors.name}
-            helperText={errors.name ? errors.name.message : ""}
+            error={!!errors.name || isErrorForKey(error, "Name")}
+            helperText={
+              errors.name
+                ? errors.name.message
+                : isErrorForKey(error, "Name") &&
+                  formatErrorFieldMessage(error, "Name")
+            }
           />
         )}
       />
@@ -75,32 +81,22 @@ const EditProfile = () => {
             variant="outlined"
             label="Email"
             autoComplete="true"
-            required
             type="email"
+            required
             fullWidth
-            error={!!errors.email || isErrorForKey(error, "email")}
+            error={!!errors.email || isErrorForKey(error, "Email")}
             helperText={
               errors.email
                 ? errors.email.message
-                : isError && !errors.email
-                ? formatErrorFieldMessage(error, "email")
+                : !errors.email
+                ? formatErrorFieldMessage(error, "Email")
                 : ""
             }
           />
         )}
       />
 
-      <Button
-        type="submit"
-        variant="contained"
-        sx={{ width: "fit-content", marginLeft: "auto" }}
-      >
-        {isPending ? (
-          <CircularProgress size={30} sx={{ color: "white" }} />
-        ) : (
-          "Save changes"
-        )}
-      </Button>
+      <LoadingButton isPending={isPending}>Save changes</LoadingButton>
     </Stack>
   );
 };

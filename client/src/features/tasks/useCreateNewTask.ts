@@ -3,6 +3,7 @@ import { CreateTaskFn } from "./api";
 import { AxiosError } from "axios";
 import { CreateUpdateTaskType, TaskType } from "../../app/taskSlice";
 import toast from "react-hot-toast";
+import { formatErrorMessage } from "../../components/utils/userUtils";
 
 function useCreateTask() {
   const {
@@ -16,6 +17,13 @@ function useCreateTask() {
     mutationFn: CreateTaskFn,
     onSuccess: () => {
       toast.success("Successfully created a new task.");
+    },
+    onError: (error) => {
+      const errorToShow = formatErrorMessage(error);
+
+      if (errorToShow !== undefined && !errorToShow.includes("title")) {
+        toast.error(errorToShow);
+      }
     },
   });
 

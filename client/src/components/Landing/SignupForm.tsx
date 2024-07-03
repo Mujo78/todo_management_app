@@ -1,13 +1,6 @@
 import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  Stack,
-  Typography,
-  TextField,
-  Button,
-  FormHelperText,
-  CircularProgress,
-} from "@mui/material";
+import { Stack, Typography, TextField, FormHelperText } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { signupValidationSchema } from "../../validations/signupValidation";
 import PasswordInput from "../UI/PasswordInput";
@@ -19,6 +12,7 @@ import {
   isErrorForKey,
 } from "../utils/userUtils";
 import SuccessAlert from "../UI/SuccessAlert";
+import LoadingButton from "../UI/LoadingButton";
 
 const SignupForm: React.FC = () => {
   const { control, formState, handleSubmit, reset } =
@@ -144,13 +138,9 @@ const SignupForm: React.FC = () => {
           Please check your inbox for verification email.
         </SuccessAlert>
 
-        <Button type="submit" variant="contained">
-          {isPending ? (
-            <CircularProgress size={30} sx={{ color: "white" }} />
-          ) : (
-            "Register"
-          )}
-        </Button>
+        <LoadingButton fullWidth isPending={isPending}>
+          Register
+        </LoadingButton>
       </Stack>
     </Stack>
   );

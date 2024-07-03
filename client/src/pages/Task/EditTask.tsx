@@ -8,13 +8,12 @@ import { useEffect } from "react";
 import TaskForm from "../../components/Task/TaskForm";
 import useUpdateTask from "../../features/tasks/useUpdateTask";
 import SuccessAlert from "../../components/UI/SuccessAlert";
-import { Alert, CircularProgress } from "@mui/material";
-import { formatErrorMessage } from "../../components/utils/userUtils";
+import { CircularProgress } from "@mui/material";
 
 const EditTask = () => {
   const { taskId } = useParams();
 
-  const { data, error, isSuccess, isError, isPending } = useGetTask(taskId);
+  const { data, isSuccess, isError, isPending } = useGetTask(taskId);
   const {
     updateTask,
     errorUpdate,
@@ -59,15 +58,9 @@ const EditTask = () => {
           onSubmit={onSubmit}
           isDisabled={data?.status === 1 || data?.status === 2}
         >
-          {isUpdatingSuccess ? (
-            <SuccessAlert isSuccess={isUpdatingSuccess}>
-              Well done!
-            </SuccessAlert>
-          ) : (
-            isError && (
-              <Alert severity="error">{formatErrorMessage(error)}</Alert>
-            )
-          )}
+          <SuccessAlert isSuccess={isUpdatingSuccess}>
+            Task successfully updated.
+          </SuccessAlert>
         </TaskForm>
       )}
     </>

@@ -21,11 +21,11 @@ namespace server.Middlewares
 
         private static async Task ProcessException(HttpContext context, Exception ex)
         {
-            var(statusCode, problemDetails) = HandleException(ex);
+            var (statusCode, problemDetails) = HandleException(ex);
 
             context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/json";
-            
+
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
 
@@ -39,13 +39,23 @@ namespace server.Middlewares
             };
             switch (ex)
             {
+                case NoContentException:
+                    statusCode = StatusCodes.Status204NoContent;
+                    problemDetails.Status = statusCode;
+                    problemDetails.Title = "No content";
+                    break;
                 case BadRequestException:
                     statusCode = StatusCodes.Status400BadRequest;
                     problemDetails.Status = statusCode;
                     problemDetails.Title = "Bad request.";
                     break;
+                case ForbidException:
+                    statusCode = StatusCodes.Status403Forbidden;
+                    problemDetails.Status = statusCode;
+                    problemDetails.Title = "Forbidden";
+                    break;
                 case NotFoundException:
-                   statusCode = StatusCodes.Status404NotFound;
+                    statusCode = StatusCodes.Status404NotFound;
                     problemDetails.Status = statusCode;
                     problemDetails.Title = "Resource not found.";
                     break;
@@ -53,16 +63,6 @@ namespace server.Middlewares
                     statusCode = StatusCodes.Status409Conflict;
                     problemDetails.Status = statusCode;
                     problemDetails.Title = "Conflict error.";
-                    break;
-                case ForbidException:
-                    statusCode = StatusCodes.Status403Forbidden;
-                    problemDetails.Status = statusCode;
-                    problemDetails.Title = "Forbidden";
-                    break;
-                case NoContentException:
-                    statusCode = StatusCodes.Status204NoContent;
-                    problemDetails.Status = statusCode;
-                    problemDetails.Title = "No content";
                     break;
                 default:
                     statusCode = StatusCodes.Status500InternalServerError;

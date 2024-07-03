@@ -21,7 +21,6 @@ export function isErrorForKey(
   key: string
 ) {
   if (isAxiosError(error)) {
-    console.log(error);
     if (error.response?.data.errors && error.response?.data.errors[key]) {
       return true;
     } else if (

@@ -1,6 +1,5 @@
 import {
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -11,6 +10,7 @@ import {
 import React from "react";
 import useDeleteProfile from "../../features/user/useDeleteProfile";
 import { useNavigate } from "react-router-dom";
+import LoadingButton from "../UI/LoadingButton";
 
 interface Props {
   show: boolean;
@@ -53,19 +53,17 @@ const DeleteProfileModal: React.FC<Props> = ({ setShow, show, total }) => {
         </List>
       </DialogContent>
       <DialogActions sx={{ gap: "1rem" }}>
-        <Button onClick={handleClose}>Close</Button>
-        <Button
-          color="error"
-          variant="outlined"
-          onClick={handleDeleteProfile}
-          autoFocus
-        >
-          {isPending ? (
-            <CircularProgress size={30} sx={{ color: "red" }} />
-          ) : (
-            "Confirm"
-          )}
+        <Button onClick={handleClose} variant="outlined">
+          Close
         </Button>
+
+        <LoadingButton
+          onClick={handleDeleteProfile}
+          isPending={isPending}
+          error
+        >
+          Confirm
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

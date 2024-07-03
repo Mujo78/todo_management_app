@@ -78,6 +78,8 @@ export async function ChangePasswordFn(data: ChangePasswordType) {
 }
 
 export async function DeleteMyProfileFn() {
-  const res = await apiClientAuth.delete("/v1/users/");
+  const res = await apiClientAuth.delete("/v1/users/", {
+    withCredentials: true,
+  });
   return res.data;
 }
