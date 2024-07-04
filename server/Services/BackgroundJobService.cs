@@ -2,10 +2,11 @@
 using server.Data;
 using server.Models;
 using server.Services.IService;
+using server.Utils.Enums;
 
 namespace server.Services
 {
-    public class TokenCleanupService(IServiceScopeFactory serviceScopeFactory) : ITokenCleanupService
+    public class BackgroundJobService(IServiceScopeFactory serviceScopeFactory) : IBackgroundJobService
     {
         private readonly IServiceScopeFactory _serviceScopeFactory = serviceScopeFactory;
 
@@ -39,6 +40,28 @@ namespace server.Services
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task MakeAssignmentsFailed()
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+            var assignments = await GetExpiredAssignments(dbContext);
+
+            foreach (var assignment in assignments)
+            {
+                assignment.Status = Status.Failed;
+                assignment.UpdatedAt = DateTime.Now;
+            }
+
+            try
+            {
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public bool IsRefreshTokenValid(RefreshToken refreshToken)
         {
             return refreshToken.IsValid && refreshToken.ExpiresAt > DateTime.Now;
@@ -64,6 +87,11 @@ namespace server.Services
         private static async Task<IEnumerable<UserToken>> GetInvalidUserTokens(ApplicationDBContext db)
         {
             return await db.UserTokens.Where(r => r.ExpiresAt < DateTime.Now).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Assignment>> GetExpiredAssignments(ApplicationDBContext db)
+        {
+            return await db.Assignments.Where(a => a.DueDate.CompareTo(DateTime.Now) < 0 && !a.Status.Equals(Status.Completed)).ToListAsync();
         }
     }
 }

@@ -5,7 +5,6 @@ import { Toaster } from "react-hot-toast";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "../UI/ErrorFallback";
 import useAuthStore from "../../app/authSlice";
-import { requestForNotifications } from "../utils/notification";
 
 const AppLayout: React.FC = () => {
   const initialize = useAuthStore((state) => state.initialize);
@@ -13,10 +12,6 @@ const AppLayout: React.FC = () => {
   useEffect(() => {
     initialize();
   }, [initialize]);
-
-  useEffect(() => {
-    requestForNotifications();
-  }, []);
 
   return (
     <ErrorBoundary

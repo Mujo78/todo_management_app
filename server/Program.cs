@@ -57,7 +57,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-builder.Services.TryAddSingleton<ITokenCleanupService, TokenCleanupService>();
+builder.Services.TryAddSingleton<IBackgroundJobService, BackgroundJobService>();
 builder.Services.AddTransient<IMailService, MailService>();
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -124,9 +124,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-var tokenCleanupService = app.Services.GetRequiredService<ITokenCleanupService>();
-RecurringJob.AddOrUpdate("RefreshTokenCleanupJob", () => tokenCleanupService.CleanupInvalidRefreshTokens(), "* * * * *");
-RecurringJob.AddOrUpdate("UserTokenCleanupJob", () => tokenCleanupService.CleanupInvalidUserTokens(), "* * * * *");
-
+var backgroundService = app.Services.GetRequiredService<IBackgroundJobService>();
+RecurringJob.AddOrUpdate("RefreshTokenCleanupJob", () => backgroundService.CleanupInvalidRefreshTokens(), "* * * * *");
+RecurringJob.AddOrUpdate("UserTokenCleanupJob", () => backgroundService.CleanupInvalidUserTokens(), "* * * * *");
+RecurringJob.AddOrUpdate("MakeAssignmentsFailed", () => backgroundService.MakeAssignmentsFailed(), "* * * * *");
 
 app.Run();

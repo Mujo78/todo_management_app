@@ -3,7 +3,7 @@ import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useTaskStore, { TaskType } from "../../app/taskSlice";
 import { formatPriority } from "../utils/taskUtils";
-import { format } from "date-fns";
+import { format, isPast } from "date-fns";
 
 interface Props {
   data: TaskType;
@@ -37,8 +37,8 @@ const TaskCard: React.FC<Props> = ({ data }) => {
     []
   );
 
-  const isCompleted = data.status === 1;
-  const isFailed = data.status === 2;
+  const isCompleted = data?.status === 1;
+  const isFailed = data?.status === 2 || isPast(data.dueDate);
 
   return (
     <Card

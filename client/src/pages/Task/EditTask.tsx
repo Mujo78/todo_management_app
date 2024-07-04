@@ -26,7 +26,7 @@ const EditTask = () => {
     useForm<CreateUpdateTaskType>({
       resolver: yupResolver(addTaskValidationSchema),
     });
-  const { errors } = formState;
+  const { errors, isDirty } = formState;
 
   useEffect(() => {
     if (data && isSuccess) {
@@ -36,7 +36,12 @@ const EditTask = () => {
   }, [data, reset, isSuccess]);
 
   const onSubmit = (data: CreateUpdateTaskType) => {
-    if (taskId && !isError && data.status === 0) {
+    if (
+      taskId &&
+      !isError &&
+      (data.status === 0 || data.status > 1) &&
+      isDirty
+    ) {
       const values = data as TaskType;
       updateTask({ taskId, values });
     }
@@ -45,7 +50,7 @@ const EditTask = () => {
   return (
     <>
       {isPending ? (
-        <CircularProgress />
+        <CircularProgress sx={{ margin: "auto" }} />
       ) : (
         <TaskForm
           title="Edit task"
@@ -57,6 +62,7 @@ const EditTask = () => {
           isPending={isUpdating}
           onSubmit={onSubmit}
           isDisabled={data?.status === 1 || data?.status === 2}
+          isDateDisabled={data?.status === 1}
         >
           <SuccessAlert isSuccess={isUpdatingSuccess}>
             Task successfully updated.

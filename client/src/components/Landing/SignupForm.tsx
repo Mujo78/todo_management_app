@@ -53,8 +53,8 @@ const SignupForm: React.FC = () => {
               {...field}
               variant="outlined"
               label="Name"
-              autoComplete="true"
               required
+              autoComplete="true"
               fullWidth
               error={!!errors.name || isErrorForKey(error, "Name")}
               helperText={
@@ -78,11 +78,11 @@ const SignupForm: React.FC = () => {
           render={({ field }) => (
             <TextField
               {...field}
-              required
-              type="email"
               autoComplete="true"
               variant="outlined"
               label="Email"
+              required
+              type="email"
               fullWidth
               error={!!errors.email || isErrorForKey(error, "Email")}
               helperText={
@@ -104,14 +104,20 @@ const SignupForm: React.FC = () => {
           name="password"
           defaultValue=""
           control={control}
-          error={!!errors.password || isErrorForKey(error, "Password")}
+          error={
+            !!errors.password ||
+            (isErrorForKey(error, "Password") &&
+              !isErrorForKey(error, "Confirm Password"))
+          }
           errorMessage={errors.password?.message}
         >
-          {!errors.password && isErrorForKey(error, "Password") && (
-            <FormHelperText component="span" error>
-              {formatErrorFieldMessage(error, "Password")}
-            </FormHelperText>
-          )}
+          {!errors.password &&
+            isErrorForKey(error, "Password") &&
+            !isErrorForKey(error, "Confirm Password") && (
+              <FormHelperText component="span" error>
+                {formatErrorFieldMessage(error, "Password")}
+              </FormHelperText>
+            )}
         </PasswordInput>
 
         <PasswordInput
@@ -124,14 +130,13 @@ const SignupForm: React.FC = () => {
           }
           errorMessage={errors.confirmPassword?.message}
         >
-          {!errors.confirmPassword &&
-            isErrorForKey(error, "ConfirmPassword") && (
-              <FormHelperText component="span" error>
-                {isErrorForKey(error, "ConfirmPassword")
-                  ? formatErrorFieldMessage(error, "ConfirmPassword")
-                  : formatErrorMessage(error)}
-              </FormHelperText>
-            )}
+          {!errors.confirmPassword && (
+            <FormHelperText component="span" error>
+              {isErrorForKey(error, "ConfirmPassword")
+                ? formatErrorFieldMessage(error, "ConfirmPassword")
+                : formatErrorMessage(error)}
+            </FormHelperText>
+          )}
         </PasswordInput>
 
         <SuccessAlert isSuccess={isSuccess}>

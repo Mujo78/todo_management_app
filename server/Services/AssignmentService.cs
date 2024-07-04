@@ -99,6 +99,10 @@ namespace server.Services
             updateDTO.DueDate = updateDTO.DueDate.ToLocalTime();
 
             Assignment assignmentToUpdate = mapper.Map<Assignment>(updateDTO);
+            if(assignmentToUpdate.Status.Equals(Status.Failed))
+            {
+                assignmentToUpdate.Status = Status.Open;
+            }
             assignmentToUpdate.UpdatedAt = DateTime.Now;
 
             bool result = await repository.UpdateAsync(assignmentToUpdate);

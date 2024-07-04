@@ -74,6 +74,8 @@ const HomePage = () => {
             No data available.
           </Alert>
         ) : (
+          tasks?.data &&
+          tasks.data.length > 0 &&
           tasks?.data?.map((m) => <TaskCard key={m.id} data={m} />)
         )}
       </Stack>

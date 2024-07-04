@@ -44,7 +44,6 @@ const PasswordInput = <TFieldValues extends FieldValues>({
           {...field}
           variant="outlined"
           label={label}
-          required
           type={toggle ? "text" : "password"}
           InputProps={{
             endAdornment: (

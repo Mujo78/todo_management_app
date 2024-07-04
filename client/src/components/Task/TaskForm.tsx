@@ -37,6 +37,7 @@ interface Props<TFieldValues extends FieldValues> {
   isError: boolean;
   error: Error | AxiosError<unknown, unknown> | null;
   isDisabled?: boolean;
+  isDateDisabled?: boolean;
   handleSubmit: UseFormHandleSubmit<TFieldValues>;
   onSubmit: (values: TFieldValues) => void;
   title: string;
@@ -53,6 +54,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
   onSubmit,
   title,
   isDisabled,
+  isDateDisabled,
 }: Props<TFieldValues>) => {
   const navigate = useNavigate();
 
@@ -115,7 +117,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DemoContainer components={["DateTimePicker"]}>
                   <DateTimePicker
-                    disabled={isPending || isDisabled}
+                    disabled={isPending || isDateDisabled}
                     slotProps={{
                       textField: {
                         error:
@@ -247,7 +249,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
         {children}
 
         <Button
-          type={!isDisabled ? "submit" : "button"}
+          type={isDateDisabled ? "button" : "submit"}
           variant="contained"
           sx={{ width: "fit-content", margin: "0 0 0 auto" }}
         >

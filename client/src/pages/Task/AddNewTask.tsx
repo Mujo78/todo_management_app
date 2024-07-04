@@ -11,12 +11,14 @@ const AddNewTask = () => {
     useForm<CreateUpdateTaskType>({
       resolver: yupResolver(addTaskValidationSchema),
     });
-  const { errors } = formState;
+  const { errors, isDirty } = formState;
 
   const { createTask, error, isError, isPending, isSuccess } = useCreateTask();
 
   const onSubmit = (values: CreateUpdateTaskType) => {
-    createTask(values, { onSuccess: () => reset() });
+    if (isDirty) {
+      createTask(values, { onSuccess: () => reset() });
+    }
   };
 
   return (
