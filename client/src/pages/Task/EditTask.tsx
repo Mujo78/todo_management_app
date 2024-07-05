@@ -52,22 +52,24 @@ const EditTask = () => {
       {isPending ? (
         <CircularProgress sx={{ margin: "auto" }} />
       ) : (
-        <TaskForm
-          title="Edit task"
-          control={control}
-          error={errorUpdate}
-          errors={errors}
-          handleSubmit={handleSubmit}
-          isError={isUpdatingError}
-          isPending={isUpdating}
-          onSubmit={onSubmit}
-          isDisabled={data?.status === 1 || data?.status === 2}
-          isDateDisabled={data?.status === 1}
-        >
-          <SuccessAlert isSuccess={isUpdatingSuccess}>
-            Task successfully updated.
-          </SuccessAlert>
-        </TaskForm>
+        data && (
+          <TaskForm
+            title="Edit task"
+            control={control}
+            error={errorUpdate}
+            errors={errors}
+            handleSubmit={handleSubmit}
+            isError={isUpdatingError}
+            isPending={isUpdating}
+            onSubmit={onSubmit}
+            isDisabled={data?.status === 1 || data?.status === 2}
+            isDateDisabled={data?.status === 1}
+          >
+            <SuccessAlert isSuccess={isUpdatingSuccess}>
+              Task successfully updated.
+            </SuccessAlert>
+          </TaskForm>
+        )
       )}
     </>
   );

@@ -52,3 +52,8 @@ export async function MakeTaskFinishedFn(values: string[]) {
   const res = await apiClientAuth.patch("/v1/assignments/", values);
   return res.data;
 }
+
+export async function MakeTaskFailedFn(taskId: string) {
+  const res = await apiClientAuth.patch(`/v1/assignments/${taskId}`);
+  return res.data;
+}

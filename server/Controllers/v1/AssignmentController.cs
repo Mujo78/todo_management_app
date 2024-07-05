@@ -112,6 +112,20 @@ namespace server.Controllers.v1
             return Ok(assignment);
         }
 
+        [HttpPatch("{Id}")]
+        [ProducesResponseType(typeof(AssignmentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> MakeAssignmentFailed([FromRoute] Guid Id)
+        {
+            var assignment = await assignmentService.MakeAssignmentExpiredAndFailed(Id);
+            return Ok(assignment);
+        }
+
         [HttpPatch]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

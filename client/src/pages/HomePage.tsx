@@ -11,9 +11,10 @@ import InfoIcon from "@mui/icons-material/Info";
 import TaskCard from "../components/Task/TaskCard";
 import useTaskStore from "../app/taskSlice";
 import TaskOptionsHeader from "../components/Task/TaskOptionsHeader";
+import useMakeTaskFailed from "../features/tasks/useMakeTaskFailed";
 
 const HomePage = () => {
-  const { setTasks, tasks } = useTaskStore();
+  const { setTasks, tasks, findExpiredTask } = useTaskStore();
   const navigate = useNavigate();
   const query = useSearchQuery();
   const pageNum = query.get("pageNum") || 1;
@@ -22,6 +23,8 @@ const HomePage = () => {
     name,
     pageNum,
   });
+
+  const { failTask } = useMakeTaskFailed();
 
   const handleNavigate = (path: string) => {
     navigate(path);
@@ -45,6 +48,18 @@ const HomePage = () => {
     query.set("pageNum", "1");
     navigate(`/home?${query.toString()}`);
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const founded = findExpiredTask();
+
+      if (founded) {
+        failTask(founded.id);
+      }
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, [findExpiredTask, failTask]);
 
   return (
     <Stack gap={4} flexGrow={1} width="70%" pt={3}>

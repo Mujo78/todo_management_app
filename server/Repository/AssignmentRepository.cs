@@ -23,6 +23,10 @@ namespace server.Repository
         {
             return await db.Assignments.AsNoTracking().FirstOrDefaultAsync(n => n.Id.Equals(taskId) && n.UserId.Equals(userId));
         }
+        public async Task<Assignment?> GetTrackingAssignmentById(Guid taskId, Guid? userId)
+        {
+            return await db.Assignments.FirstOrDefaultAsync(n => n.Id.Equals(taskId) && n.UserId.Equals(userId));
+        }
         public bool AssignmentExists(Guid taskId, Guid? userId)
         {
             return db.Assignments.Any(n => n.Id.Equals(taskId) && n.UserId.Equals(userId));

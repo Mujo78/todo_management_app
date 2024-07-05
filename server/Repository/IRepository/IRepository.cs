@@ -8,5 +8,6 @@ namespace server.Repository.IRepository
         Task<bool> RemoveAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> SaveAsync();
+        Task SaveChangesAsync();
     }
 }

@@ -125,8 +125,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 var backgroundService = app.Services.GetRequiredService<IBackgroundJobService>();
-RecurringJob.AddOrUpdate("RefreshTokenCleanupJob", () => backgroundService.CleanupInvalidRefreshTokens(), "* * * * *");
-RecurringJob.AddOrUpdate("UserTokenCleanupJob", () => backgroundService.CleanupInvalidUserTokens(), "* * * * *");
-RecurringJob.AddOrUpdate("MakeAssignmentsFailed", () => backgroundService.MakeAssignmentsFailed(), "* * * * *");
+RecurringJob.AddOrUpdate("RefreshTokenCleanupJob", () => backgroundService.CleanupInvalidRefreshTokens(), "0 0 */7 * *");
+RecurringJob.AddOrUpdate("UserTokenCleanupJob", () => backgroundService.CleanupInvalidUserTokens(), "0 0 */14 * *");
+RecurringJob.AddOrUpdate("MakeAssignmentsFailed", () => backgroundService.MakeAssignmentsFailed(), "0 0 */2 * *");
 
 app.Run();

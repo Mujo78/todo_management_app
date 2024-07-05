@@ -6,6 +6,7 @@ namespace server.Repository.IRepository
     {
         Task<IEnumerable<Assignment>> GetAllAssignments(Guid? userId, string? title, int pageNum, int limit);
         Task<IEnumerable<Assignment>> GetAssignmentsById(List<Guid> assignmentsIds, Guid? userId);
+        Task<Assignment?> GetTrackingAssignmentById(Guid taskId, Guid? userId);
         Task<int> GetCountAssignments(Guid? userId, string? title);
         Task<Assignment?> GetAssignmentById(Guid taskId, Guid? userId);
         Task RemoveAllAssignments(Guid? userId);

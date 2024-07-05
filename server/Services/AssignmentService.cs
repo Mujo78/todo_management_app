@@ -36,7 +36,7 @@ namespace server.Services
         {
             var userId = authService.GetUserId();
             var assignment = await repository.GetAssignmentById(taskId, userId);
-            
+
             return assignment == null ? throw new NotFoundException("Assignment not found.") : mapper.Map<AssignmentDTO>(assignment);
         }
 
@@ -99,7 +99,7 @@ namespace server.Services
             updateDTO.DueDate = updateDTO.DueDate.ToLocalTime();
 
             Assignment assignmentToUpdate = mapper.Map<Assignment>(updateDTO);
-            if(assignmentToUpdate.Status.Equals(Status.Failed))
+            if (assignmentToUpdate.Status.Equals(Status.Failed))
             {
                 assignmentToUpdate.Status = Status.Open;
             }
@@ -136,6 +136,28 @@ namespace server.Services
             try
             {
                 await repository.RemoveSelectedAssignments(assignments);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<AssignmentDTO> MakeAssignmentExpiredAndFailed(Guid Id)
+        {
+            if (Id.Equals(null) || Id.Equals(Guid.Empty)) throw new BadRequestException("Please provide valid ID for assignment.");
+            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");
+            
+            var assignment = await repository.GetTrackingAssignmentById(Id, userId) ?? throw new NotFoundException("Task not found.");
+            if (assignment.Status != Status.Open) throw new BadRequestException("Task is already failed or completed.");
+
+            assignment.Status = Status.Failed;
+            assignment.UpdatedAt = DateTime.Now;
+
+            try
+            {
+                await repository.SaveChangesAsync();
+                return mapper.Map<AssignmentDTO>(assignment);
             }
             catch (Exception ex)
             {

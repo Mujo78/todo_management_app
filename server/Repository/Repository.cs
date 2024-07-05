@@ -35,5 +35,10 @@ namespace server.Repository
             return saved > 0;
         }
 
+        public async Task SaveChangesAsync()
+        {
+           await applicationDBContext.SaveChangesAsync();
+        }
+
     }
 }

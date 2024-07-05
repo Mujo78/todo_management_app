@@ -9,6 +9,7 @@ namespace server.Services.IService
         Task<AssignmentDTO?> GetAssignmentAsync(Guid taskId);
         Task<AssignmentDTO> CreateAssignmentAsync(AssignmentCreateDTO assignment);
         Task<AssignmentDTO> UpdateAssignmentAsync(Guid taskId, AssignmentUpdateDTO updateDTO);
+        Task<AssignmentDTO> MakeAssignmentExpiredAndFailed(Guid Id);
         Task MakeAssignmentsCompleted(List<Guid> assignmentsIds);
         Task DeleteAssignmentAsync(Guid taskId);
         Task DeleteAllAssignmentsAsync();
