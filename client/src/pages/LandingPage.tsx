@@ -16,20 +16,31 @@ const LandingPage = () => {
 
   return (
     <Stack
-      direction="row"
+      direction={{
+        xs: "column",
+        sm: "row",
+      }}
+      gap={{ xs: 0, sm: 0 }}
       height="100%"
-      maxWidth="100%"
-      justifyContent="center"
-      alignItems="center"
+      width="100%"
+      justifyContent={{ xs: "center", sm: "space-between" }}
+      alignItems={{ sm: "center" }}
+      flexGrow={1}
     >
       <Stack
-        width="75%"
-        height="75%"
-        gap={3}
-        justifyContent="center"
-        maxHeight="lg"
+        maxWidth={{
+          xs: "100%",
+          sm: "75%",
+        }}
+        height={{
+          xs: "100%",
+          sm: "75%",
+        }}
+        gap={{ xs: 1, sm: 3 }}
+        pt={{ xs: 4, sm: 0 }}
+        flexGrow={1}
       >
-        <Box height="auto">
+        <Box maxWidth="100%">
           <Tabs
             centered
             value={currentTab}
@@ -40,13 +51,23 @@ const LandingPage = () => {
             <Tab value="signup" icon={<HowToReg />} aria-label="signup" />
           </Tabs>
         </Box>
-        <Box my="auto" mx="auto" width="50%" flexShrink="initial">
+        <Box
+          mx="auto"
+          width={{ xs: "90%", sm: "65%", md: "70%" }}
+          height="100%"
+          flexGrow={1}
+          display="flex"
+        >
           {currentTab === "login" && <LoginForm />}
           {currentTab === "signup" && <SignupForm />}
         </Box>
       </Stack>
       <Stack
-        width="25%"
+        display={{
+          xs: "none",
+          sm: "flex",
+        }}
+        maxWidth={{ xs: "100%", sm: "35%", md: "30%" }}
         height="100%"
         alignItems="center"
         justifyContent="center"

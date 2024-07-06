@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { ErrorBoundary } from "react-error-boundary";
@@ -7,6 +7,7 @@ import ErrorFallback from "../UI/ErrorFallback";
 import useAuthStore from "../../app/authSlice";
 
 const AppLayout: React.FC = () => {
+  const matches = useMediaQuery("(max-width:600px)");
   const initialize = useAuthStore((state) => state.initialize);
 
   useEffect(() => {
@@ -25,8 +26,8 @@ const AppLayout: React.FC = () => {
         }}
         direction="row"
       >
-        <Toaster position="top-right" />
-        <Box sx={{ width: "100%" }}>
+        <Toaster position={matches ? "top-center" : "top-right"} />
+        <Box flexGrow={1}>
           <Outlet />
         </Box>
       </Stack>

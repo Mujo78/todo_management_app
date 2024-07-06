@@ -43,14 +43,14 @@ const ForgotPasswordForm: React.FC = () => {
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={3} flexGrow={1}>
       <Typography variant="h4" fontWeight={700} mt={2} textAlign="center">
         Forgot Your Password?
       </Typography>
       <Stack
         gap={2}
         component="form"
-        width="80%"
+        width={{ xs: "100%", sm: "80%", lg: "65%" }}
         mx="auto"
         onSubmit={handleSubmit(onSubmit)}
       >
@@ -63,25 +63,23 @@ const ForgotPasswordForm: React.FC = () => {
               {...field}
               variant="outlined"
               label="Email"
-              sx={{ mb: "1rem" }}
+              sx={{ mb: "0.5rem" }}
               autoComplete="true"
               required
               type="email"
               fullWidth
               error={!!errors.email || isErrorForKey(error, "Email")}
               helperText={
-                errors.email ? (
-                  errors.email.message
-                ) : !errors.email &&
-                  (isErrorForKey(error, "Email") || isError) ? (
-                  <FormHelperText component="span" error>
-                    {isErrorForKey(error, "Email")
-                      ? formatErrorFieldMessage(error, "Email")
-                      : formatErrorMessage(error)}
-                  </FormHelperText>
-                ) : (
-                  ""
-                )
+                errors.email
+                  ? errors.email.message
+                  : !errors.email &&
+                    (isErrorForKey(error, "Email") || isError) && (
+                      <FormHelperText component="span" error>
+                        {isErrorForKey(error, "Email")
+                          ? formatErrorFieldMessage(error, "Email")
+                          : formatErrorMessage(error)}
+                      </FormHelperText>
+                    )
               }
             />
           )}

@@ -20,7 +20,7 @@ const SignupForm: React.FC = () => {
       resolver: yupResolver(signupValidationSchema),
     });
   const { errors, isDirty } = formState;
-  const { signup, error, isPending, isSuccess } = useSignup();
+  const { signup, error, isError, isPending, isSuccess } = useSignup();
 
   const onSubmit = (values: UserAccountDataType) => {
     if (!isPending && isDirty) {
@@ -33,15 +33,15 @@ const SignupForm: React.FC = () => {
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={4} my="auto" flexGrow={1}>
       <Typography variant="h4" fontWeight={700} textAlign="center">
         Sign up today!
       </Typography>
       <Stack
         component="form"
-        width="80%"
+        width={{ xs: "100%", md: "90%", lg: "80%", xl: "65%" }}
+        gap={2}
         mx="auto"
-        gap={3}
         onSubmit={handleSubmit(onSubmit)}
       >
         <Controller
@@ -130,13 +130,15 @@ const SignupForm: React.FC = () => {
           }
           errorMessage={errors.confirmPassword?.message}
         >
-          {!errors.confirmPassword && (
-            <FormHelperText component="span" error>
-              {isErrorForKey(error, "ConfirmPassword")
-                ? formatErrorFieldMessage(error, "ConfirmPassword")
-                : formatErrorMessage(error)}
-            </FormHelperText>
-          )}
+          {!errors.confirmPassword &&
+            isError &&
+            !isErrorForKey(error, "Email") && (
+              <FormHelperText component="span" error>
+                {isErrorForKey(error, "ConfirmPassword")
+                  ? formatErrorFieldMessage(error, "ConfirmPassword")
+                  : formatErrorMessage(error)}
+              </FormHelperText>
+            )}
         </PasswordInput>
 
         <SuccessAlert isSuccess={isSuccess}>

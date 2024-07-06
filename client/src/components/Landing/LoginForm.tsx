@@ -12,6 +12,7 @@ import {
   isErrorForKey,
 } from "../utils/userUtils";
 import LoadingButton from "../UI/LoadingButton";
+import { Link } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
   const { control, formState, handleSubmit } = useForm<LogindDataType>({
@@ -28,16 +29,21 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <Stack gap={4}>
-      <Typography variant="h4" fontWeight={700} mt={2} textAlign="center">
+    <Stack gap={4} my="auto" flexGrow={1}>
+      <Typography
+        variant="h4"
+        fontWeight={700}
+        mt={{ sm: 2 }}
+        textAlign="center"
+      >
         Log in to You Account
       </Typography>
       <Stack
         onSubmit={handleSubmit(onSubmit)}
         gap={2}
-        component="form"
-        width="80%"
         mx="auto"
+        component="form"
+        width={{ xs: "100%", lg: "70%" }}
       >
         <Controller
           control={control}
@@ -93,9 +99,9 @@ const LoginForm: React.FC = () => {
         </LoadingButton>
       </Stack>
       <Typography
-        component="a"
+        component={Link}
         sx={{ textDecoration: "none" }}
-        href="/forgot-password"
+        to="/forgot-password"
         fontSize="small"
         mx="auto"
         color="primary.main"

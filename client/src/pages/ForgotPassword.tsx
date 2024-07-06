@@ -7,28 +7,30 @@ const ForgotPassword = () => {
     <Stack
       direction="row"
       height="100%"
-      maxWidth="100%"
+      width="100%"
       justifyContent="center"
       alignItems="center"
     >
       <Stack
-        width="25%"
+        maxWidth={{ sm: "35%", md: "25%" }}
         height="100%"
         alignItems="center"
         justifyContent="center"
+        display={{ xs: "none", sm: "flex" }}
         color="white"
         bgcolor="primary.main"
       >
         <ForgotPasswordInfo />
       </Stack>
       <Stack
-        width="75%"
-        height="75%"
+        maxWidth={{ xs: "90%", sm: "65%", md: "75%" }}
+        maxHeight={{ xs: "100%", sm: "65%", md: "75%" }}
         gap={3}
+        flexGrow={1}
+        flexDirection="row"
         justifyContent="center"
-        maxHeight="lg"
       >
-        <Box mx="auto" my="auto" height="auto" width="50%">
+        <Box mx="auto" my="auto" width={{ xs: "100%", sm: "90%" }}>
           <ForgotPasswordForm />
         </Box>
       </Stack>

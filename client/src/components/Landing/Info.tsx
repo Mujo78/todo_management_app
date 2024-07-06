@@ -6,12 +6,22 @@ import {
   ListItemText,
   Stack,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 
 const Info: React.FC = () => {
+  const matches = useMediaQuery("(max-width:600px)");
   return (
-    <Stack gap={3} px={4}>
-      <Typography variant="h5" fontWeight="bold" textAlign="center">
+    <Stack
+      gap={{ xs: 1.5, sm: 1.5, md: 3 }}
+      py={{ xs: 2, sm: 0 }}
+      px={{ xs: 3, sm: 2.5, md: 4 }}
+    >
+      <Typography
+        variant={matches ? "h6" : "h5"}
+        fontWeight="bold"
+        textAlign="center"
+      >
         Welcome to TaskMaster
       </Typography>
       <Typography paragraph textAlign="center">
@@ -19,25 +29,29 @@ const Info: React.FC = () => {
         your tasks effortlessly.
       </Typography>
       <Box>
-        <Typography variant="h5" fontWeight="600" textAlign="center">
+        <Typography
+          variant={matches ? "h6" : "h5"}
+          fontWeight="600"
+          textAlign="center"
+        >
           Why TaskMaster?
         </Typography>
-        <List>
+        <List component="ol">
           <ListItem disablePadding>
             <ListItemText>
-              <strong>Easy Task Management:</strong> Add, edit, and delete tasks
-              with ease.
+              <strong>- Easy Task Management:</strong> Add, edit, and delete
+              tasks with ease.
             </ListItemText>
           </ListItem>
           <ListItem disablePadding>
             <ListItemText>
-              <strong>Reminders:</strong> Never miss a deadline with automatic
+              <strong>- Reminders:</strong> Never miss a deadline with automatic
               reminders.
             </ListItemText>
           </ListItem>
           <ListItem disablePadding>
             <ListItemText>
-              <strong>Prioritize:</strong> Focus on what matters most.
+              <strong>- Prioritize:</strong> Focus on what matters most.
             </ListItemText>
           </ListItem>
         </List>
