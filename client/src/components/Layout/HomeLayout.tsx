@@ -1,26 +1,30 @@
 import React from "react";
-import { Stack } from "@mui/material";
+import { Stack, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import AppNavbar from "../UI/AppNavbar";
 import AppSidebar from "../UI/AppSidebar";
+import TabNavigation from "../UI/TabNavigation";
 
 const HomeLayout: React.FC = () => {
+  const matches = useMediaQuery("(max-width:600px)");
+
   return (
     <Stack gap={2} height="100vh">
       <AppNavbar />
-      <Stack p={3} flexGrow={1}>
+      <Stack p={{ xs: 1, sm: 3 }} flexGrow={1}>
         <Stack
-          mx="auto"
+          mx={{ sm: "auto" }}
           justifyContent="start"
           flexDirection="row"
           gap={5}
           flexGrow={1}
-          width="60%"
+          width={{ sm: "60%" }}
         >
-          <AppSidebar />
+          {!matches && <AppSidebar />}
           <Outlet />
         </Stack>
       </Stack>
+      {matches && <TabNavigation />}
     </Stack>
   );
 };

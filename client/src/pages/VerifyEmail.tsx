@@ -1,6 +1,6 @@
 import { CircularProgress, Stack, Typography } from "@mui/material";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useVerifyEmail from "../features/user/useVerifyEmail";
 import { formatErrorMessage } from "../components/utils/userUtils";
 import SuccessAlert from "../components/UI/SuccessAlert";
@@ -17,25 +17,27 @@ const VerifyEmail = () => {
   }, [token, verifyEmail]);
 
   return (
-    <Stack
-      width="100%"
-      height="100vh"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <Stack width="40%" gap={3}>
+    <Stack width="100%" height="100vh" p={{ xs: 2, sm: 4 }}>
+      <Stack maxWidth="100%" alignItems="center" gap={3}>
         <Typography
           variant="h4"
+          component={Link}
+          to="/"
           textAlign="center"
-          fontWeight={700}
-          color="primary.main"
+          sx={{ textDecoration: "none" }}
+          fontWeight="bold"
+          color="primary"
         >
           TaskMaster
         </Typography>
-        <Typography variant="h4" textAlign="center" fontWeight={400}>
+        <Typography variant="h5" textAlign="center" fontWeight={600}>
           Verify your email address
         </Typography>
-        <Typography paragraph>
+        <Typography
+          paragraph
+          textAlign="center"
+          maxWidth={{ sm: "60%", md: "40%" }}
+        >
           By verifying your email, you will confirm that you want to use this as
           your TaskMaster account email address. Once it's done you will be able
           to start with creating and achieving your daily goals.
@@ -45,16 +47,21 @@ const VerifyEmail = () => {
           {isPending ? (
             <CircularProgress />
           ) : isError ? (
-            <Typography color="red">{formatErrorMessage(error)}</Typography>
-          ) : isSuccess ? (
-            <SuccessAlert isSuccess={isSuccess}>
-              Successfully verified email address.
-            </SuccessAlert>
+            <Typography color="red" paragraph>
+              {formatErrorMessage(error)}
+            </Typography>
           ) : (
-            ""
+            isSuccess && (
+              <SuccessAlert isSuccess={isSuccess}>
+                Successfully verified email address.
+              </SuccessAlert>
+            )
           )}
         </Stack>
       </Stack>
+      <Typography mt="auto" textAlign="center" variant="body2" color="#9a9696">
+        Copyright © 2024 TaskMaster
+      </Typography>
     </Stack>
   );
 };

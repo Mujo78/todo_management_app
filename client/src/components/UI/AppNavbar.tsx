@@ -5,9 +5,12 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  MenuList,
   Toolbar,
   Typography,
   Link as MUILink,
+  useMediaQuery,
+  Box,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { ExitToApp } from "@mui/icons-material";
@@ -15,10 +18,11 @@ import useLogout from "../../features/auth/useLogout";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const AppNavbar: React.FC = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const matches = useMediaQuery("(max-width:600px)");
   const { userLogout } = useLogout();
 
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -37,7 +41,7 @@ const AppNavbar: React.FC = () => {
   };
 
   return (
-    <AppBar position="static" color="primary">
+    <AppBar position="sticky" color="primary">
       <Toolbar
         sx={{
           alignItems: "center",
@@ -54,10 +58,10 @@ const AppNavbar: React.FC = () => {
         >
           TaskMaster
         </MUILink>
-        <Typography paragraph my="auto">
+        <Typography display={{ xs: "none", sm: "block" }} paragraph my="auto">
           {new Date().toDateString()}
         </Typography>
-        <div>
+        <Box>
           <IconButton
             size="small"
             aria-label="account of current user"
@@ -83,11 +87,17 @@ const AppNavbar: React.FC = () => {
             open={open}
             onClose={handleClose}
           >
-            <MenuItem onClick={() => handleNavigate("/home")}>Home</MenuItem>
-            <MenuItem onClick={() => handleNavigate("/profile")}>
-              Profile
-            </MenuItem>
-            <Divider />
+            {!matches && (
+              <MenuList>
+                <MenuItem onClick={() => handleNavigate("/home")}>
+                  Home
+                </MenuItem>
+                <MenuItem onClick={() => handleNavigate("/profile")}>
+                  Profile
+                </MenuItem>
+                <Divider />
+              </MenuList>
+            )}
             <MenuItem
               onClick={handleLogout}
               sx={{ display: "flex", gap: "10px" }}
@@ -95,7 +105,7 @@ const AppNavbar: React.FC = () => {
               <ExitToApp /> Log out
             </MenuItem>
           </Menu>
-        </div>
+        </Box>
       </Toolbar>
     </AppBar>
   );

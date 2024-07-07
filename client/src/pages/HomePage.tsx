@@ -62,10 +62,22 @@ const HomePage = () => {
   }, [findExpiredTask, failTask]);
 
   return (
-    <Stack gap={4} flexGrow={1} width="70%" pt={3}>
+    <Stack
+      gap={4}
+      flexGrow={1}
+      maxWidth={{ sm: "70%" }}
+      pt={{ xs: 0, sm: 3 }}
+      pb={{ xs: 6, sm: 0 }}
+    >
       <Stack direction="row">
         <TaskSearchInput />
         <Button
+          sx={{
+            display: {
+              xs: "none",
+              sm: "flow",
+            },
+          }}
           color="info"
           variant="contained"
           onClick={() => handleNavigate("/add-task")}
@@ -94,24 +106,22 @@ const HomePage = () => {
           tasks?.data?.map((m) => <TaskCard key={m.id} data={m} />)
         )}
       </Stack>
-      {tasks?.data && tasks.data.length > 0 ? (
+      {isSuccess && name && (
+        <Button
+          onClick={handleClear}
+          color="error"
+          variant="contained"
+          sx={{ width: "fit-content", margin: "auto 0 0 auto" }}
+        >
+          Clear
+        </Button>
+      )}
+      {tasks?.data && tasks.data.length > 0 && (
         <PaginationModified
           page={Number(pageNum)}
           total={tasks?.totalCount}
           handleNavigate={handlePageChange}
         />
-      ) : (
-        isSuccess &&
-        name && (
-          <Button
-            onClick={handleClear}
-            color="error"
-            variant="contained"
-            sx={{ width: "fit-content", margin: "auto 0 0 auto" }}
-          >
-            Clear
-          </Button>
-        )
       )}
     </Stack>
   );

@@ -1,28 +1,46 @@
 import { Stack, Typography } from "@mui/material";
 import ResetPasswordForm from "../components/Landing/ResetPasswordForm";
+import { Link } from "react-router-dom";
 
 const ResetPassword = () => {
   return (
-    <Stack gap={3} width="100%" height="100vh" p={6}>
-      <Stack width="100%" alignItems="center" gap={2}>
+    <Stack gap={3} width="100%" height="100vh" p={{ xs: 2, sm: 6 }}>
+      <Stack maxWidth="100%" alignItems="center" gap={2}>
+        <Typography
+          variant="h4"
+          component={Link}
+          to="/"
+          sx={{ textDecoration: "none" }}
+          textAlign="center"
+          fontWeight="bold"
+          color="primary"
+        >
+          TaskMaster
+        </Typography>
         <Typography variant="h5" textAlign="center" fontWeight={600}>
           Reset Password
         </Typography>
-        <Typography paragraph textAlign="center" width="40%">
-          Create a new password that you don't use on any other site. Strong
-          password contains letters, numbers and special characters.
+        <Typography
+          paragraph
+          textAlign="start"
+          maxWidth={{ sm: "60%", md: "40%" }}
+        >
+          - Create a new password that you don't use on any other site, <br />-
+          Strong password contains letters, numbers and special characters
         </Typography>
       </Stack>
       <Stack
-        gap={3}
-        width="100%"
+        maxWidth="100%"
         textAlign="center"
         justifyContent="center"
-        direction="row"
+        flexDirection="row"
         height="100%"
       >
         <ResetPasswordForm />
       </Stack>
+      <Typography textAlign="center" variant="body2" color="#9a9696">
+        Copyright © 2024 TaskMaster
+      </Typography>
     </Stack>
   );
 };

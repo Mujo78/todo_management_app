@@ -90,6 +90,8 @@ namespace server.Repository
             user.EmailConfirmed = true;
             db.Users.Update(user);
 
+            db.UserTokens.Remove(token);
+
             await db.SaveChangesAsync();
         }
     }

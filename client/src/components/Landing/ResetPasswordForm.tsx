@@ -23,7 +23,8 @@ const ResetPasswordForm: React.FC = () => {
     });
   const { errors, isDirty } = formState;
 
-  const { error, isPending, resetPassword, isSuccess } = useResetPassword();
+  const { error, isPending, isError, resetPassword, isSuccess } =
+    useResetPassword();
 
   const onSubmit = (values: ResetPasswordType) => {
     if (!isPending && token !== undefined && isDirty) {
@@ -36,7 +37,7 @@ const ResetPasswordForm: React.FC = () => {
       onSubmit={handleSubmit(onSubmit)}
       gap={2}
       component="form"
-      width="40%"
+      width={{ xs: "90%", sm: "80%", md: "60%", lg: "40%" }}
       mx="auto"
     >
       <PasswordInput
@@ -65,15 +66,14 @@ const ResetPasswordForm: React.FC = () => {
         }
         errorMessage={errors.confirmNewPassword?.message}
       >
-        {!errors.confirmNewPassword ? (
-          <FormHelperText component="span" error>
-            {isErrorForKey(error, "ConfirmNewPassword")
-              ? formatErrorFieldMessage(error, "ConfirmNewPassword")
-              : formatErrorMessage(error)}
-          </FormHelperText>
-        ) : (
-          ""
-        )}
+        {!errors.confirmNewPassword &&
+          (isError || isErrorForKey(error, "ConfirmNewPassword")) && (
+            <FormHelperText component="span" error>
+              {isErrorForKey(error, "ConfirmNewPassword")
+                ? formatErrorFieldMessage(error, "ConfirmNewPassword")
+                : formatErrorMessage(error)}
+            </FormHelperText>
+          )}
       </PasswordInput>
 
       <SuccessAlert isSuccess={isSuccess}>

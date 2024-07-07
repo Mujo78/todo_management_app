@@ -28,7 +28,7 @@ const TaskSearchInput: React.FC = () => {
   return (
     <Stack
       component="form"
-      width="80%"
+      width={{ xs: "100%", sm: "80%" }}
       mx="auto"
       gap={2}
       onSubmit={handleSubmit}

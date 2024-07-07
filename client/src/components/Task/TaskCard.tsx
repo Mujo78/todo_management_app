@@ -45,12 +45,19 @@ const TaskCard: React.FC<Props> = ({ data }) => {
       onClick={handleNavigate}
       sx={{
         display: "flex",
+        flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "1.2rem",
+        maxWidth: "100%",
+        padding: "1rem",
+        gap: {
+          xs: 0.2,
+          sm: 1,
+        },
+        textAlign: "center",
         cursor: "pointer",
         textDecoration: isCompleted || isFailed ? "line-through" : "none",
-        transition: "all 0.5s",
+        transition: { xs: "none", lg: "background-color 0.5s" },
         bgcolor: isCompleted
           ? "lightgreen"
           : isFailed
@@ -65,7 +72,7 @@ const TaskCard: React.FC<Props> = ({ data }) => {
         },
       }}
     >
-      <Stack direction="row" alignItems="center" width="70%" gap={2}>
+      <Stack direction="row" alignItems="center">
         <Checkbox
           size="small"
           disabled={isCompleted || isFailed}
@@ -75,6 +82,17 @@ const TaskCard: React.FC<Props> = ({ data }) => {
           onClick={handleClick}
           onChange={handleChange}
         />
+      </Stack>
+      <Stack
+        flexDirection={{
+          xs: "column",
+          sm: "row",
+        }}
+        flexGrow={1}
+        gap={1}
+        textAlign="start"
+        justifyContent="space-between"
+      >
         <Typography
           paragraph
           component="span"
@@ -88,10 +106,10 @@ const TaskCard: React.FC<Props> = ({ data }) => {
         >
           {data.title}
         </Typography>
+        <Typography>{format(data.dueDate, "dd/MM/yyyy - HH:mm")}</Typography>
       </Stack>
-      <Stack flexDirection="row" alignItems="center" gap={4}>
+      <Stack flexDirection="row" alignItems="center" flexGrow={0} px={2}>
         <Badge color={formatPriority(data.priority)} badgeContent="" />
-        {format(data.dueDate, "dd/MM/yyyy - HH:mm")}
       </Stack>
     </Card>
   );

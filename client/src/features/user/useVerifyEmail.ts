@@ -12,6 +12,7 @@ function useVerifyEmail() {
   } = useMutation<unknown, Error | AxiosError<unknown, unknown>, string>({
     mutationKey: ["verifyEmail"],
     mutationFn: VerifyEmailFn,
+    retry: 0,
   });
 
   return { verifyEmail, error, isError, isPending, isSuccess };

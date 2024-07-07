@@ -16,7 +16,7 @@ const TabNavigation: React.FC = () => {
   };
 
   return (
-    <Box width="100%" position="fixed" bottom={0}>
+    <Box width="100%" zIndex={999} position="fixed" bottom={0}>
       <BottomNavigation value={value} onChange={handleChange}>
         <BottomNavigationAction value="/home" label="Tasks" icon={<Task />} />
         <BottomNavigationAction value="/add-task" label="Add" icon={<Add />} />
