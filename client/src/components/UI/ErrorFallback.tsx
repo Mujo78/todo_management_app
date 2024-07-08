@@ -7,7 +7,6 @@ const ErrorFallback: React.FC<FallbackProps> = ({
   error,
   resetErrorBoundary,
 }) => {
-  console.log(error);
   return (
     <Stack
       width="100%"

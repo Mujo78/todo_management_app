@@ -22,7 +22,7 @@ import {
   PathValue,
   UseFormHandleSubmit,
 } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { formatErrorFieldMessage, isErrorForKey } from "../utils/userUtils";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
@@ -40,6 +40,7 @@ interface Props<TFieldValues extends FieldValues> {
   isDateDisabled?: boolean;
   handleSubmit: UseFormHandleSubmit<TFieldValues>;
   onSubmit: (values: TFieldValues) => void;
+  setShow?: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
 }
 
@@ -54,12 +55,20 @@ const TaskForm = <TFieldValues extends FieldValues>({
   onSubmit,
   title,
   isDisabled,
+  setShow,
   isDateDisabled,
 }: Props<TFieldValues>) => {
   const navigate = useNavigate();
 
   const handleNavigateBack = () => {
     navigate(-1);
+  };
+  const { taskId } = useParams();
+
+  const handleDelete = () => {
+    if (taskId && setShow) {
+      setShow(true);
+    }
   };
 
   return (
@@ -68,7 +77,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
         <Button color="secondary" onClick={handleNavigateBack}>
           <ArrowBack />
         </Button>
-        <Typography variant="h5" fontWeight={400} mx="auto">
+        <Typography variant="h5" fontWeight={400} mx="auto" textAlign="center">
           {title}
         </Typography>
       </Box>
@@ -248,17 +257,24 @@ const TaskForm = <TFieldValues extends FieldValues>({
 
         {children}
 
-        <Button
-          type={isDateDisabled ? "button" : "submit"}
-          variant="contained"
-          sx={{ width: "fit-content", margin: "0 0 0 auto" }}
-        >
-          {isPending ? (
-            <CircularProgress size={30} sx={{ color: "white" }} />
-          ) : (
-            "Save"
+        <Stack flexDirection="row" justifyContent="space-between">
+          {taskId !== undefined && (
+            <Button color="error" onClick={handleDelete} variant="outlined">
+              Delete
+            </Button>
           )}
-        </Button>
+          <Button
+            type={isDateDisabled ? "button" : "submit"}
+            variant="contained"
+            sx={{ width: "fit-content", margin: "0 0 0 auto" }}
+          >
+            {isPending ? (
+              <CircularProgress size={30} sx={{ color: "white" }} />
+            ) : (
+              "Save"
+            )}
+          </Button>
+        </Stack>
       </Stack>
     </Stack>
   );

@@ -65,18 +65,18 @@ const HomePage = () => {
     <Stack
       gap={4}
       flexGrow={1}
-      maxWidth={{ sm: "70%" }}
-      pt={{ xs: 0, sm: 3 }}
+      pt={{ xs: 0, sm: 1.5, lg: 3 }}
       pb={{ xs: 6, sm: 0 }}
     >
-      <Stack direction="row">
+      <Stack direction="row" gap={2} maxWidth="100%">
         <TaskSearchInput />
         <Button
           sx={{
             display: {
               xs: "none",
-              sm: "flow",
+              sm: "flex",
             },
+            my: 0.1,
           }}
           color="info"
           variant="contained"
@@ -88,7 +88,7 @@ const HomePage = () => {
         </Button>
       </Stack>
       <TaskOptionsHeader />
-      <Stack gap={2}>
+      <Stack gap={2} width="100%">
         {isPending ? (
           <Stack alignItems="center" p={6}>
             <CircularProgress />

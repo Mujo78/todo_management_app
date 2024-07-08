@@ -5,7 +5,7 @@ namespace server.Repository.IRepository
     {
         Task<T?> GetByIdAsync(Guid Id);
         Task<bool> CreateAsync(T entity);
-        Task<bool> RemoveAsync(T entity);
+        Task RemoveAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> SaveAsync();
         Task SaveChangesAsync();

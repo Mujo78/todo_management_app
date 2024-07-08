@@ -79,8 +79,14 @@ namespace server.Services
             var assignment = await repository.GetAssignmentById(Id, userId) ?? throw new NotFoundException("Assignment not found.");
             if (!assignment.UserId.Equals(userId)) throw new ForbidException("You do not have permission to access this resource.");
 
-            bool result = await repository.RemoveAsync(assignment);
-            if (!result) throw new Exception("Assignment not deleted.");
+            try
+            {
+                await repository.RemoveAsync(assignment);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<AssignmentDTO> UpdateAssignmentAsync(Guid taskId, AssignmentUpdateDTO updateDTO)

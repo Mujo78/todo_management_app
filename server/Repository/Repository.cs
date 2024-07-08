@@ -18,10 +18,10 @@ namespace server.Repository
             return await applicationDBContext.Set<T>().FindAsync(Id);
         }
 
-        public async Task<bool> RemoveAsync(T entity)
+        public async Task RemoveAsync(T entity)
         {
             applicationDBContext.Set<T>().Remove(entity);
-            return await SaveAsync();
+            await applicationDBContext.SaveChangesAsync();
         }
         public async Task<bool> UpdateAsync(T entity)
         {

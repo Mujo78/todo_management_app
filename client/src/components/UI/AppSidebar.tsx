@@ -10,11 +10,13 @@ import {
   ListItemText,
   Stack,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import useAuthStore from "../../app/authSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const AppSidebar: React.FC = () => {
+  const matches = useMediaQuery("(min-width:900px)");
   const navigate = useNavigate();
   const location = useLocation().pathname;
   const { auth } = useAuthStore();
@@ -28,7 +30,7 @@ const AppSidebar: React.FC = () => {
   };
 
   return (
-    <Stack gap={2} width="25%">
+    <Stack gap={2} maxWidth={{ sm: "25%" }}>
       <Stack
         onClick={profileNavigate}
         alignItems="center"
@@ -59,20 +61,28 @@ const AppSidebar: React.FC = () => {
         <List>
           <ListItem disablePadding onClick={() => handleNavigate("/home")}>
             <ListItemButton
+              sx={{ gap: 2 }}
               selected={location === "/home" || location.includes("task")}
             >
-              <ListItemIcon>
+              <ListItemIcon
+                sx={{ minWidth: "fit-content", mx: { sm: "auto", md: 0 } }}
+              >
                 <Assignment />
               </ListItemIcon>
-              <ListItemText primary="Tasks" />
+              {matches && <ListItemText primary="Tasks" />}
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding onClick={() => handleNavigate("/profile")}>
-            <ListItemButton selected={location.startsWith("/profile")}>
-              <ListItemIcon>
+            <ListItemButton
+              sx={{ gap: 2 }}
+              selected={location.startsWith("/profile")}
+            >
+              <ListItemIcon
+                sx={{ minWidth: "fit-content", mx: { sm: "auto", md: 0 } }}
+              >
                 <PersonOutline />
               </ListItemIcon>
-              <ListItemText primary="Profile" />
+              {matches && <ListItemText primary="Profile" />}
             </ListItemButton>
           </ListItem>
         </List>
@@ -83,7 +93,7 @@ const AppSidebar: React.FC = () => {
         startIcon={<AddTask />}
         sx={{ borderRadius: 5, py: 1.5 }}
       >
-        Add a new task
+        {matches && "Add a new task"}
       </Button>
     </Stack>
   );

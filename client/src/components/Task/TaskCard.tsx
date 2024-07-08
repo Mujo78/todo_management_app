@@ -46,10 +46,11 @@ const TaskCard: React.FC<Props> = ({ data }) => {
       sx={{
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "start",
         alignItems: "center",
         maxWidth: "100%",
         padding: "1rem",
+        flexGrow: 1,
         gap: {
           xs: 0.2,
           sm: 1,
@@ -90,25 +91,22 @@ const TaskCard: React.FC<Props> = ({ data }) => {
         }}
         flexGrow={1}
         gap={1}
+        maxWidth="100%"
         textAlign="start"
         justifyContent="space-between"
       >
-        <Typography
-          paragraph
-          component="span"
-          my="auto"
-          sx={{
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            maxWidth: "100%",
-          }}
-        >
-          {data.title}
+        <Typography paragraph component="span" my="auto">
+          {data.title.slice(0, 20)}...
         </Typography>
         <Typography>{format(data.dueDate, "dd/MM/yyyy - HH:mm")}</Typography>
       </Stack>
-      <Stack flexDirection="row" alignItems="center" flexGrow={0} px={2}>
+      <Stack
+        flexDirection="row"
+        alignItems="center"
+        ml="auto"
+        flexGrow={0}
+        px={2}
+      >
         <Badge color={formatPriority(data.priority)} badgeContent="" />
       </Stack>
     </Card>
