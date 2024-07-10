@@ -25,10 +25,10 @@ namespace server.Repository
             return await Save();
         }
 
-        public async Task<bool> Logout(RefreshToken refreshToken)
+        public async Task Logout(RefreshToken refreshToken)
         {
             db.RefreshTokens.Remove(refreshToken);
-            return await Save();
+            await db.SaveChangesAsync();
         }
         public async Task<RefreshToken?> GetRefreshToken(string tokenId)
         {

@@ -1,4 +1,10 @@
-import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Stack,
+} from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "../UI/LoadingButton";
@@ -30,22 +36,35 @@ const DeleteTaskModal: React.FC<Props> = ({ setShow, show, title, taskId }) => {
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      sx={{ p: 0 }}
     >
-      <DialogTitle id="alert-dialog-title">
+      <DialogTitle sx={{ p: { xs: 1, sm: 3 } }} id="alert-dialog-title">
         Are you sure you want to delete your task: {title}?
       </DialogTitle>
-      <DialogActions sx={{ gap: "1rem" }}>
-        <Button onClick={handleClose} variant="outlined">
-          Close
-        </Button>
-
-        <LoadingButton
-          onClick={handleDeleteProfile}
-          isPending={isPending}
-          error
+      <DialogActions>
+        <Stack
+          flexGrow={1}
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+          gap={1}
         >
-          Confirm
-        </LoadingButton>
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            sx={{ flexGrow: { xs: 1, sm: 0 } }}
+          >
+            Close
+          </Button>
+
+          <LoadingButton
+            sx={{ flexGrow: { xs: 1, sm: 0 } }}
+            onClick={handleDeleteProfile}
+            isPending={isPending}
+            error
+          >
+            Confirm
+          </LoadingButton>
+        </Stack>
       </DialogActions>
     </Dialog>
   );

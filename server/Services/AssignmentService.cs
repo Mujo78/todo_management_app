@@ -35,9 +35,9 @@ namespace server.Services
         public async Task<AssignmentDTO?> GetAssignmentAsync(Guid taskId)
         {
             var userId = authService.GetUserId();
-            var assignment = await repository.GetAssignmentById(taskId, userId);
+            var assignment = await repository.GetAssignmentById(taskId, userId) ?? throw new NotFoundException("Assignment not found.");
 
-            return assignment == null ? throw new NotFoundException("Assignment not found.") : mapper.Map<AssignmentDTO>(assignment);
+            return mapper.Map<AssignmentDTO>(assignment);
         }
 
         public async Task<AssignmentDTO> CreateAssignmentAsync(AssignmentCreateDTO assignmentDTO)
@@ -54,9 +54,15 @@ namespace server.Services
             assignmentToCreate.CreatedAt = DateTime.Now;
             assignmentToCreate.UpdatedAt = DateTime.Now;
 
-            bool isSuccess = await repository.CreateAsync(assignmentToCreate);
-
-            return isSuccess ? mapper.Map<AssignmentDTO>(assignmentToCreate) : throw new Exception("Assignment not created.");
+            try
+            {
+                await repository.CreateAsync(assignmentToCreate);
+                return mapper.Map<AssignmentDTO>(assignmentToCreate);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task DeleteAllAssignmentsAsync()
@@ -83,7 +89,7 @@ namespace server.Services
             {
                 await repository.RemoveAsync(assignment);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -111,8 +117,15 @@ namespace server.Services
             }
             assignmentToUpdate.UpdatedAt = DateTime.Now;
 
-            bool result = await repository.UpdateAsync(assignmentToUpdate);
-            return result ? mapper.Map<AssignmentDTO>(assignmentToUpdate) : throw new Exception("Assignment not updated.");
+            try
+            {
+                await repository.UpdateAsync(assignmentToUpdate);
+                return mapper.Map<AssignmentDTO>(assignmentToUpdate);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task MakeAssignmentsCompleted(List<Guid> assignmentsIds)
@@ -127,7 +140,7 @@ namespace server.Services
 
             try
             {
-                await repository.SaveAsync();
+                await repository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -153,7 +166,7 @@ namespace server.Services
         {
             if (Id.Equals(null) || Id.Equals(Guid.Empty)) throw new BadRequestException("Please provide valid ID for assignment.");
             var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");
-            
+
             var assignment = await repository.GetTrackingAssignmentById(Id, userId) ?? throw new NotFoundException("Task not found.");
             if (assignment.Status != Status.Open) throw new BadRequestException("Task is already failed or completed.");
 

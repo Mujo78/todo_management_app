@@ -4,9 +4,9 @@ namespace server.Repository.IRepository
     public interface IRepository<T> where T : class
     {
         Task<T?> GetByIdAsync(Guid Id);
-        Task<bool> CreateAsync(T entity);
+        Task CreateAsync(T entity);
         Task RemoveAsync(T entity);
-        Task<bool> UpdateAsync(T entity);
+        Task UpdateAsync(T entity);
         Task<bool> SaveAsync();
         Task SaveChangesAsync();
     }

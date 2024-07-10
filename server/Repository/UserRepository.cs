@@ -94,5 +94,10 @@ namespace server.Repository
 
             await db.SaveChangesAsync();
         }
+
+        public bool ResetPasswordTokenIsValidAndExists(User user)
+        {
+            return db.UserTokens.Any(n => n.UserId.Equals(user.Id) && n.TokenType.Equals(TokenType.PasswordReset) && n.ExpiresAt > DateTime.Now);
+        }
     }
 }

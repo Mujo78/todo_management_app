@@ -15,5 +15,6 @@ namespace server.Repository.IRepository
         bool EmailAlreadyUsed(string email);
         bool EmailAlreadyUsed(string email, Guid? userId);
         bool IsUserTokenValid(UserToken token);
+        bool ResetPasswordTokenIsValidAndExists(User user);
     }
 }

@@ -1,10 +1,16 @@
 import React from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import AppLink from "../UI/AppLink";
+import {
+  DashboardCustomizeOutlined,
+  EditOutlined,
+  HttpsOutlined,
+} from "@mui/icons-material";
 
 const ProfileLayout: React.FC = () => {
   const location = useLocation().pathname;
+  const matches = useMediaQuery("(max-width:600px)");
 
   return (
     <Stack flexGrow={1}>
@@ -30,19 +36,19 @@ const ProfileLayout: React.FC = () => {
           width="100%"
           flexDirection="row"
           display="flex"
-          justifyContent="start"
+          justifyContent={{ xs: "center", sm: "start" }}
           gap={4}
         >
           <AppLink to="/profile" underline>
-            Overview
+            {matches ? <DashboardCustomizeOutlined /> : "Overview"}
           </AppLink>
 
           <AppLink to="/profile/edit" underline>
-            Edit
+            {matches ? <EditOutlined /> : "Edit"}
           </AppLink>
 
           <AppLink to="/profile/change-password" underline>
-            Change password
+            {matches ? <HttpsOutlined /> : "Change password"}
           </AppLink>
         </Box>
 

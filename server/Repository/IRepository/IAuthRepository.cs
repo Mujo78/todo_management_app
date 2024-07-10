@@ -9,7 +9,7 @@ namespace server.Repository.IRepository
         Task<bool> CreateRefreshToken(RefreshToken token);
         Task<RefreshToken?> GetRefreshToken(string tokenId);
         Task<RefreshToken?> GetRefreshToken(Guid userId);
-        Task<bool> Logout(RefreshToken refreshToken);
+        Task Logout(RefreshToken refreshToken);
         Task<bool> Save();
     }
 }

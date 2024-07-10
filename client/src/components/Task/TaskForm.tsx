@@ -85,10 +85,15 @@ const TaskForm = <TFieldValues extends FieldValues>({
         component="form"
         width="100%"
         mx="auto"
-        gap={4}
+        gap={2.5}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Box display="flex" gap={2} alignItems="center">
+        <Box
+          display="flex"
+          flexWrap={{ xs: "wrap", md: "nowrap" }}
+          gap={2}
+          alignItems="center"
+        >
           <Controller
             control={control}
             name={"title" as Path<TFieldValues>}
@@ -103,7 +108,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
                   flexGrow: 1,
                 }}
                 autoComplete="true"
-                required
+                //required
                 error={!!errors.title || isErrorForKey(error, "Title")}
                 helperText={
                   errors.title
@@ -124,21 +129,29 @@ const TaskForm = <TFieldValues extends FieldValues>({
             name={"dueDate" as Path<TFieldValues>}
             render={({ field }) => (
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DemoContainer components={["DateTimePicker"]}>
+                <DemoContainer
+                  sx={{
+                    flexGrow: { xs: 1, md: 0 },
+                    width: "fit-content",
+                    overflowX: "hidden",
+                  }}
+                  components={["DateTimePicker"]}
+                >
                   <DateTimePicker
                     disabled={isPending || isDateDisabled}
+                    disablePast
                     slotProps={{
                       textField: {
                         error:
                           !!errors.dueDate || isErrorForKey(error, "DueDate"),
                         helperText: errors.dueDate
                           ? (errors.dueDate.message as React.ReactNode)
-                          : isError && !errors.dueDate
-                          ? (formatErrorFieldMessage(
+                          : isErrorForKey(error, "DueDate") &&
+                            !errors.dueDate &&
+                            (formatErrorFieldMessage(
                               error,
                               "DueDate"
-                            ) as React.ReactNode)
-                          : "",
+                            ) as React.ReactNode),
                       },
                     }}
                     {...field}
@@ -178,7 +191,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
           )}
         />
 
-        <Box display="flex" gap={2}>
+        <Box display="flex" flexWrap={{ xs: "wrap", md: "nowrap" }} gap={2}>
           <Controller
             control={control}
             name={"priority" as Path<TFieldValues>}
@@ -206,12 +219,12 @@ const TaskForm = <TFieldValues extends FieldValues>({
                 <FormHelperText>
                   {errors.priority
                     ? (errors.priority.message as React.ReactNode)
-                    : isError && !errors.priority
-                    ? (formatErrorFieldMessage(
+                    : isErrorForKey(error, "Priority") &&
+                      !errors.priority &&
+                      (formatErrorFieldMessage(
                         error,
                         "Priority"
-                      ) as React.ReactNode)
-                    : ""}
+                      ) as React.ReactNode)}
                 </FormHelperText>
               </FormControl>
             )}
@@ -243,12 +256,12 @@ const TaskForm = <TFieldValues extends FieldValues>({
                 <FormHelperText>
                   {errors.status
                     ? (errors.status.message as React.ReactNode)
-                    : isError && !errors.status
-                    ? (formatErrorFieldMessage(
+                    : isErrorForKey(error, "Status") &&
+                      !errors.status &&
+                      (formatErrorFieldMessage(
                         error,
                         "Status"
-                      ) as React.ReactNode)
-                    : ""}
+                      ) as React.ReactNode)}
                 </FormHelperText>
               </FormControl>
             )}
@@ -257,16 +270,31 @@ const TaskForm = <TFieldValues extends FieldValues>({
 
         {children}
 
-        <Stack flexDirection="row" justifyContent="space-between">
+        <Stack
+          flexDirection="row"
+          flexWrap={{ xs: "wrap", sm: "nowrap" }}
+          gap={{ xs: 2, sm: 0 }}
+          justifyContent="space-between"
+        >
           {taskId !== undefined && (
-            <Button color="error" onClick={handleDelete} variant="outlined">
-              Delete
+            <Button
+              sx={{
+                width: { xs: "100%", sm: "fit-content" },
+              }}
+              color="error"
+              onClick={handleDelete}
+              variant="text"
+            >
+              Delete Task
             </Button>
           )}
           <Button
             type={isDateDisabled ? "button" : "submit"}
             variant="contained"
-            sx={{ width: "fit-content", margin: "0 0 0 auto" }}
+            sx={{
+              width: { xs: "100%", sm: "fit-content" },
+              margin: "0 0 0 auto",
+            }}
           >
             {isPending ? (
               <CircularProgress size={30} sx={{ color: "white" }} />

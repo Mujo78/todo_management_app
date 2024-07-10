@@ -1,10 +1,11 @@
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, SxProps, Theme } from "@mui/material";
 import React from "react";
 
 interface Props {
   isPending: boolean;
   children: React.ReactNode;
   fullWidth?: boolean;
+  sx?: SxProps<Theme>;
   onClick?: () => void;
   error?: boolean;
 }
@@ -15,6 +16,7 @@ const LoadingButton: React.FC<Props> = ({
   error,
   fullWidth,
   children,
+  sx,
 }) => {
   return (
     <Button
@@ -23,10 +25,12 @@ const LoadingButton: React.FC<Props> = ({
       color={error ? "error" : "primary"}
       variant="contained"
       fullWidth={fullWidth}
-      sx={{
-        width: !fullWidth ? "fit-content" : "100%",
-        marginLeft: fullWidth ? 0 : "auto",
-      }}
+      sx={
+        sx ?? {
+          width: !fullWidth ? "fit-content" : "100%",
+          marginLeft: fullWidth ? 0 : "auto",
+        }
+      }
     >
       {isPending ? (
         <CircularProgress size={30} sx={{ color: "white" }} />

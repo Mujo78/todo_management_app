@@ -6,6 +6,7 @@ import {
   DialogTitle,
   List,
   ListItem,
+  Stack,
 } from "@mui/material";
 import React from "react";
 import useDeleteProfile from "../../features/user/useDeleteProfile";
@@ -52,18 +53,31 @@ const DeleteProfileModal: React.FC<Props> = ({ setShow, show, total }) => {
           <ListItem>- your tasks will be deleted ({total})</ListItem>
         </List>
       </DialogContent>
-      <DialogActions sx={{ gap: "1rem" }}>
-        <Button onClick={handleClose} variant="outlined">
-          Close
-        </Button>
-
-        <LoadingButton
-          onClick={handleDeleteProfile}
-          isPending={isPending}
-          error
+      <DialogActions>
+        <Stack
+          flexGrow={1}
+          flexWrap="wrap"
+          justifyContent="space-between"
+          flexDirection={{ xs: "column", sm: "row" }}
+          gap={1}
         >
-          Confirm
-        </LoadingButton>
+          <Button
+            onClick={handleClose}
+            sx={{ flexGrow: { xs: 1, sm: 0 } }}
+            variant="outlined"
+          >
+            Close
+          </Button>
+
+          <LoadingButton
+            sx={{ flexGrow: { xs: 1, sm: 0 } }}
+            onClick={handleDeleteProfile}
+            isPending={isPending}
+            error
+          >
+            Confirm
+          </LoadingButton>
+        </Stack>
       </DialogActions>
     </Dialog>
   );

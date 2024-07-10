@@ -7,10 +7,10 @@ namespace server.Repository
     {
         private readonly ApplicationDBContext applicationDBContext = applicationDB;
 
-        public async Task<bool> CreateAsync(T entity)
+        public async Task CreateAsync(T entity)
         {
             await applicationDBContext.Set<T>().AddAsync(entity);
-            return await SaveAsync();
+            await applicationDBContext.SaveChangesAsync();
         }
 
         public async Task<T?> GetByIdAsync(Guid Id)
@@ -23,10 +23,10 @@ namespace server.Repository
             applicationDBContext.Set<T>().Remove(entity);
             await applicationDBContext.SaveChangesAsync();
         }
-        public async Task<bool> UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
             applicationDBContext.Set<T>().Update(entity);
-            return await SaveAsync();
+            await applicationDBContext.SaveChangesAsync();
         }
 
         public async Task<bool> SaveAsync()

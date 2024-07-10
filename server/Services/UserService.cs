@@ -110,21 +110,31 @@ namespace server.Services
             userFound.Email = updateDTO.Email;
             userFound.Name = updateDTO.Name;
 
-            await repository.UpdateAsync(userFound);
+            try
+            {
+                await repository.UpdateAsync(userFound);
+                return mapper.Map<UserDTO>(userFound);
 
-            return mapper.Map<UserDTO>(userFound);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task ForgotPassword(string email)
         {
             var user = await repository.GetUser(email) ?? throw new NotFoundException("User not found.");
+            var tokenFounded = repository.ResetPasswordTokenIsValidAndExists(user);
+
+            if (tokenFounded) throw new ConflictException("Reset password link already created. Please check your inbox.");
 
             UserToken token = new()
             {
                 UserId = user.Id,
                 Token = Guid.NewGuid().ToString(),
                 TokenType = TokenType.PasswordReset,
-                ExpiresAt = DateTime.Now.AddHours(2),
+                ExpiresAt = DateTime.Now.AddMinutes(1),
                 CreatedAt = DateTime.Now,
             };
 
