@@ -47,7 +47,7 @@ const VerifyEmail = () => {
           {isPending ? (
             <CircularProgress />
           ) : isError ? (
-            <Typography color="red" paragraph>
+            <Typography color="error" paragraph>
               {formatErrorMessage(error)}
             </Typography>
           ) : (
@@ -59,7 +59,12 @@ const VerifyEmail = () => {
           )}
         </Stack>
       </Stack>
-      <Typography mt="auto" textAlign="center" variant="body2" color="#9a9696">
+      <Typography
+        mt="auto"
+        textAlign="center"
+        variant="body2"
+        color="dark.light"
+      >
         Copyright © 2024 TaskMaster
       </Typography>
     </Stack>

@@ -44,8 +44,8 @@ const EditProfile = () => {
       onSubmit={handleSubmit(onSubmit)}
       gap={2}
       component="form"
-      width="100%"
-      mx="auto"
+      px={1}
+      flexGrow={1}
     >
       <Controller
         control={control}
@@ -88,15 +88,20 @@ const EditProfile = () => {
             helperText={
               errors.email
                 ? errors.email.message
-                : !errors.email
-                ? formatErrorFieldMessage(error, "Email")
-                : ""
+                : !errors.email &&
+                  isErrorForKey(error, "Email") &&
+                  formatErrorFieldMessage(error, "Email")
             }
           />
         )}
       />
 
-      <LoadingButton isPending={isPending}>Save changes</LoadingButton>
+      <LoadingButton
+        isPending={isPending}
+        sx={{ flexGrow: { xs: 1, sm: 0 }, ml: { sm: "auto" } }}
+      >
+        Save changes
+      </LoadingButton>
     </Stack>
   );
 };

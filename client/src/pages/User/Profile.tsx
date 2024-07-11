@@ -58,7 +58,7 @@ const Profile = () => {
                 <Grid item xs={12} sm={9}>
                   <Typography
                     textAlign={{ xs: "start", sm: "end" }}
-                    color="gray"
+                    color="dark.light"
                     variant="body1"
                   >
                     {data.user.name}
@@ -72,7 +72,7 @@ const Profile = () => {
                 <Grid item xs={12} sm={9}>
                   <Typography
                     textAlign={{ xs: "start", sm: "end" }}
-                    color="gray"
+                    color="dark.light"
                     variant="body1"
                   >
                     {data.user.email}
@@ -86,7 +86,7 @@ const Profile = () => {
                 <Grid item xs={12} sm={9}>
                   <Typography
                     textAlign={{ xs: "start", sm: "end" }}
-                    color="gray"
+                    color="dark.light"
                     variant="body1"
                   >
                     {new Date(data.user.createdAt).toDateString()}
@@ -118,12 +118,18 @@ const Profile = () => {
 
               <Stack gap={2}>
                 <Gauge
+                  role="meter"
+                  aria-labelledby="average_level"
                   title="Average"
                   width={200}
                   height={200}
                   value={data.average}
                 />
-                <Typography textAlign="center" variant="body1">
+                <Typography
+                  id="average_level"
+                  textAlign="center"
+                  variant="body1"
+                >
                   Average
                 </Typography>
               </Stack>

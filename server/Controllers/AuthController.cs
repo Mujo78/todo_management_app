@@ -1,7 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Schema;
 using server.DTO.Auth;
 using server.Exceptions;
 using server.Services.IService;

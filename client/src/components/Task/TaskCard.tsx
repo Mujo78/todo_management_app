@@ -75,6 +75,8 @@ const TaskCard: React.FC<Props> = ({ data }) => {
     >
       <Stack direction="row" alignItems="center">
         <Checkbox
+          inputProps={{ "aria-label": "controlled" }}
+          aria-describedby={`Select-${data.title}-task`}
           size="small"
           disabled={isCompleted || isFailed}
           id={`checkbox-${data.title}`}

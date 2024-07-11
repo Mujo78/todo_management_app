@@ -33,10 +33,10 @@ const ChangePassword = () => {
   return (
     <Stack
       onSubmit={handleSubmit(onSubmit)}
-      gap={4}
+      gap={2}
+      px={1}
       component="form"
-      width="100%"
-      mx="auto"
+      flexGrow={1}
     >
       <PasswordInput
         control={control}
@@ -104,7 +104,12 @@ const ChangePassword = () => {
           )}
       </PasswordInput>
 
-      <LoadingButton isPending={isPending}>Save changes</LoadingButton>
+      <LoadingButton
+        isPending={isPending}
+        sx={{ flexGrow: { xs: 1, sm: 0 }, ml: { sm: "auto" } }}
+      >
+        Save changes
+      </LoadingButton>
     </Stack>
   );
 };

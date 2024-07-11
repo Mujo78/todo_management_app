@@ -12,7 +12,12 @@ const AppLink: React.FC<Props> = ({ children, to, underline }) => {
   const location = useLocation().pathname;
 
   return (
-    <Link to={to} underline="none" component={RouterLink}>
+    <Link
+      to={to}
+      underline="none"
+      aria-label={`link-${to}`}
+      component={RouterLink}
+    >
       <Typography variant="button">{children}</Typography>
       {location === to && underline && (
         <Divider sx={{ backgroundColor: "primary.main" }} />

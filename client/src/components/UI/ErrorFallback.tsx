@@ -14,7 +14,12 @@ const ErrorFallback: React.FC<FallbackProps> = ({
       justifyContent="center"
       alignItems="center"
     >
-      <Stack width="30%" textAlign="start" gap={1}>
+      <Stack
+        maxWidth={{ sm: "70%", lg: "50%" }}
+        textAlign="start"
+        px={{ xs: 1, sm: 0 }}
+        gap={1}
+      >
         <Typography variant="h6">{error.name}</Typography>
         <Typography paragraph>{error.message}</Typography>
         <Typography paragraph>

@@ -38,7 +38,7 @@ const ResetPassword = () => {
       >
         <ResetPasswordForm />
       </Stack>
-      <Typography textAlign="center" variant="body2" color="#9a9696">
+      <Typography textAlign="center" variant="body2" color="dark.light">
         Copyright © 2024 TaskMaster
       </Typography>
     </Stack>

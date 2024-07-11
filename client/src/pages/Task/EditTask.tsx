@@ -8,14 +8,16 @@ import { useEffect, useState } from "react";
 import TaskForm from "../../components/Task/TaskForm";
 import useUpdateTask from "../../features/tasks/useUpdateTask";
 import SuccessAlert from "../../components/UI/SuccessAlert";
-import { CircularProgress } from "@mui/material";
+import { Alert, CircularProgress, Stack } from "@mui/material";
 import DeleteTaskModal from "../../components/Task/DeleteTaskModal";
+import { Info } from "@mui/icons-material";
+import { formatErrorMessage } from "../../components/utils/userUtils";
 
 const EditTask = () => {
   const [show, setShow] = useState<boolean>(false);
   const { taskId } = useParams();
 
-  const { data, isSuccess, isError, isPending } = useGetTask(taskId);
+  const { data, isSuccess, isError, isPending, error } = useGetTask(taskId);
   const {
     updateTask,
     errorUpdate,
@@ -53,35 +55,41 @@ const EditTask = () => {
     <>
       {isPending ? (
         <CircularProgress sx={{ margin: "auto" }} />
-      ) : (
-        data && (
-          <>
-            <TaskForm
-              title="Edit task"
-              control={control}
-              error={errorUpdate}
-              errors={errors}
-              handleSubmit={handleSubmit}
-              isError={isUpdatingError}
-              isPending={isUpdating}
-              onSubmit={onSubmit}
+      ) : data ? (
+        <>
+          <TaskForm
+            title="Edit task"
+            control={control}
+            error={errorUpdate}
+            errors={errors}
+            handleSubmit={handleSubmit}
+            isError={isUpdatingError}
+            isPending={isUpdating}
+            onSubmit={onSubmit}
+            setShow={setShow}
+            isDisabled={data?.status === 1 || data?.status === 2}
+            isDateDisabled={data?.status === 1}
+          >
+            <SuccessAlert isSuccess={isUpdatingSuccess}>
+              Task successfully updated.
+            </SuccessAlert>
+          </TaskForm>
+          {show && taskId && (
+            <DeleteTaskModal
               setShow={setShow}
-              isDisabled={data?.status === 1 || data?.status === 2}
-              isDateDisabled={data?.status === 1}
-            >
-              <SuccessAlert isSuccess={isUpdatingSuccess}>
-                Task successfully updated.
-              </SuccessAlert>
-            </TaskForm>
-            {show && taskId && (
-              <DeleteTaskModal
-                setShow={setShow}
-                show={show}
-                title={control._formValues.title}
-                taskId={taskId}
-              />
-            )}
-          </>
+              show={show}
+              title={control._formValues.title}
+              taskId={taskId}
+            />
+          )}
+        </>
+      ) : (
+        isError && (
+          <Stack flexGrow={1}>
+            <Alert severity="error" icon={<Info />}>
+              {formatErrorMessage(error)}
+            </Alert>
+          </Stack>
         )
       )}
     </>

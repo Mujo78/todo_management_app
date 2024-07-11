@@ -74,7 +74,11 @@ const TaskForm = <TFieldValues extends FieldValues>({
   return (
     <Stack gap={4} mx="auto" pt={3} flexGrow={1}>
       <Box display="flex">
-        <Button color="secondary" onClick={handleNavigateBack}>
+        <Button
+          aria-label="BackButton"
+          color="secondary"
+          onClick={handleNavigateBack}
+        >
           <ArrowBack />
         </Button>
         <Typography variant="h5" fontWeight={400} mx="auto" textAlign="center">
@@ -108,7 +112,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
                   flexGrow: 1,
                 }}
                 autoComplete="true"
-                //required
+                required
                 error={!!errors.title || isErrorForKey(error, "Title")}
                 helperText={
                   errors.title

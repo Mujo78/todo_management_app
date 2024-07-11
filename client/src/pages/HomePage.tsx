@@ -78,6 +78,7 @@ const HomePage = () => {
             },
             my: 0.1,
           }}
+          aria-label="AddNewTask"
           color="info"
           variant="contained"
           onClick={() => handleNavigate("/add-task")}
@@ -94,7 +95,7 @@ const HomePage = () => {
             <CircularProgress />
           </Stack>
         ) : isError ? (
-          <Alert color="error">{formatErrorMessage(error)}</Alert>
+          <Alert severity="error">{formatErrorMessage(error)}</Alert>
         ) : isSuccess &&
           ((tasks?.data && tasks.data.length === 0) || !tasks) ? (
           <Alert icon={<InfoIcon />} color="secondary">

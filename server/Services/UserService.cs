@@ -59,10 +59,16 @@ namespace server.Services
             if (BCrypt.Net.BCrypt.Verify(changePasswordDTO.NewPassword, user.Password))
                 throw new BadRequestException("New password cannot be the same as the old password.");
 
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordDTO.NewPassword, 12);
-            user.Password = hashedPassword;
-            bool isSuccess = await repository.SaveAsync();
-            if (!isSuccess) throw new Exception("Password not changed.");
+            try
+            {
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordDTO.NewPassword, 12);
+                user.Password = hashedPassword;
+                await repository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task Register(RegistrationDTO registrationDTO)

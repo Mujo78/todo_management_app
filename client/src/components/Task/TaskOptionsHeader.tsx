@@ -40,6 +40,7 @@ const TaskOptionsHeader: React.FC = () => {
       {tasksToAction.length > 0 && (
         <Stack flexDirection="row" flexGrow={1} justifyContent="space-between">
           <Button
+            aria-label="MakeTasksFinished"
             color="success"
             variant="contained"
             onClick={makeTasksCompleted}
@@ -50,6 +51,7 @@ const TaskOptionsHeader: React.FC = () => {
           </Button>
           <Button
             color="error"
+            aria-label="RemoveSelectedTasks"
             onClick={removeSelectedTasks}
             variant="contained"
           >
@@ -61,6 +63,7 @@ const TaskOptionsHeader: React.FC = () => {
       )}
       {tasks && tasks?.data.length > 0 && (
         <Button
+          aria-label="RemoveAllTasks"
           color="error"
           onClick={removeAllTasks}
           sx={{ marginLeft: "auto" }}
