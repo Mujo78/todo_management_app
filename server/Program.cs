@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Asp.Versioning;
 using server.Utils.Email;
+using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,13 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
     });
+});
+
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<GzipCompressionProvider>();
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes;
 });
 
 builder.Services.AddHangfireServer();
@@ -121,7 +129,7 @@ app.UseHttpsRedirection();
 app.UseCors(MyAllowAllOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseResponseCompression();
 app.MapControllers();
 
 var backgroundService = app.Services.GetRequiredService<IBackgroundJobService>();

@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import {
   createBrowserRouter,
   RouteObject,
@@ -6,18 +7,16 @@ import {
 import LandingPage from "./pages/LandingPage";
 import AppLayout from "./components/Layout/AppLayout";
 import HomeLayout from "./components/Layout/HomeLayout";
-import HomePage from "./pages/HomePage";
-import VerifyEmail from "./pages/VerifyEmail";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
+
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+
 import UserRequired from "./helpers/UserRequired";
 import Authorized from "./helpers/Authorized";
-import Profile from "./pages/User/Profile";
-import AddNewTask from "./pages/Task/AddNewTask";
-import EditTask from "./pages/Task/EditTask";
-import ProfileLayout from "./components/Layout/ProfileLayout";
-import EditProfile from "./pages/User/EditProfile";
-import ChangePassword from "./pages/User/ChangePassword";
+import userRoutes from "./routes/userRoutes";
+import ErrorPage from "./pages/ErrorPage";
+import SuspenseFallback from "./components/UI/SuspenseFallback";
 
 const routes: RouteObject = {
   path: "/",
@@ -32,50 +31,35 @@ const routes: RouteObject = {
       path: "/",
       element: <HomeLayout />,
       loader: UserRequired,
-      children: [
-        {
-          path: "/home",
-          element: <HomePage />,
-        },
-        {
-          path: "/profile",
-          element: <ProfileLayout />,
-          children: [
-            {
-              path: "",
-              element: <Profile />,
-            },
-            {
-              path: "edit",
-              element: <EditProfile />,
-            },
-            {
-              path: "change-password",
-              element: <ChangePassword />,
-            },
-          ],
-        },
-        {
-          path: "/add-task",
-          element: <AddNewTask />,
-        },
-        {
-          path: "/edit-task/:taskId",
-          element: <EditTask />,
-        },
-      ],
+      children: userRoutes,
     },
     {
       path: "/forgot-password",
-      element: <ForgotPassword />,
+      element: (
+        <Suspense fallback={<SuspenseFallback />}>
+          <ForgotPassword />
+        </Suspense>
+      ),
     },
     {
       path: "/verify-email/:token",
-      element: <VerifyEmail />,
+      element: (
+        <Suspense fallback={<SuspenseFallback />}>
+          <VerifyEmail />
+        </Suspense>
+      ),
     },
     {
       path: "/password-reset/:token",
-      element: <ResetPassword />,
+      element: (
+        <Suspense fallback={<SuspenseFallback />}>
+          <ResetPassword />
+        </Suspense>
+      ),
+    },
+    {
+      path: "*",
+      element: <ErrorPage />,
     },
   ],
 };

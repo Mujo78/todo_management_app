@@ -19,7 +19,6 @@ function useLogout() {
     onSuccess: () => {
       logout();
       navigate("/");
-      toast.success("Successfully logged out.");
     },
     onError: (error) => {
       toast.error(formatErrorMessage(error));
