@@ -2,9 +2,9 @@ import { Stack, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { UserProfileUpdateType } from "../../features/user/api";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { editProfileValidationSchema } from "../../validations/editProfileValidation";
+import { editProfileValidationSchema } from "../../validations/user/editProfileValidation";
 import useAuthStore, { UserType } from "../../app/authSlice";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import useUpdateProfile from "../../features/user/useUpdateUserProfile";
 import {
   formatErrorFieldMessage,
@@ -33,11 +33,15 @@ const EditProfile = () => {
     }
   };
 
-  useEffect(() => {
-    if (auth?.user) {
+  const memoizedReset = useCallback(() => {
+    if (auth && auth.user) {
       reset(auth.user);
     }
   }, [auth, reset]);
+
+  useEffect(() => {
+    memoizedReset();
+  }, [memoizedReset]);
 
   return (
     <Stack

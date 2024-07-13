@@ -42,10 +42,17 @@ const AppSidebar: React.FC = () => {
           boxShadow: 1,
           cursor: "pointer",
         }}
+        maxWidth="100%"
         gap={2}
       >
         <Avatar />
-        <Typography paragraph my="auto">
+        <Typography
+          paragraph
+          maxWidth="100%"
+          textAlign="center"
+          my="auto"
+          sx={{ overflowWrap: "break-word" }}
+        >
           {auth?.user.name}
         </Typography>
       </Stack>

@@ -13,7 +13,6 @@ const TaskSearchInput: React.FC = () => {
     if (taskName !== "") {
       query.set("pageNum", "1");
       query.set("name", taskName);
-      setTaskName("");
 
       navigate(`/home?${query.toString()}`);
     }

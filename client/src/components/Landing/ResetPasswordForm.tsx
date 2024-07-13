@@ -1,5 +1,5 @@
 import React from "react";
-import { resetPasswordValidationSchema } from "../../validations/resetPasswordValidation";
+import { resetPasswordValidationSchema } from "../../validations/user/resetPasswordValidation";
 import { useParams } from "react-router-dom";
 import { ResetPasswordType } from "../../features/user/api";
 import { yupResolver } from "@hookform/resolvers/yup";

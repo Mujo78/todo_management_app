@@ -1,17 +1,16 @@
+import { useMemo, useState } from "react";
 import { Box, Stack, Tab, Tabs } from "@mui/material";
 import { Login, HowToReg } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import { useSearchQuery } from "../hooks/useSearchQuery";
-import LoginForm from "../components/Landing/LoginForm";
-import SignupForm from "../components/Landing/SignupForm";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import Info from "../components/Landing/Info";
 
 const LandingPage = () => {
-  const navigate = useNavigate();
-  const currentTab = useSearchQuery().get("tab") || "login";
+  const location = useLocation().pathname === "/signup";
+  const initialValue = useMemo(() => (location ? 1 : 0), [location]);
+  const [value, setValue] = useState<number>(initialValue);
 
-  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
-    navigate(`?tab=${newValue}`);
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
   };
 
   return (
@@ -43,12 +42,18 @@ const LandingPage = () => {
         <Box maxWidth="100%">
           <Tabs
             centered
-            value={currentTab}
+            value={value}
             onChange={handleChange}
             aria-label="icon tabs"
+            role="navigation"
           >
-            <Tab value="login" icon={<Login />} aria-label="login" />
-            <Tab value="signup" icon={<HowToReg />} aria-label="signup" />
+            <Tab component={Link} to="" icon={<Login />} aria-label="login" />
+            <Tab
+              component={Link}
+              to="signup"
+              icon={<HowToReg />}
+              aria-label="signup"
+            />
           </Tabs>
         </Box>
         <Box
@@ -58,8 +63,7 @@ const LandingPage = () => {
           flexGrow={1}
           display="flex"
         >
-          {currentTab === "login" && <LoginForm />}
-          {currentTab === "signup" && <SignupForm />}
+          <Outlet />
         </Box>
       </Stack>
       <Stack

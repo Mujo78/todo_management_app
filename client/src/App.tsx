@@ -17,6 +17,8 @@ import Authorized from "./helpers/Authorized";
 import userRoutes from "./routes/userRoutes";
 import ErrorPage from "./pages/ErrorPage";
 import SuspenseFallback from "./components/UI/SuspenseFallback";
+import SignupForm from "./components/Landing/SignupForm";
+import LoginForm from "./components/Landing/LoginForm";
 
 const routes: RouteObject = {
   path: "/",
@@ -26,6 +28,16 @@ const routes: RouteObject = {
       path: "/",
       element: <LandingPage />,
       loader: Authorized,
+      children: [
+        {
+          path: "",
+          element: <LoginForm />,
+        },
+        {
+          path: "signup",
+          element: <SignupForm />,
+        },
+      ],
     },
     {
       path: "/",

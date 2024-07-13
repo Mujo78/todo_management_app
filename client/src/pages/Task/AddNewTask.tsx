@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { addTaskValidationSchema } from "../../validations/addNewTaskValidation";
+import { addTaskValidationSchema } from "../../validations/task/addNewTaskValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateUpdateTaskType } from "../../app/taskSlice";
 import useCreateTask from "../../features/tasks/useCreateNewTask";

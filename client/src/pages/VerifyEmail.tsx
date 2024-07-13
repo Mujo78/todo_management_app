@@ -1,5 +1,5 @@
 import { CircularProgress, Stack, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import useVerifyEmail from "../features/user/useVerifyEmail";
 import { formatErrorMessage } from "../components/utils/userUtils";
@@ -10,11 +10,18 @@ const VerifyEmail = () => {
   const { verifyEmail, isPending, error, isError, isSuccess } =
     useVerifyEmail();
 
+  const memoizedVerifyEmail = useCallback(
+    (token: string) => {
+      verifyEmail(token);
+    },
+    [verifyEmail]
+  );
+
   useEffect(() => {
     if (token) {
-      verifyEmail(token);
+      memoizedVerifyEmail(token);
     }
-  }, [token, verifyEmail]);
+  }, [token, memoizedVerifyEmail]);
 
   return (
     <Stack width="100%" height="100vh" p={{ xs: 2, sm: 4 }}>

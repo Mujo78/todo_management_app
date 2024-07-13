@@ -2,7 +2,7 @@ import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack, Typography, TextField, FormHelperText } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { signupValidationSchema } from "../../validations/signupValidation";
+import { signupValidationSchema } from "../../validations/user/signupValidation";
 import PasswordInput from "../UI/PasswordInput";
 import { UserAccountDataType } from "../../features/user/api";
 import useSignup from "../../features/user/useSignup";

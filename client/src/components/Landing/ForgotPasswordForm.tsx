@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { ForgotPasswordType } from "../../features/user/api";
-import { forgotPasswordValidationSchema } from "../../validations/forgotPasswordValidation";
+import { forgotPasswordValidationSchema } from "../../validations/user/forgotPasswordValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useForgotPassword from "../../features/user/useForgotPassword";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +39,7 @@ const ForgotPasswordForm: React.FC = () => {
   };
 
   const handleNavigate = () => {
-    navigate("/?tab=login");
+    navigate("/");
   };
 
   return (

@@ -12,7 +12,7 @@ import { AxiosError } from "axios";
 import { formatErrorMessage } from "../../components/utils/userUtils";
 import { BarChart, BarSeriesType, Gauge } from "@mui/x-charts";
 import DeleteProfileModal from "../../components/User/DeleteProfileModal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const Profile = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -30,12 +30,14 @@ const Profile = () => {
     setShow(true);
   };
 
-  const assignmentArray =
-    data &&
-    Object.entries(data?.assignmentCount).map(([key, value]) => ({
+  const assignmentArray = useMemo(() => {
+    if (!data) return [];
+
+    return Object.entries(data.assignmentCount).map(([key, value]) => ({
       data: [value],
       label: key.charAt(0).toUpperCase() + key.slice(1),
     }));
+  }, [data]);
 
   return (
     <>

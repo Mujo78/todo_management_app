@@ -3,7 +3,7 @@ import useGetTask from "../../features/tasks/useGetTask";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateUpdateTaskType, TaskType } from "../../app/taskSlice";
-import { addTaskValidationSchema } from "../../validations/addNewTaskValidation";
+import { addTaskValidationSchema } from "../../validations/task/addNewTaskValidation";
 import { useEffect, useState } from "react";
 import TaskForm from "../../components/Task/TaskForm";
 import useUpdateTask from "../../features/tasks/useUpdateTask";
@@ -34,8 +34,8 @@ const EditTask = () => {
 
   useEffect(() => {
     if (data && isSuccess) {
-      data.dueDate = new Date(data.dueDate);
-      reset(data);
+      const updatedData = { ...data, dueDate: new Date(data.dueDate) };
+      reset(updatedData);
     }
   }, [data, reset, isSuccess]);
 

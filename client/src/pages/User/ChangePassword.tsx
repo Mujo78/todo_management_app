@@ -1,7 +1,7 @@
 import { FormHelperText, Stack } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { ChangePasswordType } from "../../features/user/api";
-import { changePasswordValidationSchema } from "../../validations/changePassword";
+import { changePasswordValidationSchema } from "../../validations/user/changePassword";
 import { yupResolver } from "@hookform/resolvers/yup";
 import PasswordInput from "../../components/UI/PasswordInput";
 import useChangePassword from "../../features/user/useChangePassword";

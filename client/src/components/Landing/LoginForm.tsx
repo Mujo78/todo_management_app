@@ -2,7 +2,7 @@ import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormHelperText, Stack, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { loginValidationSchema } from "../../validations/loginValidation";
+import { loginValidationSchema } from "../../validations/user/loginValidation";
 import PasswordInput from "../UI/PasswordInput";
 import useLogin from "../../features/auth/useLogin";
 import { LogindDataType } from "../../features/auth/api";
@@ -15,7 +15,7 @@ import LoadingButton from "../UI/LoadingButton";
 import { Link } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
-  const { control, formState, handleSubmit } = useForm<LogindDataType>({
+  const { control, formState, handleSubmit, reset } = useForm<LogindDataType>({
     resolver: yupResolver(loginValidationSchema),
   });
   const { errors, isDirty } = formState;
@@ -24,7 +24,7 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = (values: LogindDataType) => {
     if (!isPending && isDirty) {
-      login(values);
+      login(values, { onSuccess: () => reset() });
     }
   };
 
