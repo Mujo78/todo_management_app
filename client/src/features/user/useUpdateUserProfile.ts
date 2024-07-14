@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { UpdateProfileFn } from "./api";
 import useAuthStore, { UserType } from "../../app/authSlice";
 import toast from "react-hot-toast";
-import { formatErrorMessage } from "../../components/utils/userUtils";
+import { formatErrorMessage } from "../../components/utils/user/userUtils";
 
 function useUpdateProfile() {
   const { updateUserInfo } = useAuthStore();

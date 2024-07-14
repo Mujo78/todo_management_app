@@ -4,7 +4,7 @@ import { ChangePasswordFn, ChangePasswordType } from "./api";
 import {
   formatErrorMessage,
   isErrorForKey,
-} from "../../components/utils/userUtils";
+} from "../../components/utils/user/userUtils";
 import toast from "react-hot-toast";
 
 function useChangePassword() {

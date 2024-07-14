@@ -4,7 +4,7 @@ import { UserLogoutFn } from "./api";
 import { AxiosError } from "axios";
 import useAuthStore from "../../app/authSlice";
 import toast from "react-hot-toast";
-import { formatErrorMessage } from "../../components/utils/userUtils";
+import { formatErrorMessage } from "../../components/utils/user/userUtils";
 
 function useLogout() {
   const navigate = useNavigate();

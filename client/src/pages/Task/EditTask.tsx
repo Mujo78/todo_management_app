@@ -11,7 +11,7 @@ import SuccessAlert from "../../components/UI/SuccessAlert";
 import { Alert, CircularProgress, Stack } from "@mui/material";
 import DeleteTaskModal from "../../components/Task/DeleteTaskModal";
 import { Info } from "@mui/icons-material";
-import { formatErrorMessage } from "../../components/utils/userUtils";
+import { formatErrorMessage } from "../../components/utils/user/userUtils";
 
 const EditTask = () => {
   const [show, setShow] = useState<boolean>(false);

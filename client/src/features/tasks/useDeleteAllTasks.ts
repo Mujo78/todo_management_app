@@ -3,7 +3,7 @@ import { DeleteAllTaskFn } from "./api";
 import { AxiosError } from "axios";
 import useTaskStore from "../../app/taskSlice";
 import toast from "react-hot-toast";
-import { formatErrorMessage } from "../../components/utils/userUtils";
+import { formatErrorMessage } from "../../components/utils/user/userUtils";
 
 function useDeleteAllTasks() {
   const { initialize } = useTaskStore();

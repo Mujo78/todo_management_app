@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import {
   formatErrorMessage,
   isErrorForKey,
-} from "../../components/utils/userUtils";
+} from "../../components/utils/user/userUtils";
 
 function useUpdateTask() {
   const {

@@ -2,7 +2,7 @@ import { CircularProgress, Stack, Typography } from "@mui/material";
 import { useCallback, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import useVerifyEmail from "../features/user/useVerifyEmail";
-import { formatErrorMessage } from "../components/utils/userUtils";
+import { formatErrorMessage } from "../components/utils/user/userUtils";
 import SuccessAlert from "../components/UI/SuccessAlert";
 
 const VerifyEmail = () => {

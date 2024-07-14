@@ -9,7 +9,7 @@ import {
   formatErrorFieldMessage,
   formatErrorMessage,
   isErrorForKey,
-} from "../../components/utils/userUtils";
+} from "../../components/utils/user/userUtils";
 import LoadingButton from "../../components/UI/LoadingButton";
 
 const ChangePassword = () => {

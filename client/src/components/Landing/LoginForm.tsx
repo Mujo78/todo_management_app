@@ -10,7 +10,7 @@ import {
   formatErrorFieldMessage,
   formatErrorMessage,
   isErrorForKey,
-} from "../utils/userUtils";
+} from "../utils/user/userUtils";
 import LoadingButton from "../UI/LoadingButton";
 import { Link } from "react-router-dom";
 
@@ -36,7 +36,7 @@ const LoginForm: React.FC = () => {
         mt={{ sm: 2 }}
         textAlign="center"
       >
-        Log in to You Account
+        Log in to Your Account
       </Typography>
       <Stack
         onSubmit={handleSubmit(onSubmit)}

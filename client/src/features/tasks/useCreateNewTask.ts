@@ -3,7 +3,7 @@ import { CreateTaskFn } from "./api";
 import { AxiosError } from "axios";
 import { CreateUpdateTaskType, TaskType } from "../../app/taskSlice";
 import toast from "react-hot-toast";
-import { formatErrorMessage } from "../../components/utils/userUtils";
+import { formatErrorMessage } from "../../components/utils/user/userUtils";
 
 function useCreateTask() {
   const {

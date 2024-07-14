@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { DeleteMyProfileFn } from "./api";
-import { formatErrorMessage } from "../../components/utils/userUtils";
+import { formatErrorMessage } from "../../components/utils/user/userUtils";
 import toast from "react-hot-toast";
 import useAuthStore from "../../app/authSlice";
 

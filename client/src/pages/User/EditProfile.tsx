@@ -9,7 +9,7 @@ import useUpdateProfile from "../../features/user/useUpdateUserProfile";
 import {
   formatErrorFieldMessage,
   isErrorForKey,
-} from "../../components/utils/userUtils";
+} from "../../components/utils/user/userUtils";
 import LoadingButton from "../../components/UI/LoadingButton";
 
 const EditProfile = () => {
