@@ -2,17 +2,17 @@ import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack, Typography, TextField, FormHelperText } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { signupValidationSchema } from "../../validations/user/signupValidation";
-import PasswordInput from "../UI/PasswordInput";
-import { UserAccountDataType } from "../../features/user/api";
-import useSignup from "../../features/user/useSignup";
+import { signupValidationSchema } from "../../../validations/user/signupValidation";
+import PasswordInput from "../../UI/PasswordInput";
+import { UserAccountDataType } from "../../../features/user/api";
+import useSignup from "../../../features/user/useSignup";
 import {
   formatErrorFieldMessage,
   formatErrorMessage,
   isErrorForKey,
-} from "../utils/user/userUtils";
-import SuccessAlert from "../UI/SuccessAlert";
-import LoadingButton from "../UI/LoadingButton";
+} from "../../utils/user/userUtils";
+import SuccessAlert from "../../UI/SuccessAlert";
+import LoadingButton from "../../UI/LoadingButton";
 
 const SignupForm: React.FC = () => {
   const { control, formState, handleSubmit, reset } =

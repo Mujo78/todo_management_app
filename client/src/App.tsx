@@ -17,8 +17,8 @@ import Authorized from "./helpers/Authorized";
 import userRoutes from "./routes/userRoutes";
 import ErrorPage from "./pages/ErrorPage";
 import SuspenseFallback from "./components/UI/SuspenseFallback";
-import SignupForm from "./components/Landing/SignupForm";
-import LoginForm from "./components/Landing/LoginForm";
+import SignupForm from "./components/Landing/SignupForm/SignupForm";
+import LoginForm from "./components/Landing/LoginForm/LoginForm";
 
 const routes: RouteObject = {
   path: "/",

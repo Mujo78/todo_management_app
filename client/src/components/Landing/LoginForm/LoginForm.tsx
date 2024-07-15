@@ -2,16 +2,16 @@ import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormHelperText, Stack, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { loginValidationSchema } from "../../validations/user/loginValidation";
-import PasswordInput from "../UI/PasswordInput";
-import useLogin from "../../features/auth/useLogin";
-import { LogindDataType } from "../../features/auth/api";
+import { loginValidationSchema } from "../../../validations/user/loginValidation";
+import PasswordInput from "../../UI/PasswordInput";
+import useLogin from "../../../features/auth/useLogin";
+import { LogindDataType } from "../../../features/auth/api";
 import {
   formatErrorFieldMessage,
   formatErrorMessage,
   isErrorForKey,
-} from "../utils/user/userUtils";
-import LoadingButton from "../UI/LoadingButton";
+} from "../../utils/user/userUtils";
+import LoadingButton from "../../UI/LoadingButton";
 import { Link } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
@@ -35,6 +35,7 @@ const LoginForm: React.FC = () => {
         fontWeight={700}
         mt={{ sm: 2 }}
         textAlign="center"
+        role="title"
       >
         Log in to Your Account
       </Typography>
@@ -104,6 +105,7 @@ const LoginForm: React.FC = () => {
         to="/forgot-password"
         fontSize="small"
         mx="auto"
+        role="link"
         color="primary.main"
       >
         Forgot Password?
