@@ -6,6 +6,7 @@ import LandingPage from "../../pages/LandingPage";
 import LoginForm from "../../components/Landing/LoginForm/LoginForm";
 import SignupForm from "../../components/Landing/SignupForm/SignupForm";
 import ForgotPassword from "../../pages/ForgotPassword";
+import ResetPassword from "../../pages/ResetPassword";
 
 export const renderWithRouter = (initialEntries: string[]) => {
   return render(
@@ -18,6 +19,7 @@ export const renderWithRouter = (initialEntries: string[]) => {
           </Route>
 
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/password-reset/:token" element={<ResetPassword />} />
         </Routes>
       </QueryClientProvider>
     </MemoryRouter>

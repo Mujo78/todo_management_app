@@ -19,8 +19,14 @@ using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
+
 // Add services to the container.
-var connString = builder.Configuration.GetConnectionString("DefaultSQLConnection");
+var connStringToUse = builder.Environment.IsStaging() ? "StageSQLConnection" : "DefaultSQLConnection";
+var connString = builder.Configuration.GetConnectionString(connStringToUse);
 builder.Services.AddDbContext<ApplicationDBContext>(opt =>
 {
     opt.UseSqlServer(connString);
@@ -115,12 +121,19 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI(opt => {
         opt.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDo_API_V1");
     });
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<ApplicationDBContext>();
+    dbContext.Database.EnsureCreated();
 }
 
 app.UseHangfireDashboard();
