@@ -45,16 +45,15 @@ const ChangePassword = () => {
         label="Password"
         error={
           !!errors.oldPassword ||
-          ((isErrorForKey(error, "old password") ||
-            isErrorForKey(error, "OldPassword")) &&
-            !isErrorForKey(error, "new password"))
+          isErrorForKey(error, "old password") ||
+          isErrorForKey(error, "OldPassword")
         }
         errorMessage={errors.oldPassword?.message}
       >
         {!errors.oldPassword &&
           (isErrorForKey(error, "old password") ||
             isErrorForKey(error, "OldPassword")) &&
-          !isErrorForKey(error, "new password") && (
+          !isErrorForKey(error, "New Password") && (
             <FormHelperText component="span">
               {formatErrorMessage(error) ||
                 formatErrorFieldMessage(error, "OldPassword")}

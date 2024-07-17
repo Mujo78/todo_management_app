@@ -6,7 +6,7 @@ namespace server.DTO.User
     public class ResetPasswordDTO
     {
         [Required(ErrorMessage = "The New Password field is required.")]
-        [PasswordValidation]
+        [PasswordValidation("New Password")]
         public required string NewPassword { get; set; }
 
         [Required(ErrorMessage = "The Confirm New Password field is required.")]

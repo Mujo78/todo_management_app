@@ -81,7 +81,7 @@ namespace server.Controllers.v1
 
         public async Task<ActionResult> UpdateMyProfile([FromBody] UserUpdateDTO updateDTO)
         {
-            if (updateDTO == null) return BadRequest();
+            if (updateDTO == null) return BadRequest("Please provide valid user data to update your profile.");
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var user = await userService.UpdateUser(updateDTO);

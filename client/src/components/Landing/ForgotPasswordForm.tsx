@@ -77,6 +77,8 @@ const ForgotPasswordForm: React.FC = () => {
                       <FormHelperText component="span" error>
                         {isErrorForKey(error, "Email")
                           ? formatErrorFieldMessage(error, "Email")
+                          : isErrorForKey(error, "reset password")
+                          ? formatErrorFieldMessage(error, "reset password")
                           : formatErrorMessage(error)}
                       </FormHelperText>
                     )

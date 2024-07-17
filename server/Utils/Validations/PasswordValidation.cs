@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace server.Utils.Validations
 {
-    public class PasswordValidation : ValidationAttribute
+    public class PasswordValidation(string FieldName) : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
@@ -11,7 +11,7 @@ namespace server.Utils.Validations
 
             if (value != null && !value.Equals("") && !Regex.IsMatch((string)value, regPattern))
             {
-                return new ValidationResult("Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.");
+                return new ValidationResult($"{FieldName} must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.");
             }
 
             return ValidationResult.Success;

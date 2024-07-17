@@ -131,7 +131,7 @@ namespace server.Services
         public async Task ForgotPassword(string email)
         {
             var user = await repository.GetUser(email) ?? throw new NotFoundException("User not found.");
-            var tokenFounded = repository.ResetPasswordTokenIsValidAndExists(user);
+            bool tokenFounded = repository.ResetPasswordTokenIsValidAndExists(user);
 
             if (tokenFounded) throw new ConflictException("Reset password link already created. Please check your inbox.");
 
@@ -140,7 +140,7 @@ namespace server.Services
                 UserId = user.Id,
                 Token = Guid.NewGuid().ToString(),
                 TokenType = TokenType.PasswordReset,
-                ExpiresAt = DateTime.Now.AddMinutes(1),
+                ExpiresAt = DateTime.Now.AddHours(1),
                 CreatedAt = DateTime.Now,
             };
 

@@ -16,7 +16,6 @@ export const changePasswordValidationSchema = Yup.object({
     }),
   confirmNewPassword: Yup.string()
     .required("Confirm password is required.")
-    .min(8, "Password must be at least 8 characters long.")
     .test(
       "password-match",
       "Confirm Password must match with new password.",
