@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Newtonsoft.Json.Linq;
 using server.Controllers.v1;
 using server.DTO.Auth;
 using server.DTO.User;
 using server.Services.IService;
-using System.ComponentModel;
 
 namespace server.Tests.Controllers
 {
@@ -65,7 +63,7 @@ namespace server.Tests.Controllers
         {
             RegistrationDTO? registrationDTO = null;
             
-            var result = await _controller.Registration(registrationDTO);
+            var result = await _controller.Registration(registrationDTO!);
             
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("Please provide valid data for registration.", badRequestResult.Value);
@@ -109,7 +107,7 @@ namespace server.Tests.Controllers
         {
             ForgotPasswordDTO? forgotPasswordDTO = null;
 
-            var result = await _controller.ForgotPassword(forgotPasswordDTO);
+            var result = await _controller.ForgotPassword(forgotPasswordDTO!);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("Please provide valid email address.", badRequestResult.Value);
@@ -121,7 +119,7 @@ namespace server.Tests.Controllers
             ResetPasswordDTO? resetPasswordDTO = null;
             string token = "";
 
-            var result = await _controller.ResetPassword(token, resetPasswordDTO);
+            var result = await _controller.ResetPassword(token, resetPasswordDTO!);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("Please provide valid data to change password.", badRequestResult.Value);
@@ -170,7 +168,7 @@ namespace server.Tests.Controllers
         {
             UserUpdateDTO? userUpdateDTO = null;
 
-            var result = await _controller.UpdateMyProfile(userUpdateDTO);
+            var result = await _controller.UpdateMyProfile(userUpdateDTO!);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("Please provide valid user data to update your profile.", badRequestResult.Value);
@@ -273,7 +271,7 @@ namespace server.Tests.Controllers
         {
             ChangePasswordDTO? changePasswordDTO = null;
 
-            var result = await _controller.ChangePassword(changePasswordDTO);
+            var result = await _controller.ChangePassword(changePasswordDTO!);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("Please provide valid data for changing password.", badRequestResult.Value);

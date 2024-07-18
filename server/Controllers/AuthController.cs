@@ -42,7 +42,7 @@ namespace server.Controllers
                 AccessToken = tokenToReturn.AccessToken,
                 User = tokenToReturn.User
             };
-            
+
             return Ok(loginDataDTO);
         }
 
@@ -72,25 +72,17 @@ namespace server.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Logout()
         {
-            try
-            {
-                string refreshToken = Request.Cookies["refreshToken"]!;
-                if (string.IsNullOrEmpty(refreshToken)) throw new BadRequestException("Invalid token provided.");
+            string refreshToken = Request.Cookies["refreshToken"]!;
+            if (string.IsNullOrEmpty(refreshToken)) throw new BadRequestException("Invalid token provided.");
 
-                await authService.Logout(refreshToken);
-                Response.Cookies.Delete("refreshToken", new CookieOptions
-                {
-                    Secure = true,
-                    HttpOnly = true,
-                    SameSite = SameSiteMode.None,
-                });
-                return Ok("Logged out successfully.");
-
-            }
-            catch(Exception ex)
+            await authService.Logout(refreshToken);
+            Response.Cookies.Delete("refreshToken", new CookieOptions
             {
-                throw new Exception(ex.Message);
-            }
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+            });
+            return Ok("Logged out successfully.");
         }
 
     }

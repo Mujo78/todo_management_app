@@ -8,7 +8,7 @@ namespace server.Utils.Validations
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
 
-            if(value == null)
+            if(value == null || value is not DateTime)
             {
                 return new ValidationResult("Invalid date!");
             }
