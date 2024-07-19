@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
 using server.Controllers.v1;
+using server.DTO.Assignment;
 using server.DTO.Auth;
 using server.DTO.User;
 using server.Services.IService;
@@ -161,6 +162,45 @@ namespace server.Tests.Controllers
 
             var isSuccess = Assert.IsType<OkObjectResult>(result);
             Assert.Equal("Password successfully changed.", isSuccess.Value);
+        }
+
+        [Fact]
+        public async Task GetMyInfo_ShouldBeSuccess()
+        {
+
+            var userDTO = new UserDTO
+            {
+                Name = "Test User One",
+                EmailConfirmed = true,
+                Id = Guid.NewGuid(),
+                CreatedAt = DateTime.UtcNow.AddDays(-2),
+                Email = "user@gmail.com",
+            };
+
+            var assignmentCountDTO = new AssignmentCountDTO
+            {
+                Total = 3,
+                Completed = 1,
+                Failed = 1,
+                Open = 1
+            };
+
+            var myInfoDTO = new MyInfoDTO
+            {
+                AssignmentCount = assignmentCountDTO,
+                Average = 1,
+                User = userDTO
+            };
+
+            _userServiceMock.Setup(service => service.GetMyProfileInfo()).ReturnsAsync(myInfoDTO);
+
+            var result = await _controller.GetMyInfo();
+
+            var isSuccess = Assert.IsType<OkObjectResult>(result);
+            var value = Assert.IsType<MyInfoDTO>(isSuccess.Value);
+            Assert.Equal(myInfoDTO.User.Id, value.User.Id);
+            Assert.Equal(myInfoDTO.AssignmentCount.Total, value.AssignmentCount.Total);
+            Assert.Equal(myInfoDTO.Average, value.Average);
         }
 
         [Fact]
