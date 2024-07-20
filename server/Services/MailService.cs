@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using server.Services.IService;
 using server.Utils.Email;
+using System.Reflection;
 
 namespace server.Services
 {
@@ -40,7 +41,7 @@ namespace server.Services
                     EmailSubject = "Profile Deleted",
                     EmailBody = "Your account has been successfully deleted from the ToDo Management System. We're sad to see you leave, but we understand that sometimes priorities change.",
                 };
-                string filePath = Directory.GetCurrentDirectory() + "\\Utils\\Email\\Views\\DeleteProfile.html";
+                string filePath = GetTemplatePath("DeleteProfile.html");
                 string emailTemplateText = File.ReadAllText(filePath);
                 
                 BodyBuilder emailBodyBuilder = new()
@@ -72,7 +73,7 @@ namespace server.Services
                     $"To reset your password, click on the button below:\n" +
                     $"{verificationLink}",
                 };
-                string filePath = Directory.GetCurrentDirectory() + "\\Utils\\Email\\Views\\ForgotPassword.html";
+                string filePath = GetTemplatePath("ForgotPassword.html");
                 string emailTemplateText = File.ReadAllText(filePath);
 
                 emailTemplateText = emailTemplateText.Replace("{{Name}}", data.EmailToName);
@@ -105,7 +106,7 @@ namespace server.Services
                     EmailBody = $"Verify your email address with with the link: {verificationLink}",
                 };
 
-                string filePath = Directory.GetCurrentDirectory() + "\\Utils\\Email\\Views\\VerifyEmail.html";
+                string filePath = GetTemplatePath("VerifyEmail.html");
                 string emailTemplateText = File.ReadAllText(filePath);
 
                 emailTemplateText = emailTemplateText.Replace("{{Name}}", data.EmailToName);
@@ -139,7 +140,7 @@ namespace server.Services
                         $"We are happy to have you on board. Within the system, you can create, update, delete and see all of your future plans and goals that you are ready to successfully accomplish. \n\n" +
                         $"Don't hesitate to get in touch if you have any questions. We will always get back to you. :)",
                 };
-                string filePath = Directory.GetCurrentDirectory() + "\\Utils\\Email\\Views\\Welcome.html";
+                string filePath = GetTemplatePath("Welcome.html");
                 string emailTemplateText = File.ReadAllText(filePath);
 
                 BodyBuilder emailBodyBuilder = new()
@@ -153,6 +154,13 @@ namespace server.Services
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        private string GetTemplatePath(string templateName)
+        {
+            var pathTemp = configuration.GetValue<string>("TemplatePath");
+            string templatePath = Path.Combine(pathTemp!, templateName);
+            return templatePath;
         }
     }
 }
