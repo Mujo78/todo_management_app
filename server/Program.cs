@@ -151,3 +151,4 @@ RecurringJob.AddOrUpdate("UserTokenCleanupJob", () => backgroundService.CleanupI
 RecurringJob.AddOrUpdate("MakeAssignmentsFailed", () => backgroundService.MakeAssignmentsFailed(), "0 0 */2 * *");
 
 app.Run();
+public partial class Program { }

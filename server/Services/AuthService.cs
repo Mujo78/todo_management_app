@@ -145,7 +145,6 @@ namespace server.Services
             string tokenStr = tokenHandler.WriteToken(token);
 
             return tokenStr;
-
         }
 
         public string GenerateRefreshToken()
@@ -159,12 +158,17 @@ namespace server.Services
         public bool IsAccessTokenValid(string accessToken, Guid expectedUserId, string jwtTokenId)
         {
             var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(accessToken);
+            var tokenIsValidToken = handler.CanReadToken(accessToken);
 
-            var userId = token.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-            var tokenId = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
+            if (tokenIsValidToken)
+            {
+                var token = handler.ReadJwtToken(accessToken);
+                var userId = token.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+                var tokenId = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
-            return userId != null && tokenId != null && new Guid(userId).Equals(expectedUserId) && tokenId.Equals(jwtTokenId);
+                return userId != null && tokenId != null && new Guid(userId).Equals(expectedUserId) && tokenId.Equals(jwtTokenId);
+            }
+            return false;
         }
 
         public Guid? GetUserId()

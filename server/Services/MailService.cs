@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using server.Services.IService;
 using server.Utils.Email;
-using System.Reflection;
 
 namespace server.Services
 {
