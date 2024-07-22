@@ -1,10 +1,6 @@
 ﻿using System.Net.Http.Json;
 using System.Net;
 using server.DTO.Auth;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace server.IntegrationTests.Controllers
 {
@@ -101,27 +97,7 @@ namespace server.IntegrationTests.Controllers
         [Fact]
         public async Task RefreshAccessToken_ShouldBeSuccess()
         {
-            Guid userOneId = Guid.Parse("e569a650-3491-4833-a425-1d6412317b1e");
-            Guid refreshTokenJTI = Guid.Parse("18b62733-3733-405d-9a83-bd5efa55435d");
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("accessTokenForTestingOnlyKeyGoesHere" ?? "");
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new(JwtRegisteredClaimNames.Jti, refreshTokenJTI.ToString()),
-                    new("userId", userOneId.ToString()),
-                    new(JwtRegisteredClaimNames.Email, "user12345@gmail.com"),
-                    new(JwtRegisteredClaimNames.Name, "User Test Integration Name"),
-                }),
-                Expires = DateTime.Now.AddSeconds(1),
-                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            string accessToken = tokenHandler.WriteToken(token);
-
+            string accessToken = GenerateAccessTokenForTesting(DateTime.Now.AddSeconds(1));
             string refreshToken = "s1mpl3-r3fr36h-t0k3n";
 
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
@@ -135,5 +111,35 @@ namespace server.IntegrationTests.Controllers
             Assert.IsType<AccessTokenDTO>(content);
         }
 
+        [Fact]
+        public async Task Logout_ShouldReturnUnauthorized()
+        {
+            var response = await _client.DeleteAsync("/api/auth/logout");
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Logout_ShouldReturnNotFound_WhenRefreshTokenNotExists()
+        {
+            var authClient = _authorizedClient;
+            authClient.DefaultRequestHeaders.Add("Cookie", $"refreshToken=refreshToken");
+            var response = await authClient.DeleteAsync("/api/auth/logout");
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+            Assert.NotNull(content);
+            Assert.Equal("Invalid token provided.", content!.Detail);
+        }
+
+        [Fact]
+        public async Task Logout_ShouldBeSuccess()
+        {
+            var response = await _authorizedClient.DeleteAsync("/api/auth/logout");
+
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.NotNull(content);
+            Assert.Equal("Logged out successfully.", content);
+        }
     }
 }

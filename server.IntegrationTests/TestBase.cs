@@ -1,8 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using FluentAssertions.Common;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using server.Data;
 using server.Models;
+using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace server.IntegrationTests
 {
@@ -10,17 +17,23 @@ namespace server.IntegrationTests
     public class TestBase(ServerWebApplicationFactory factory) : IAsyncLifetime
     {
         private readonly ServerWebApplicationFactory _factory = factory;
+        public static IConfiguration _configuration;
         private AsyncServiceScope _scope;
         protected IServiceProvider _services;
         protected HttpClient _client;
+        protected HttpClient _authorizedClient;
 
         public async Task InitializeAsync()
         {
+            var builder = new ConfigurationBuilder().AddUserSecrets<TestBase>();
+            _configuration = builder.Build();
             _client = _factory.CreateClient(new WebApplicationFactoryClientOptions());
+            _authorizedClient = CreateClientWithAuth();
             _scope = _factory.Services.CreateAsyncScope();
             _services = _scope.ServiceProvider;
-
+            
             ClearDatabaseAsync();
+
             await EnsureDatabaseCreatedAsync();
             await SeedDataAsync();
         }
@@ -53,10 +66,54 @@ namespace server.IntegrationTests
             await _scope.DisposeAsync();
         }
 
+        private HttpClient CreateClientWithAuth()
+        {
+            var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false,
+            });
+            string accessToken = GenerateAccessTokenForTesting(DateTime.Now.AddHours(2));
+            string refreshToken = "s1mpl3-r3fr36h-t0k3n";
+
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            client.DefaultRequestHeaders.Add("Cookie", $"refreshToken={refreshToken}");
+            return client;
+        }
+
+        public static string GenerateAccessTokenForTesting(DateTime expiresAt)
+        {
+            var secretKey = _configuration.GetValue<string>("ApiSettings:Secret");
+            Guid userOneId = Guid.Parse("e569a650-3491-4833-a425-1d6412317b1e");
+            Guid refreshTokenJTI = Guid.Parse("18b62733-3733-405d-9a83-bd5efa55435d");
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secretKey ?? "");
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new(JwtRegisteredClaimNames.Jti, refreshTokenJTI.ToString()),
+                    new("userId", userOneId.ToString()),
+                    new(JwtRegisteredClaimNames.Email, "user12345@gmail.com"),
+                    new(JwtRegisteredClaimNames.Name, "User Test Integration Name"),
+                }),
+                Expires = expiresAt,
+                Issuer = _configuration.GetValue<string>("ApiSettings:Issuer")!,
+                Audience = _configuration.GetValue<string>("ApiSettings:Audience")!,
+                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            string accessToken = tokenHandler.WriteToken(token);
+            return accessToken;
+        }
+
         private void SeedDatabase(ApplicationDBContext dbContext)
         {
             if (dbContext.Database.CanConnect() && !dbContext.Users.Any())
             {
+                Guid assignmentId = Guid.Parse("d2bcc9c5-1540-4d2a-a815-f5fc8ad0706e");
+                Guid assignmentSecondId = Guid.Parse("c17541b0-a5b7-4004-9e85-15c60d2a9b62");
                 Guid userSecondId = Guid.Parse("e569a650-3491-4833-a425-1d6412317b1e");
                 Guid refreshTokenJTI = Guid.Parse("18b62733-3733-405d-9a83-bd5efa55435d");
                 var user = new User
@@ -129,9 +186,36 @@ namespace server.IntegrationTests
                     ExpiresAt = DateTime.Now.AddDays(7),
                 };
 
+                var assignment = new Assignment
+                {
+                    Id = assignmentId,
+                    CreatedAt = DateTime.Now,
+                    Description = "",
+                    DueDate = DateTime.Now.AddDays(3),
+                    Priority = Utils.Enums.Priority.Medium,
+                    Status = Utils.Enums.Status.Open,
+                    Title = "Test Assignment One",
+                    UpdatedAt = DateTime.Now,
+                    UserId = userSecondId
+                };
+
+                var assignmentSecond = new Assignment
+                {
+                    Id = assignmentSecondId,
+                    CreatedAt = DateTime.Now,
+                    Description = "",
+                    DueDate = DateTime.Now.AddDays(3),
+                    Priority = Utils.Enums.Priority.Medium,
+                    Status = Utils.Enums.Status.Failed,
+                    Title = "Test Assignment Two",
+                    UpdatedAt = DateTime.Now,
+                    UserId = userSecondId
+                };
+
                 dbContext.Users.AddRange([user, userSecond]);
                 dbContext.UserTokens.AddRange([resetToken, invalidResetToken, verifyToken, invalidVerifyToken]);
                 dbContext.RefreshTokens.Add(validRefreshToken);
+                dbContext.Assignments.AddRange([assignment, assignmentSecond]);
             }
         }
     }
