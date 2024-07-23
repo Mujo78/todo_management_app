@@ -55,6 +55,8 @@ const LoginForm: React.FC = () => {
               {...field}
               variant="outlined"
               label="Email"
+              id="Email"
+              aria-label="Email"
               autoComplete="true"
               required
               type="email"
@@ -77,6 +79,7 @@ const LoginForm: React.FC = () => {
 
         <PasswordInput
           control={control}
+          label="Password"
           name="password"
           defaultValue=""
           error={

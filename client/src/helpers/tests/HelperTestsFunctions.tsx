@@ -7,6 +7,9 @@ import LoginForm from "../../components/Landing/LoginForm/LoginForm";
 import SignupForm from "../../components/Landing/SignupForm/SignupForm";
 import ForgotPassword from "../../pages/ForgotPassword";
 import ResetPassword from "../../pages/ResetPassword";
+import HomeLayout from "../../components/Layout/HomeLayout";
+import HomePage from "../../pages/HomePage";
+import UserRequired from "../UserRequired";
 
 export const renderWithRouter = (initialEntries: string[]) => {
   return render(
@@ -16,6 +19,10 @@ export const renderWithRouter = (initialEntries: string[]) => {
           <Route path="/" element={<LandingPage />}>
             <Route path="" element={<LoginForm />} />
             <Route path="signup" element={<SignupForm />} />
+          </Route>
+
+          <Route path="/" element={<HomeLayout />} loader={UserRequired}>
+            <Route path="home" element={<HomePage />} />
           </Route>
 
           <Route path="/forgot-password" element={<ForgotPassword />} />

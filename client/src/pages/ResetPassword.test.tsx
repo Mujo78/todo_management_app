@@ -13,7 +13,9 @@ describe("ResetPassword page component testing", () => {
   it("Should display ResetPasswordForm component", () => {
     renderWithRouter(["/password-reset/:token"]);
 
-    const newPasswordElement = screen.getByLabelText("New Password");
+    const newPasswordElement = screen
+      .getByTestId("New Password")
+      .querySelector("input");
     expect(newPasswordElement).toBeInTheDocument();
   });
 });

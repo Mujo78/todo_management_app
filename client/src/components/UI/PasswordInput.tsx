@@ -25,7 +25,7 @@ const PasswordInput = <TFieldValues extends FieldValues>({
   children,
   defaultValue,
   errorMessage,
-  label = "Password",
+  label,
   name,
 }: Props<TFieldValues>) => {
   const [toggle, setToggle] = useState<boolean>(false);
@@ -43,7 +43,10 @@ const PasswordInput = <TFieldValues extends FieldValues>({
         <TextField
           {...field}
           variant="outlined"
+          id={label}
+          data-testid={label}
           label={label}
+          aria-label={label}
           type={toggle ? "text" : "password"}
           InputProps={{
             endAdornment: (
