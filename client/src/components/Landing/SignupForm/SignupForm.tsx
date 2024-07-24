@@ -53,6 +53,8 @@ const SignupForm: React.FC = () => {
               {...field}
               variant="outlined"
               label="Name"
+              id="Name"
+              aria-label="Name"
               required
               autoComplete="true"
               fullWidth
@@ -81,6 +83,8 @@ const SignupForm: React.FC = () => {
               autoComplete="true"
               variant="outlined"
               label="Email"
+              id="Email"
+              aria-label="Email"
               required
               type="email"
               fullWidth
@@ -102,6 +106,7 @@ const SignupForm: React.FC = () => {
 
         <PasswordInput
           name="password"
+          label="Password"
           defaultValue=""
           control={control}
           error={

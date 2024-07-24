@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { describe, expect } from "vitest";
-import { renderWithRouter } from "../helpers/tests/HelperTestsFunctions";
+import { renderWithRouter } from "../../helpers/tests/HelperTestsFunctions";
 
 describe("ForgotPassword page testing", () => {
   it("Should display info component", () => {

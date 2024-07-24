@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
-import ForgotPasswordForm from "../components/Landing/ForgotPasswordForm";
-import ForgotPasswordInfo from "../components/Landing/ForgotPasswordInfo";
+import ForgotPasswordInfo from "../../components/Landing/ForgotPasswordInfo";
+import ForgotPasswordForm from "../../components/Landing/ForgotPasswordForm/ForgotPasswordForm";
 
 const ForgotPassword = () => {
   return (

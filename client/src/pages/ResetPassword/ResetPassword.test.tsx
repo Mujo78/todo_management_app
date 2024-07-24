@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { it, describe } from "vitest";
-import { renderWithRouter } from "../helpers/tests/HelperTestsFunctions";
+import { renderWithRouter } from "../../helpers/tests/HelperTestsFunctions";
 
 describe("ResetPassword page component testing", () => {
   it("Should render", () => {

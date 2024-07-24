@@ -4,13 +4,15 @@ import {
   RouteObject,
   RouterProvider,
 } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
+import LandingPage from "./pages/LandingPage/LandingPage";
 import AppLayout from "./components/Layout/AppLayout";
 import HomeLayout from "./components/Layout/HomeLayout";
 
 const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
-const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
-const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const ForgotPassword = lazy(
+  () => import("./pages/ForgotPassword/ForgotPassword")
+);
+const ResetPassword = lazy(() => import("./pages/ResetPassword/ResetPassword"));
 
 import UserRequired from "./helpers/UserRequired";
 import Authorized from "./helpers/Authorized";

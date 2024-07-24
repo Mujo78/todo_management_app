@@ -1,12 +1,10 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import LandingPage from "./LandingPage";
-import { BrowserRouter } from "react-router-dom";
+import { fireEvent, screen } from "@testing-library/react";
 import { describe, it } from "vitest";
-import { renderWithRouter } from "../helpers/tests/HelperTestsFunctions";
+import { renderWithRouter } from "../../helpers/tests/HelperTestsFunctions";
 
 describe("LandingPage", () => {
   it("Should display Info component text", () => {
-    render(<LandingPage />, { wrapper: BrowserRouter });
+    renderWithRouter(["/"]);
 
     const appName = screen.getByText("Welcome to TaskMaster");
     expect(appName).toBeInTheDocument();
@@ -20,16 +18,13 @@ describe("LandingPage", () => {
   });
 
   it("Should navigate to Signup page", () => {
-    render(
-      <BrowserRouter>
-        <LandingPage />
-      </BrowserRouter>
-    );
+    renderWithRouter(["/"]);
 
     const signupBtn = screen.getByLabelText("signup");
     fireEvent.click(signupBtn);
 
-    expect(window.location.pathname).toBe("/signup");
+    const signupFormTitle = screen.getByText("Sign up today!");
+    expect(signupFormTitle).toBeInTheDocument();
   });
 
   it("Should display to Signup page", () => {

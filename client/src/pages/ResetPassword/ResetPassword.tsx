@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import ResetPasswordForm from "../components/Landing/ResetPasswordForm";
+import ResetPasswordForm from "../../components/Landing/ResetPasswordForm";
 import { Link } from "react-router-dom";
 
 const ResetPassword = () => {

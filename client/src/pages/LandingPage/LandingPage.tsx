@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Box, Stack, Tab, Tabs } from "@mui/material";
 import { Login, HowToReg } from "@mui/icons-material";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import Info from "../components/Landing/Info";
+import Info from "../../components/Landing/Info";
 
 const LandingPage = () => {
   const location = useLocation().pathname === "/signup";

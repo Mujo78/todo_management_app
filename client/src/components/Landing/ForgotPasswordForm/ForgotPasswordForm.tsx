@@ -7,19 +7,19 @@ import {
   Typography,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { ForgotPasswordType } from "../../features/user/api";
-import { forgotPasswordValidationSchema } from "../../validations/user/forgotPasswordValidation";
+import { ForgotPasswordType } from "../../../features/user/api";
+import { forgotPasswordValidationSchema } from "../../../validations/user/forgotPasswordValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useForgotPassword from "../../features/user/useForgotPassword";
 import { useNavigate } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
 import {
   formatErrorFieldMessage,
   formatErrorMessage,
   isErrorForKey,
-} from "../utils/user/userUtils";
-import SuccessAlert from "../UI/SuccessAlert";
-import LoadingButton from "../UI/LoadingButton";
+} from "../../utils/user/userUtils";
+import SuccessAlert from "../../UI/SuccessAlert";
+import LoadingButton from "../../UI/LoadingButton";
+import useForgotPassword from "../../../features/user/useForgotPassword";
 
 const ForgotPasswordForm: React.FC = () => {
   const navigate = useNavigate();
@@ -63,6 +63,8 @@ const ForgotPasswordForm: React.FC = () => {
               {...field}
               variant="outlined"
               label="Email"
+              id="Email"
+              aria-label="Email"
               sx={{ mb: "0.5rem" }}
               autoComplete="true"
               required
