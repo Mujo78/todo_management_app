@@ -2,7 +2,11 @@ import { http, HttpResponse } from "msw";
 import { LoginData } from "../app/authSlice";
 import { LogindDataType } from "../features/auth/api";
 import { AxiosError } from "axios";
-import { ForgotPasswordType, UserAccountDataType } from "../features/user/api";
+import {
+  ForgotPasswordType,
+  ResetPasswordType,
+  UserAccountDataType,
+} from "../features/user/api";
 
 type ErrorResponse = {
   type: string;
@@ -135,4 +139,161 @@ export const handlers = [
       );
     }
   ),
+
+  http.patch<never, ResetPasswordType, Response<string>>(
+    "https://localhost:7196/api/v1/users/reset-password/:token",
+    async ({ request }) => {
+      const body = await request.json();
+
+      const { confirmNewPassword, newPassword } = body;
+
+      if (newPassword !== confirmNewPassword) {
+        return HttpResponse.json<ErrorResponse>(
+          {
+            type: "BadRequestException",
+            title: "Bad request.",
+            status: 400,
+            detail: "Passwords must match",
+          },
+          { status: 400 }
+        );
+      }
+
+      if (
+        newPassword === "sameOldPassword&12345" &&
+        newPassword === confirmNewPassword
+      ) {
+        return HttpResponse.json<ErrorResponse>(
+          {
+            type: "BadRequestException",
+            title: "Bad request.",
+            status: 400,
+            detail: "New password cannot be the same as the old password.",
+          },
+          { status: 400 }
+        );
+      }
+
+      return HttpResponse.json<string>("Password successfully changed.", {
+        status: 200,
+      });
+    }
+  ),
+
+  http.patch<{ token: string }, ResetPasswordType, Response<string>>(
+    "https://localhost:7196/api/v1/users/verify/:token",
+    async () => {
+      return HttpResponse.json<string>("Successfully verified email address.", {
+        status: 200,
+      });
+    }
+  ),
 ];
+
+export const resetPasswordHandler = http.patch<
+  { token: string },
+  ResetPasswordType,
+  Response<string>
+>(
+  "https://localhost:7196/api/v1/users/reset-password/:invalidNotFoundedToken",
+  async () => {
+    return HttpResponse.json<ErrorResponse>(
+      {
+        type: "NotFoundException",
+        title: "Resource not found.",
+        status: 404,
+        detail: "Invalid token provided. Token not found.",
+      },
+      { status: 404 }
+    );
+  }
+);
+
+export const resetPasswordNotValidToken = http.patch<
+  { token: string },
+  ResetPasswordType,
+  Response<string>
+>(
+  "https://localhost:7196/api/v1/users/reset-password/:invalidToken",
+  async () => {
+    return HttpResponse.json<ErrorResponse>(
+      {
+        type: "BadRequestException",
+        title: "Bad request.",
+        status: 400,
+        detail: "Invalid token provided.",
+      },
+      { status: 400 }
+    );
+  }
+);
+
+export const resetPasswordInvalidTokenNotFoundedUserHandler = http.patch<
+  { token: string },
+  ResetPasswordType,
+  Response<string>
+>(
+  "https://localhost:7196/api/v1/users/reset-password/:invalidNotFoundedUserToken",
+  async () => {
+    return HttpResponse.json<ErrorResponse>(
+      {
+        type: "NotFoundException",
+        title: "Resource not found.",
+        status: 404,
+        detail: "User not found.",
+      },
+      { status: 404 }
+    );
+  }
+);
+
+export const verifyEmailTokenNotFoundHandler = http.patch<
+  { token: string },
+  ResetPasswordType,
+  Response<string>
+>("https://localhost:7196/api/v1/users/verify/:tokenNotFound", async () => {
+  return HttpResponse.json<ErrorResponse>(
+    {
+      type: "NotFoundException",
+      title: "Resource not found.",
+      status: 404,
+      detail: "Invalid token provided. Token not found.",
+    },
+    { status: 404 }
+  );
+});
+
+export const verifyEmailInvalidTokenHandler = http.patch<
+  { token: string },
+  ResetPasswordType,
+  Response<string>
+>("https://localhost:7196/api/v1/users/verify/:invalidToken", async () => {
+  return HttpResponse.json<ErrorResponse>(
+    {
+      type: "BadRequestException",
+      title: "Bad request.",
+      status: 400,
+      detail: "Invalid token provided.",
+    },
+    { status: 400 }
+  );
+});
+
+export const verifyEmailTokenUserNotFoundHandler = http.patch<
+  { token: string },
+  ResetPasswordType,
+  Response<string>
+>(
+  "https://localhost:7196/api/v1/users/verify/:invalidTokenUserNotFound",
+  async () => {
+    return HttpResponse.json<ErrorResponse>(
+      {
+        type: "NotFoundException",
+        title: "Resource not found.",
+        status: 404,
+        detail: "User not found.",
+      },
+      { status: 404 }
+    );
+  }
+);

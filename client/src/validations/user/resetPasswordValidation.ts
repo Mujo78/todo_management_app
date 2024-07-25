@@ -13,7 +13,6 @@ export const resetPasswordValidationSchema = Yup.object({
     }),
   confirmNewPassword: Yup.string()
     .required("Confirm password is required.")
-    .min(8, "Password must be at least 8 characters long.")
     .test("password-match", "Passwords must match", function (value) {
       return value === this.parent.newPassword;
     }),

@@ -1,19 +1,19 @@
 import React from "react";
-import { resetPasswordValidationSchema } from "../../validations/user/resetPasswordValidation";
+import { resetPasswordValidationSchema } from "../../../validations/user/resetPasswordValidation";
 import { useParams } from "react-router-dom";
-import { ResetPasswordType } from "../../features/user/api";
+import { ResetPasswordType } from "../../../features/user/api";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import useResetPassword from "../../features/user/useResetPassword";
+import useResetPassword from "../../../features/user/useResetPassword";
 import { FormHelperText, Stack } from "@mui/material";
-import PasswordInput from "../UI/PasswordInput";
+import PasswordInput from "../../UI/PasswordInput";
 import {
   formatErrorFieldMessage,
   formatErrorMessage,
   isErrorForKey,
-} from "../utils/user/userUtils";
-import SuccessAlert from "../UI/SuccessAlert";
-import LoadingButton from "../UI/LoadingButton";
+} from "../../utils/user/userUtils";
+import SuccessAlert from "../../UI/SuccessAlert";
+import LoadingButton from "../../UI/LoadingButton";
 
 const ResetPasswordForm: React.FC = () => {
   const { token } = useParams();

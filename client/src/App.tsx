@@ -8,7 +8,7 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import AppLayout from "./components/Layout/AppLayout";
 import HomeLayout from "./components/Layout/HomeLayout";
 
-const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail/VerifyEmail"));
 const ForgotPassword = lazy(
   () => import("./pages/ForgotPassword/ForgotPassword")
 );

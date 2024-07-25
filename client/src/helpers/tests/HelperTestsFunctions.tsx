@@ -10,6 +10,7 @@ import ResetPassword from "../../pages/ResetPassword/ResetPassword";
 import HomeLayout from "../../components/Layout/HomeLayout";
 import HomePage from "../../pages/HomePage";
 import UserRequired from "../UserRequired";
+import VerifyEmail from "../../pages/VerifyEmail/VerifyEmail";
 
 export const renderWithRouter = (initialEntries: string[]) => {
   return render(
@@ -27,6 +28,7 @@ export const renderWithRouter = (initialEntries: string[]) => {
 
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/password-reset/:token" element={<ResetPassword />} />
+          <Route path="/verify-email/:token" element={<VerifyEmail />} />
         </Routes>
       </QueryClientProvider>
     </MemoryRouter>
