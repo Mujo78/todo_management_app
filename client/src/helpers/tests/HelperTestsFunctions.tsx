@@ -8,9 +8,13 @@ import SignupForm from "../../components/Landing/SignupForm/SignupForm";
 import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "../../pages/ResetPassword/ResetPassword";
 import HomeLayout from "../../components/Layout/HomeLayout";
-import HomePage from "../../pages/HomePage";
+import HomePage from "../../pages/HomePage/HomePage";
 import UserRequired from "../UserRequired";
 import VerifyEmail from "../../pages/VerifyEmail/VerifyEmail";
+import ProfileLayout from "../../components/Layout/ProfileLayout/ProfileLayout";
+import Profile from "../../pages/User/Profile";
+import EditProfile from "../../pages/User/EditProfile/EditProfile";
+import ChangePassword from "../../pages/User/ChangePassword";
 
 export const renderWithRouter = (initialEntries: string[]) => {
   return render(
@@ -24,6 +28,11 @@ export const renderWithRouter = (initialEntries: string[]) => {
 
           <Route path="/" element={<HomeLayout />} loader={UserRequired}>
             <Route path="home" element={<HomePage />} />
+            <Route path="/profile" element={<ProfileLayout />}>
+              <Route path="" element={<Profile />} />
+              <Route path="edit" element={<EditProfile />} />
+              <Route path="change-password" element={<ChangePassword />} />
+            </Route>
           </Route>
 
           <Route path="/forgot-password" element={<ForgotPassword />} />

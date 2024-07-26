@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import { Alert, Button, CircularProgress, Stack, Tooltip } from "@mui/material";
-import useGetTasks from "../features/tasks/useGetTasks";
+import useGetTasks from "../../features/tasks/useGetTasks";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
-import TaskSearchInput from "../components/Task/TaskSearchInput";
-import { useSearchQuery } from "../hooks/useSearchQuery";
-import PaginationModified from "../components/UI/Pagination";
-import { formatErrorMessage } from "../components/utils/user/userUtils";
+import TaskSearchInput from "../../components/Task/TaskSearchInput";
+import { useSearchQuery } from "../../hooks/useSearchQuery";
+import PaginationModified from "../../components/UI/Pagination";
+import { formatErrorMessage } from "../../components/utils/user/userUtils";
 import InfoIcon from "@mui/icons-material/Info";
-import TaskCard from "../components/Task/TaskCard";
-import useTaskStore from "../app/taskSlice";
-import TaskOptionsHeader from "../components/Task/TaskOptionsHeader";
-import useMakeTaskFailed from "../features/tasks/useMakeTaskFailed";
+import TaskCard from "../../components/Task/TaskCard";
+import useTaskStore from "../../app/taskSlice";
+import TaskOptionsHeader from "../../components/Task/TaskOptionsHeader";
+import useMakeTaskFailed from "../../features/tasks/useMakeTaskFailed";
 
 const HomePage = () => {
   const { setTasks, tasks, findExpiredTask } = useTaskStore();

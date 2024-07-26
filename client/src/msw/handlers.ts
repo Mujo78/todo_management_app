@@ -1,21 +1,12 @@
 import { http, HttpResponse } from "msw";
 import { LoginData } from "../app/authSlice";
 import { LogindDataType } from "../features/auth/api";
-import { AxiosError } from "axios";
 import {
   ForgotPasswordType,
   ResetPasswordType,
   UserAccountDataType,
 } from "../features/user/api";
-
-type ErrorResponse = {
-  type: string;
-  title: string;
-  status: number;
-  detail: string;
-};
-
-type Response<T> = AxiosError | Error | T | ErrorResponse;
+import { ErrorResponse, Response } from "./Worker";
 
 export const handlers = [
   http.post<never, LogindDataType, Response<LoginData>>(

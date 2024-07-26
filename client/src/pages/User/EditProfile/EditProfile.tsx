@@ -1,16 +1,16 @@
 import { Stack, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { UserProfileUpdateType } from "../../features/user/api";
+import { UserProfileUpdateType } from "../../../features/user/api";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { editProfileValidationSchema } from "../../validations/user/editProfileValidation";
-import useAuthStore, { UserType } from "../../app/authSlice";
+import { editProfileValidationSchema } from "../../../validations/user/editProfileValidation";
+import useAuthStore, { UserType } from "../../../app/authSlice";
 import { useCallback, useEffect } from "react";
-import useUpdateProfile from "../../features/user/useUpdateUserProfile";
+import useUpdateProfile from "../../../features/user/useUpdateUserProfile";
 import {
   formatErrorFieldMessage,
   isErrorForKey,
-} from "../../components/utils/user/userUtils";
-import LoadingButton from "../../components/UI/LoadingButton";
+} from "../../../components/utils/user/userUtils";
+import LoadingButton from "../../../components/UI/LoadingButton";
 
 const EditProfile = () => {
   const { auth } = useAuthStore();
@@ -84,6 +84,7 @@ const EditProfile = () => {
             {...field}
             variant="outlined"
             label="Email"
+            aria-label="Email"
             autoComplete="true"
             type="email"
             required

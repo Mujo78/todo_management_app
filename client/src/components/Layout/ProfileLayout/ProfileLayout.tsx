@@ -1,13 +1,13 @@
 import React, { Suspense } from "react";
 import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
-import AppLink from "../UI/AppLink";
+import AppLink from "../../UI/AppLink";
 import {
   DashboardCustomizeOutlined,
   EditOutlined,
   HttpsOutlined,
 } from "@mui/icons-material";
-import SuspenseFallback from "../UI/SuspenseFallback";
+import SuspenseFallback from "../../UI/SuspenseFallback";
 
 const ProfileLayout: React.FC = () => {
   const location = useLocation().pathname;

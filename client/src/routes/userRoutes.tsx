@@ -2,10 +2,12 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 
-const Home = lazy(() => import("../pages/HomePage"));
-const ProfileLayout = lazy(() => import("../components/Layout/ProfileLayout"));
+const Home = lazy(() => import("../pages/HomePage/HomePage"));
+const ProfileLayout = lazy(
+  () => import("../components/Layout/ProfileLayout/ProfileLayout")
+);
 const Profile = lazy(() => import("../pages/User/Profile"));
-const EditProfile = lazy(() => import("../pages/User/EditProfile"));
+const EditProfile = lazy(() => import("../pages/User/EditProfile/EditProfile"));
 const ChangePassword = lazy(() => import("../pages/User/ChangePassword"));
 
 const AddNewTask = lazy(() => import("../pages/Task/AddNewTask"));

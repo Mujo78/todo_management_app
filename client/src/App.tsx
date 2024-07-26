@@ -17,7 +17,7 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword/ResetPassword"));
 import UserRequired from "./helpers/UserRequired";
 import Authorized from "./helpers/Authorized";
 import userRoutes from "./routes/userRoutes";
-import ErrorPage from "./pages/ErrorPage";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import SuspenseFallback from "./components/UI/SuspenseFallback";
 import SignupForm from "./components/Landing/SignupForm/SignupForm";
 import LoginForm from "./components/Landing/LoginForm/LoginForm";
