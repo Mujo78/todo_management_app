@@ -14,7 +14,8 @@ import VerifyEmail from "../../pages/VerifyEmail/VerifyEmail";
 import ProfileLayout from "../../components/Layout/ProfileLayout/ProfileLayout";
 import Profile from "../../pages/User/Profile";
 import EditProfile from "../../pages/User/EditProfile/EditProfile";
-import ChangePassword from "../../pages/User/ChangePassword";
+import ChangePassword from "../../pages/User/ChangePassword/ChangePassword";
+import ErrorPage from "../../pages/ErrorPage/ErrorPage";
 
 export const renderWithRouter = (initialEntries: string[]) => {
   return render(
@@ -38,6 +39,8 @@ export const renderWithRouter = (initialEntries: string[]) => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/password-reset/:token" element={<ResetPassword />} />
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
+
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </QueryClientProvider>
     </MemoryRouter>

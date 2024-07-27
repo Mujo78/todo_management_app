@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import { describe, expect } from "vitest";
 import useAuthStore from "../../../app/authSlice";
 import { mockStore, serviceWorker } from "../../../msw/Worker";
@@ -42,21 +42,23 @@ describe("Edit Profile component testing", () => {
     });
   });
 
-  it("Should return forbidden exception", () => {
+  it("Should return forbidden exception", async () => {
     serviceWorker.use(updateProfileForbiddenRequest);
 
     const userEmailInput = screen
       .getByLabelText("Email")
       .querySelector("input")!;
-    expect(userEmailInput).toBeInTheDocument();
-
-    fireEvent.change(userEmailInput, {
-      target: { value: "user123@gmail.com" },
-    });
-
     const submitBtn = screen.getByRole("button", { name: "Save changes" });
+
+    expect(userEmailInput).toBeInTheDocument();
     expect(submitBtn).toBeInTheDocument();
-    fireEvent.click(submitBtn);
+
+    await act(async () => {
+      fireEvent.input(userEmailInput, {
+        target: { value: "user123@gmail.com" },
+      });
+      fireEvent.click(submitBtn);
+    });
 
     setTimeout(() => {
       expect(
@@ -69,19 +71,22 @@ describe("Edit Profile component testing", () => {
     const userEmailInput = screen
       .getByLabelText("Email")
       .querySelector("input")!;
-    expect(userEmailInput).toBeInTheDocument();
+    const submitBtn = screen.getByRole("button", { name: "Save changes" });
 
-    fireEvent.change(userEmailInput, {
-      target: { value: "user1234@gmail.com" },
+    expect(userEmailInput).toBeInTheDocument();
+    expect(submitBtn).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.change(userEmailInput, {
+        target: { value: "user1234@gmail.com" },
+      });
+
+      fireEvent.click(submitBtn);
     });
 
-    const submitBtn = screen.getByRole("button", { name: "Save changes" });
-    expect(submitBtn).toBeInTheDocument();
-    fireEvent.click(submitBtn);
-
-    setTimeout(() => {
+    setTimeout(async () => {
       expect(
-        screen.getByText("Profile successfully updated.")
+        await screen.findByText("Profile successfully updated.")
       ).toBeInTheDocument();
     }, 2000);
   });

@@ -1,16 +1,16 @@
 import { FormHelperText, Stack } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { ChangePasswordType } from "../../features/user/api";
-import { changePasswordValidationSchema } from "../../validations/user/changePassword";
+import { ChangePasswordType } from "../../../features/user/api";
+import { changePasswordValidationSchema } from "../../../validations/user/changePassword";
 import { yupResolver } from "@hookform/resolvers/yup";
-import PasswordInput from "../../components/UI/PasswordInput";
-import useChangePassword from "../../features/user/useChangePassword";
+import PasswordInput from "../../../components/UI/PasswordInput";
+import useChangePassword from "../../../features/user/useChangePassword";
 import {
   formatErrorFieldMessage,
   formatErrorMessage,
   isErrorForKey,
-} from "../../components/utils/user/userUtils";
-import LoadingButton from "../../components/UI/LoadingButton";
+} from "../../../components/utils/user/userUtils";
+import LoadingButton from "../../../components/UI/LoadingButton";
 
 const ChangePassword = () => {
   const {

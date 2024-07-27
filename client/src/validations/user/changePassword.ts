@@ -4,9 +4,7 @@ const regPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 export const changePasswordValidationSchema = Yup.object({
-  oldPassword: Yup.string()
-    .required("Password is required.")
-    .min(8, "Password must be at least 8 characters long."),
+  oldPassword: Yup.string().required("Password is required."),
   newPassword: Yup.string()
     .required("New Password is required.")
     .min(8, "Password must be at least 8 characters long.")

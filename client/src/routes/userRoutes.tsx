@@ -8,7 +8,9 @@ const ProfileLayout = lazy(
 );
 const Profile = lazy(() => import("../pages/User/Profile"));
 const EditProfile = lazy(() => import("../pages/User/EditProfile/EditProfile"));
-const ChangePassword = lazy(() => import("../pages/User/ChangePassword"));
+const ChangePassword = lazy(
+  () => import("../pages/User/ChangePassword/ChangePassword")
+);
 
 const AddNewTask = lazy(() => import("../pages/Task/AddNewTask"));
 const EditTask = lazy(() => import("../pages/Task/EditTask"));

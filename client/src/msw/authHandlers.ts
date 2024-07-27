@@ -1,6 +1,7 @@
 import { http, HttpResponse } from "msw";
 import { ErrorResponse, Response } from "./Worker";
 import { UserType } from "../app/authSlice";
+import { ChangePasswordType } from "../features/user/api";
 
 export const authHandler = [
   http.put<never, UserType, Response<UserType>>(
@@ -34,6 +35,42 @@ export const authHandler = [
       );
     }
   ),
+
+  http.post<never, ChangePasswordType, Response<string>>(
+    "https://localhost:7196/api/v1/users/change-password",
+    async ({ request }) => {
+      const body = await request.json();
+      const { oldPassword, newPassword } = body;
+
+      if (oldPassword !== "Password&12345") {
+        return HttpResponse.json<ErrorResponse>(
+          {
+            type: "BadRequestException",
+            title: "Bad request.",
+            status: 400,
+            detail: "Wrong old password.",
+          },
+          { status: 400 }
+        );
+      }
+
+      if (oldPassword === newPassword) {
+        return HttpResponse.json<ErrorResponse>(
+          {
+            type: "BadRequestException",
+            title: "Bad request.",
+            status: 400,
+            detail: "New password cannot be the same as the old password.",
+          },
+          { status: 400 }
+        );
+      }
+
+      return HttpResponse.json<string>("Password successfully changed.", {
+        status: 200,
+      });
+    }
+  ),
 ];
 
 export const updateProfileForbiddenRequest = http.put<
@@ -56,4 +93,20 @@ export const updateProfileForbiddenRequest = http.put<
       { status: 403 }
     );
   }
+});
+
+export const changePasswordUserNotFoundRequest = http.post<
+  never,
+  ChangePasswordType,
+  Response<string>
+>("https://localhost:7196/api/v1/users/change-password", () => {
+  return HttpResponse.json<ErrorResponse>(
+    {
+      type: "NotFoundException",
+      title: "Resource not found.",
+      status: 404,
+      detail: "User not found.",
+    },
+    { status: 404 }
+  );
 });
