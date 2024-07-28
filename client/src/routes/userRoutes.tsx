@@ -6,7 +6,7 @@ const Home = lazy(() => import("../pages/HomePage/HomePage"));
 const ProfileLayout = lazy(
   () => import("../components/Layout/ProfileLayout/ProfileLayout")
 );
-const Profile = lazy(() => import("../pages/User/Profile"));
+const Profile = lazy(() => import("../pages/User/Profile/Profile"));
 const EditProfile = lazy(() => import("../pages/User/EditProfile/EditProfile"));
 const ChangePassword = lazy(
   () => import("../pages/User/ChangePassword/ChangePassword")

@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Stack, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import AppNavbar from "../UI/AppNavbar";
+import AppNavbar from "../UI/AppNavbar/AppNavbar";
 import AppSidebar from "../UI/AppSidebar";
 import TabNavigation from "../UI/TabNavigation";
 import { Toaster } from "react-hot-toast";

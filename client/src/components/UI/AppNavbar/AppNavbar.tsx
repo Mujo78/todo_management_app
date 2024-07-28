@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { ExitToApp } from "@mui/icons-material";
-import useLogout from "../../features/auth/useLogout";
+import useLogout from "../../../features/auth/useLogout";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const AppNavbar: React.FC = () => {

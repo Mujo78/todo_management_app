@@ -7,11 +7,11 @@ import {
   Typography,
 } from "@mui/material";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { GetMyInfoFn, MyInfoType } from "../../features/user/api";
+import { GetMyInfoFn, MyInfoType } from "../../../features/user/api";
 import { AxiosError } from "axios";
-import { formatErrorMessage } from "../../components/utils/user/userUtils";
+import { formatErrorMessage } from "../../../components/utils/user/userUtils";
 import { BarChart, BarSeriesType, Gauge } from "@mui/x-charts";
-import DeleteProfileModal from "../../components/User/DeleteProfileModal";
+import DeleteProfileModal from "../../../components/User/DeleteProfileModal";
 import { useMemo, useState } from "react";
 
 const Profile = () => {

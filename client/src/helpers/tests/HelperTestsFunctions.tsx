@@ -12,7 +12,7 @@ import HomePage from "../../pages/HomePage/HomePage";
 import UserRequired from "../UserRequired";
 import VerifyEmail from "../../pages/VerifyEmail/VerifyEmail";
 import ProfileLayout from "../../components/Layout/ProfileLayout/ProfileLayout";
-import Profile from "../../pages/User/Profile";
+import Profile from "../../pages/User/Profile/Profile";
 import EditProfile from "../../pages/User/EditProfile/EditProfile";
 import ChangePassword from "../../pages/User/ChangePassword/ChangePassword";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
