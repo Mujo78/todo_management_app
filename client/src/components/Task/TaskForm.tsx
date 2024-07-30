@@ -111,6 +111,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
                 variant="outlined"
                 disabled={isPending || isDisabled}
                 label="Title"
+                aria-label="Title"
                 sx={{
                   flexGrow: 1,
                 }}
@@ -133,15 +134,20 @@ const TaskForm = <TFieldValues extends FieldValues>({
             defaultValue={
               new Date() as PathValue<TFieldValues, Path<TFieldValues>>
             }
+            aria-label="Due Date and Time"
             name={"dueDate" as Path<TFieldValues>}
             render={({ field }) => (
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                aria-label="Due Date and Time"
+              >
                 <DemoContainer
                   sx={{
                     flexGrow: { xs: 1, md: 0 },
                     width: "fit-content",
                     overflowX: "hidden",
                   }}
+                  aria-label="Due Date and Time"
                   components={["DateTimePicker"]}
                 >
                   <DateTimePicker
@@ -177,6 +183,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
           render={({ field }) => (
             <TextField
               id="description-textarea"
+              aria-label="Description"
               {...field}
               variant="outlined"
               disabled={isPending || isDisabled}
@@ -251,6 +258,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
                 <Select
                   labelId="select-status-label"
                   id="select-status"
+                  aria-label="Status"
                   readOnly
                   disabled
                   {...field}

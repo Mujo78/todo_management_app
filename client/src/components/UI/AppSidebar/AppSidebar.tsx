@@ -12,7 +12,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import useAuthStore from "../../app/authSlice";
+import useAuthStore from "../../../app/authSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const AppSidebar: React.FC = () => {

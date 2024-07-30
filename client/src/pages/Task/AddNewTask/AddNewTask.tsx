@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
-import { addTaskValidationSchema } from "../../validations/task/addNewTaskValidation";
+import { addTaskValidationSchema } from "../../../validations/task/addNewTaskValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CreateUpdateTaskType } from "../../app/taskSlice";
-import useCreateTask from "../../features/tasks/useCreateNewTask";
-import SuccessAlert from "../../components/UI/SuccessAlert";
-import TaskForm from "../../components/Task/TaskForm";
+import { CreateUpdateTaskType } from "../../../app/taskSlice";
+import useCreateTask from "../../../features/tasks/useCreateNewTask";
+import SuccessAlert from "../../../components/UI/SuccessAlert";
+import TaskForm from "../../../components/Task/TaskForm";
 
 const AddNewTask = () => {
   const { control, formState, handleSubmit, reset } =

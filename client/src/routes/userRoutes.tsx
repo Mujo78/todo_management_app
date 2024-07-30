@@ -12,7 +12,7 @@ const ChangePassword = lazy(
   () => import("../pages/User/ChangePassword/ChangePassword")
 );
 
-const AddNewTask = lazy(() => import("../pages/Task/AddNewTask"));
+const AddNewTask = lazy(() => import("../pages/Task/AddNewTask/AddNewTask"));
 const EditTask = lazy(() => import("../pages/Task/EditTask"));
 
 const userRoutes: RouteObject[] = [
