@@ -2,8 +2,13 @@ import { setupServer } from "msw/node";
 import { handlers } from "./handlers";
 import { AxiosError } from "axios";
 import { authHandler } from "./authHandlers";
+import { taskHandler } from "./taskHandlers";
 
-export const serviceWorker = setupServer(...handlers, ...authHandler);
+export const serviceWorker = setupServer(
+  ...handlers,
+  ...authHandler,
+  ...taskHandler
+);
 
 export interface ErrorResponse {
   type: string;

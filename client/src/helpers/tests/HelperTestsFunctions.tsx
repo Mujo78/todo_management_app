@@ -17,6 +17,7 @@ import EditProfile from "../../pages/User/EditProfile/EditProfile";
 import ChangePassword from "../../pages/User/ChangePassword/ChangePassword";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
 import AddNewTask from "../../pages/Task/AddNewTask/AddNewTask";
+import EditTask from "../../pages/Task/EditTask/EditTask";
 
 export const renderWithRouter = (initialEntries: string[]) => {
   return render(
@@ -37,6 +38,7 @@ export const renderWithRouter = (initialEntries: string[]) => {
             </Route>
 
             <Route path="/add-task" element={<AddNewTask />} />
+            <Route path="/edit-task/:taskId" element={<EditTask />} />
           </Route>
 
           <Route path="/forgot-password" element={<ForgotPassword />} />

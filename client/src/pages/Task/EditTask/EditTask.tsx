@@ -1,17 +1,17 @@
 import { useParams } from "react-router-dom";
-import useGetTask from "../../features/tasks/useGetTask";
+import useGetTask from "../../../features/tasks/useGetTask";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CreateUpdateTaskType, TaskType } from "../../app/taskSlice";
-import { addTaskValidationSchema } from "../../validations/task/addNewTaskValidation";
+import { CreateUpdateTaskType, TaskType } from "../../../app/taskSlice";
+import { addTaskValidationSchema } from "../../../validations/task/addNewTaskValidation";
 import { useEffect, useState } from "react";
-import TaskForm from "../../components/Task/TaskForm";
-import useUpdateTask from "../../features/tasks/useUpdateTask";
-import SuccessAlert from "../../components/UI/SuccessAlert";
+import TaskForm from "../../../components/Task/TaskForm";
+import useUpdateTask from "../../../features/tasks/useUpdateTask";
+import SuccessAlert from "../../../components/UI/SuccessAlert";
 import { Alert, CircularProgress, Stack } from "@mui/material";
-import DeleteTaskModal from "../../components/Task/DeleteTaskModal";
+import DeleteTaskModal from "../../../components/Task/DeleteTaskModal";
 import { Info } from "@mui/icons-material";
-import { formatErrorMessage } from "../../components/utils/user/userUtils";
+import { formatErrorMessage } from "../../../components/utils/user/userUtils";
 
 const EditTask = () => {
   const [show, setShow] = useState<boolean>(false);
