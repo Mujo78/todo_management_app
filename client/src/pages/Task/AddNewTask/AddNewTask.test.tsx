@@ -2,55 +2,13 @@ import { describe, expect } from "vitest";
 import useAuthStore from "../../../app/authSlice";
 import { mockStore } from "../../../msw/Worker";
 import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
-import { fireEvent, screen, waitFor } from "@testing-library/react";
-import { CreateUpdateTaskType } from "../../../app/taskSlice";
-import { addDays, format, subDays } from "date-fns";
-import { act } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
+import { addDays, subDays } from "date-fns";
+import { baseChangeTaskFormFn } from "../../../msw/taskHandlers";
 
 vi.mock("../../../app//authSlice.ts", () => ({
   default: vi.fn(),
 }));
-
-const baseAddTaskFn = async ({
-  title,
-  dueDate,
-  priority,
-  status,
-  description,
-}: CreateUpdateTaskType) => {
-  renderWithRouter(["/add-task"]);
-
-  const formattedDate = format(new Date(), "MMM d, yyyy");
-
-  const titleEl = screen.getByLabelText("Title").querySelector("input")!;
-  const dueDateElInput = screen.getByLabelText(
-    `Choose date, selected date is ${formattedDate}`
-  )!;
-  const descriptionEl = screen.getAllByLabelText("Description")![0];
-
-  const priorityEl = screen.getByLabelText("Priority").querySelector("input")!;
-  const statusEl = screen
-    .getAllByLabelText("Status")[1]
-    .querySelector("input")!;
-  const submitBtn = screen.getByRole("button", { name: "Save" });
-
-  expect(titleEl).toBeInTheDocument();
-  expect(dueDateElInput).toBeInTheDocument();
-  expect(descriptionEl).toBeInTheDocument();
-  expect(priorityEl).toBeInTheDocument();
-  expect(statusEl).toBeInTheDocument();
-  expect(submitBtn).toBeInTheDocument();
-
-  await act(async () => {
-    fireEvent.change(titleEl, { target: { value: title } });
-    fireEvent.change(dueDateElInput, { target: { value: dueDate } });
-    fireEvent.change(descriptionEl, { target: { value: description } });
-    fireEvent.change(priorityEl, { target: { value: priority } });
-    fireEvent.change(statusEl, { target: { value: status } });
-
-    fireEvent.click(submitBtn);
-  });
-};
 
 describe("Add New Task component testing", () => {
   beforeEach(() => {
@@ -86,7 +44,8 @@ describe("Add New Task component testing", () => {
       },
     ],
   ])("Should return message: `%s`", async (expectedMessage, value) => {
-    await baseAddTaskFn(value);
+    renderWithRouter(["/add-task"]);
+    await baseChangeTaskFormFn(value);
 
     await waitFor(async () => {
       const message = await screen.findByText(expectedMessage);
@@ -95,7 +54,8 @@ describe("Add New Task component testing", () => {
   });
 
   it("Should return already used title", async () => {
-    await baseAddTaskFn({
+    renderWithRouter(["/add-task"]);
+    await baseChangeTaskFormFn({
       title: "Already used title",
       dueDate: addDays(new Date(), 2),
       status: 2,
@@ -113,7 +73,8 @@ describe("Add New Task component testing", () => {
   });
 
   it("Should be success", async () => {
-    await baseAddTaskFn({
+    renderWithRouter(["/add-task"]);
+    await baseChangeTaskFormFn({
       title: "New task creation here",
       dueDate: addDays(new Date(), 2),
       status: 2,

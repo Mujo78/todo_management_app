@@ -98,7 +98,7 @@ namespace server.Services
         public async Task<AssignmentDTO> UpdateAssignmentAsync(Guid taskId, AssignmentUpdateDTO updateDTO)
         {
             var userId = authService.GetUserId();
-
+            
             if (taskId.Equals("") || updateDTO == null || !updateDTO.Id.Equals(taskId)) throw new BadRequestException("Invalid ID sent.");
             if (!updateDTO.UserId.Equals(userId)) throw new ForbidException("You do not have permission to access this resource.");
 
