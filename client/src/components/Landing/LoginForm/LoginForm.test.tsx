@@ -27,9 +27,8 @@ const loginWithErrors = async (
   expect(userEmailInput.value).toBe(email);
   expect(userPasswordInput.value).toBe(password);
 
-  await waitFor(() => {
-    const errorMessage = screen.getByText(expectedMessage);
-    expect(errorMessage).toBeInTheDocument();
+  await waitFor(async () => {
+    expect(await screen.findByText(expectedMessage)).toBeInTheDocument();
   });
 };
 

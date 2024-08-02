@@ -9,7 +9,7 @@ import TaskForm from "../../../components/Task/TaskForm";
 import useUpdateTask from "../../../features/tasks/useUpdateTask";
 import SuccessAlert from "../../../components/UI/SuccessAlert";
 import { Alert, CircularProgress, Stack } from "@mui/material";
-import DeleteTaskModal from "../../../components/Task/DeleteTaskModal";
+import DeleteTaskModal from "../../../components/Task/DeleteTaskModal/DeleteTaskModal";
 import { Info } from "@mui/icons-material";
 import { formatErrorMessage } from "../../../components/utils/user/userUtils";
 

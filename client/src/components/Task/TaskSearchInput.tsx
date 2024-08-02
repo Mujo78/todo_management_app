@@ -39,6 +39,7 @@ const TaskSearchInput: React.FC = () => {
         onChange={handleChange}
         variant="outlined"
         label="Search"
+        aria-label="Search"
         autoComplete="true"
         fullWidth
       />

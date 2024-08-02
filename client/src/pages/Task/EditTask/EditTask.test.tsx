@@ -1,14 +1,12 @@
 import { describe, expect } from "vitest";
 import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import useAuthStore from "../../../app/authSlice";
 import { mockStore, serviceWorker } from "../../../msw/Worker";
 import {
   baseChangeTaskFormFn,
   invalidTaskIdSentHandler,
-  notAuthorizedDeletingTaskHandler,
   notAuthorizedTaskHandler,
-  notFoundDeletingTaskHandler,
   notFoundTaskHandler,
   taskNotFoundHandler,
 } from "../../../msw/taskHandlers";
@@ -17,18 +15,6 @@ import { addDays } from "date-fns";
 vi.mock("../../../app//authSlice.ts", () => ({
   default: vi.fn(),
 }));
-
-const baseModalFn = async () => {
-  await waitFor(() => {
-    const buttonDelete = screen.getByRole("button", {
-      name: "Delete Task",
-    });
-
-    expect(buttonDelete).toBeInTheDocument();
-
-    fireEvent.click(buttonDelete);
-  });
-};
 
 const baseCheckForGetMethodOnFormFields = async () => {
   renderWithRouter(["/edit-task/:taskId"]);
@@ -122,9 +108,7 @@ describe("Edit Task component testing", () => {
         addDays(new Date(), 2)
       );
 
-      setTimeout(async () => {
-        expect(await screen.findByText(message)).toBeInTheDocument();
-      }, 2000);
+      expect(await screen.findByText(message)).toBeInTheDocument();
     });
   });
 
@@ -167,9 +151,6 @@ describe("Edit Task component testing", () => {
         },
         addDays(new Date(), 2)
       );
-    });
-
-    await waitFor(async () => {
       expect(await screen.findByText("Task successfully updated."));
     });
   });
@@ -181,79 +162,5 @@ describe("Edit Task component testing", () => {
       const buttonDelete = screen.getByRole("button", { name: "Delete Task" });
       expect(buttonDelete).toBeInTheDocument();
     });
-  });
-
-  it("Should open, show and close modal", async () => {
-    renderWithRouter(["/edit-task/:taskId"]);
-
-    await baseModalFn();
-
-    await waitFor(async () => {
-      const taskTitle = screen.getByText(
-        "Are you sure you want to delete your task: Test Assignment Four?",
-        { selector: "h2" }
-      );
-      const closeButton = screen.getByRole("button", { name: "Close" });
-
-      expect(taskTitle).toBeInTheDocument();
-      expect(closeButton).toBeInTheDocument();
-
-      fireEvent.click(closeButton);
-      expect(
-        await screen.findByRole("button", {
-          name: "Delete Task",
-        })
-      ).toBeVisible();
-    });
-  });
-
-  it.each([
-    ["Assignment not found.", notFoundDeletingTaskHandler],
-    [
-      "You are not authorize to access these resources.",
-      notAuthorizedDeletingTaskHandler,
-    ],
-  ])("Should return message: `%s`", async (message, handler) => {
-    serviceWorker.use(handler);
-
-    renderWithRouter(["/edit-task/:taskId"]);
-
-    await baseModalFn();
-
-    await waitFor(() => {
-      const btnDelete = screen.getByRole("button", { name: "Confirm" });
-      expect(btnDelete).toBeInTheDocument();
-
-      fireEvent.click(btnDelete);
-
-      setTimeout(async () => {
-        expect(await screen.findByText(message)).toBeInTheDocument();
-      }, 2000);
-    });
-  });
-
-  it("Should be success deleting", async () => {
-    renderWithRouter(["/edit-task/:taskId"]);
-
-    await baseModalFn();
-
-    await waitFor(async () => {
-      const btnDelete = screen.getByRole("button", { name: "Confirm" });
-      expect(btnDelete).toBeInTheDocument();
-
-      fireEvent.click(btnDelete);
-
-      setTimeout(async () => {
-        expect(
-          await screen.findByText("Task successfully deleted.")
-        ).toBeInTheDocument();
-      }, 2000);
-
-      expect(window.location.pathname === "/home");
-    });
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
   });
 });

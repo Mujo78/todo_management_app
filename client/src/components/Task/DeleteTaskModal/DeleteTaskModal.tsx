@@ -7,8 +7,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import LoadingButton from "../UI/LoadingButton";
-import useDeleteTask from "../../features/tasks/useDeleteTask";
+import LoadingButton from "../../UI/LoadingButton";
+import useDeleteTask from "../../../features/tasks/useDeleteTask";
 
 interface Props {
   show: boolean;

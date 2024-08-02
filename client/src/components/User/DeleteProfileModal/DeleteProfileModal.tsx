@@ -9,9 +9,9 @@ import {
   Stack,
 } from "@mui/material";
 import React from "react";
-import useDeleteProfile from "../../features/user/useDeleteProfile";
+import useDeleteProfile from "../../../features/user/useDeleteProfile";
 import { useNavigate } from "react-router-dom";
-import LoadingButton from "../UI/LoadingButton";
+import LoadingButton from "../../UI/LoadingButton";
 
 interface Props {
   show: boolean;
