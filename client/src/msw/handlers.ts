@@ -56,6 +56,15 @@ export const handlers = [
     }
   ),
 
+  http.delete<never, undefined, Response<string>>(
+    "https://localhost:7196/api/auth/logout",
+    () => {
+      return HttpResponse.json<string>("Logged out successfully.", {
+        status: 200,
+      });
+    }
+  ),
+
   http.post<never, UserAccountDataType, Response<string>>(
     "https://localhost:7196/api/v1/users/registration",
     async ({ request }) => {
@@ -288,3 +297,19 @@ export const verifyEmailTokenUserNotFoundHandler = http.patch<
     );
   }
 );
+
+export const invalidTokenLogoutHandler = http.delete<
+  never,
+  undefined,
+  Response<string>
+>("https://localhost:7196/api/auth/logout", () => {
+  return HttpResponse.json<ErrorResponse>(
+    {
+      type: "NotFoundException",
+      title: "Resource not found.",
+      status: 404,
+      detail: "Invalid token provided. Token not found.",
+    },
+    { status: 404 }
+  );
+});

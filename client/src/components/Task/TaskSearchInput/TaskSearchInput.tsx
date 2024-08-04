@@ -1,6 +1,6 @@
 import { Stack, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { useSearchQuery } from "../../hooks/useSearchQuery";
+import { useSearchQuery } from "../../../hooks/useSearchQuery";
 import { useNavigate } from "react-router-dom";
 
 const TaskSearchInput: React.FC = () => {

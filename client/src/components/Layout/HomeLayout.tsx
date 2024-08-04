@@ -3,7 +3,7 @@ import { Stack, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import AppNavbar from "../UI/AppNavbar/AppNavbar";
 import AppSidebar from "../UI/AppSidebar/AppSidebar";
-import TabNavigation from "../UI/TabNavigation";
+import TabNavigation from "../UI/TabNavigation/TabNavigation";
 import { Toaster } from "react-hot-toast";
 import SuspenseFallback from "../UI/SuspenseFallback";
 

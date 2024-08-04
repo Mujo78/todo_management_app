@@ -61,7 +61,7 @@ namespace server.Services
 
         public async Task Logout(string refreshToken)
         {
-            var refreshTokenFounded = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided.");
+            var refreshTokenFounded = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided. Token not found.");
             try
             {
                 await repository.Logout(refreshTokenFounded);

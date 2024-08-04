@@ -3,7 +3,7 @@ import { Alert, Button, CircularProgress, Stack, Tooltip } from "@mui/material";
 import useGetTasks from "../../features/tasks/useGetTasks";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
-import TaskSearchInput from "../../components/Task/TaskSearchInput";
+import TaskSearchInput from "../../components/Task/TaskSearchInput/TaskSearchInput";
 import { useSearchQuery } from "../../hooks/useSearchQuery";
 import PaginationModified from "../../components/UI/Pagination";
 import { formatErrorMessage } from "../../components/utils/user/userUtils";

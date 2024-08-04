@@ -66,7 +66,11 @@ const AppSidebar: React.FC = () => {
         }}
       >
         <List>
-          <ListItem disablePadding onClick={() => handleNavigate("/home")}>
+          <ListItem
+            aria-label="Tasks"
+            disablePadding
+            onClick={() => handleNavigate("/home")}
+          >
             <ListItemButton
               sx={{ gap: 2 }}
               selected={location === "/home" || location.includes("task")}
@@ -79,7 +83,11 @@ const AppSidebar: React.FC = () => {
               {matches && <ListItemText primary="Tasks" />}
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding onClick={() => handleNavigate("/profile")}>
+          <ListItem
+            aria-label="Profile"
+            disablePadding
+            onClick={() => handleNavigate("/profile")}
+          >
             <ListItemButton
               sx={{ gap: 2 }}
               selected={location.startsWith("/profile")}
@@ -95,6 +103,7 @@ const AppSidebar: React.FC = () => {
         </List>
       </Stack>
       <Button
+        aria-label="addNewTaskBtn"
         variant="outlined"
         onClick={() => handleNavigate("/add-task")}
         startIcon={<AddTask />}

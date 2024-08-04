@@ -102,7 +102,8 @@ const AppNavbar: React.FC = () => {
               onClick={handleLogout}
               sx={{ display: "flex", gap: "10px" }}
             >
-              <ExitToApp /> Log out
+              <ExitToApp />
+              Log out
             </MenuItem>
           </Menu>
         </Box>
