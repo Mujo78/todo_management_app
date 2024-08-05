@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Stack, Tooltip } from "@mui/material";
 import { Delete, DeleteSweep, Check } from "@mui/icons-material";
-import useTaskStore from "../../app/taskSlice";
-import useDeleteAllTasks from "../../features/tasks/useDeleteAllTasks";
+import useTaskStore from "../../../app/taskSlice";
+import useDeleteAllTasks from "../../../features/tasks/useDeleteAllTasks";
 import { useNavigate } from "react-router-dom";
-import useMakeTasksFinished from "../../features/tasks/useMakeTasksFinished";
-import useDeleteSelectedTasks from "../../features/tasks/useDeleteSelectedTasks";
+import useMakeTasksFinished from "../../../features/tasks/useMakeTasksFinished";
+import useDeleteSelectedTasks from "../../../features/tasks/useDeleteSelectedTasks";
 
 const TaskOptionsHeader: React.FC = () => {
   const navigate = useNavigate();

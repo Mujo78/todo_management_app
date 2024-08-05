@@ -1,44 +1,8 @@
 import { http, HttpResponse } from "msw";
 import { AllTasksType, CreateUpdateTaskType, TaskType } from "../app/taskSlice";
-import { ErrorResponse, Response } from "./Worker";
-import { addDays, format, subDays } from "date-fns";
+import { ErrorResponse, Response, tasksToReturn } from "./Worker";
+import { addDays, format } from "date-fns";
 import { act, fireEvent, screen } from "@testing-library/react";
-
-const tasksToReturn: TaskType[] = [
-  {
-    id: "openTask",
-    createdAt: new Date(),
-    description: "Open Task description",
-    dueDate: addDays(new Date(), 2),
-    priority: 2,
-    status: 0,
-    title: "Open Task Here",
-    updatedAt: new Date(),
-    userId: "userIdForOpenTask",
-  },
-  {
-    id: "failedTask",
-    createdAt: new Date(),
-    description: "Failed Task description",
-    dueDate: subDays(new Date(), 2),
-    priority: 2,
-    status: 2,
-    title: "Failed Task Here",
-    updatedAt: new Date(),
-    userId: "userIdForFailedTask",
-  },
-  {
-    id: "completedTask",
-    createdAt: new Date(),
-    description: "Completed Task description",
-    dueDate: addDays(new Date(), 2),
-    priority: 2,
-    status: 1,
-    title: "Completed Task Here",
-    updatedAt: new Date(),
-    userId: "userIdForCompletedTask",
-  },
-];
 
 export const taskHandler = [
   http.get<{ pageNum: string }, undefined, Response<AllTasksType>>(
@@ -263,6 +227,20 @@ export const notAuthorizedDeletingTaskHandler = http.delete<
   );
 });
 
+export const shouldReturnEmptyArrayForTasksData = http.get<
+  { pageNum: string },
+  undefined,
+  Response<AllTasksType>
+>("https://localhost:7196/api/v1/assignments", () => {
+  return HttpResponse.json<AllTasksType>(
+    {
+      data: [],
+      pageNumber: 1,
+      totalCount: 1,
+    },
+    { status: 200 }
+  );
+});
 export const baseChangeTaskFormFn = async (
   { title, dueDate, priority, status, description }: CreateUpdateTaskType,
   dueDateLabel?: Date

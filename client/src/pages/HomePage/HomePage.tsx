@@ -8,9 +8,9 @@ import { useSearchQuery } from "../../hooks/useSearchQuery";
 import PaginationModified from "../../components/UI/Pagination";
 import { formatErrorMessage } from "../../components/utils/user/userUtils";
 import InfoIcon from "@mui/icons-material/Info";
-import TaskCard from "../../components/Task/TaskCard";
+import TaskCard from "../../components/Task/TaskCard/TaskCard";
 import useTaskStore from "../../app/taskSlice";
-import TaskOptionsHeader from "../../components/Task/TaskOptionsHeader";
+import TaskOptionsHeader from "../../components/Task/TaskOptionsHeader/TaskOptionsHeader";
 import useMakeTaskFailed from "../../features/tasks/useMakeTaskFailed";
 
 const HomePage = () => {
@@ -111,6 +111,7 @@ const HomePage = () => {
         <Button
           onClick={handleClear}
           color="error"
+          aria-label="ClearSearchBtn"
           variant="contained"
           sx={{ width: "fit-content", margin: "auto 0 0 auto" }}
         >

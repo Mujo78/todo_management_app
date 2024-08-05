@@ -1,8 +1,8 @@
 import { Badge, Card, Checkbox, Stack, Typography } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useTaskStore, { TaskType } from "../../app/taskSlice";
-import { formatPriority } from "../utils/task/taskUtils";
+import useTaskStore, { TaskType } from "../../../app/taskSlice";
+import { formatPriority } from "../../utils/task/taskUtils";
 import { format } from "date-fns";
 
 interface Props {
@@ -42,6 +42,7 @@ const TaskCard: React.FC<Props> = ({ data }) => {
 
   return (
     <Card
+      data-testid={`${data.id}-card`}
       onClick={handleNavigate}
       sx={{
         display: "flex",
