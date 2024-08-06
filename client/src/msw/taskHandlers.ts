@@ -115,10 +115,37 @@ export const taskHandler = [
     }
   ),
 
+  http.patch<never, string[], Response<string>>(
+    "https://localhost:7196/api/v1/assignments",
+    () => {
+      return HttpResponse.json<string>("Tasks successfully completed.", {
+        status: 200,
+      });
+    }
+  ),
+
   http.delete<never, undefined, Response<string>>(
     "https://localhost:7196/api/v1/assignments/:taskId",
     () => {
       return HttpResponse.json<string>("aecce5a1-c36d-4737-197e-08dcaa6f6588", {
+        status: 200,
+      });
+    }
+  ),
+
+  http.delete<never, string[], Response<string>>(
+    "https://localhost:7196/api/v1/assignments/selected",
+    () => {
+      return HttpResponse.json<string>("Tasks successfully deleted.", {
+        status: 200,
+      });
+    }
+  ),
+
+  http.delete<never, undefined, Response<string>>(
+    "https://localhost:7196/api/v1/assignments",
+    () => {
+      return HttpResponse.json<string>("Tasks successfully deleted.", {
         status: 200,
       });
     }
@@ -241,6 +268,57 @@ export const shouldReturnEmptyArrayForTasksData = http.get<
     { status: 200 }
   );
 });
+
+export const shouldReturnUnauthorizedWhenMakingFinishedTasks = http.patch<
+  never,
+  string[],
+  Response<string>
+>("https://localhost:7196/api/v1/assignments", () => {
+  return HttpResponse.json<ErrorResponse>(
+    {
+      type: "ForbidException",
+      title: "Forbidden",
+      status: 403,
+      detail: "You are not authorize to access these resources.",
+    },
+    { status: 403 }
+  );
+});
+
+export const shouldReturnNoProvidedTasksWhenMakingFinishedTasks = http.patch<
+  never,
+  string[],
+  Response<string>
+>("https://localhost:7196/api/v1/assignments", () => {
+  return HttpResponse.json<ErrorResponse>(
+    {
+      type: "BadRequestException",
+      title: "Bad request.",
+      status: 400,
+      detail: "No assignments provided.",
+    },
+    { status: 400 }
+  );
+});
+
+export const shouldReturnOneTaskOrMoreNotFoundWhenMakingFinishedTasks =
+  http.patch<never, string[], Response<string>>(
+    "https://localhost:7196/api/v1/assignments",
+    () => {
+      return HttpResponse.json<ErrorResponse>(
+        {
+          type: "NotFoundException",
+          title: "Resource not found.",
+          status: 404,
+          detail: "One or more assignments not found with the provided data.",
+        },
+        {
+          status: 404,
+        }
+      );
+    }
+  );
+
 export const baseChangeTaskFormFn = async (
   { title, dueDate, priority, status, description }: CreateUpdateTaskType,
   dueDateLabel?: Date

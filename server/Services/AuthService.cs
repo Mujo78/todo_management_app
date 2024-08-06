@@ -76,7 +76,12 @@ namespace server.Services
         {
             var refresh_token = await repository.GetRefreshToken(userId);
 
-            if (refresh_token == null)
+            if (refresh_token != null && refresh_token.ExpiresAt < DateTime.Now)
+            {
+                await repository.Logout(refresh_token);
+            }
+
+            if (refresh_token == null || refresh_token.ExpiresAt < DateTime.Now)
             {
                 RefreshToken token = new()
                 {
