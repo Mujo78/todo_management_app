@@ -107,6 +107,7 @@ const LoginForm: React.FC = () => {
         sx={{ textDecoration: "none" }}
         to="/forgot-password"
         fontSize="small"
+        aria-label="forgotPassword"
         mx="auto"
         role="link"
         color="primary.main"
