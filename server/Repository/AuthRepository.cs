@@ -40,6 +40,11 @@ namespace server.Repository
             return await db.RefreshTokens.FirstOrDefaultAsync(r => r.UserId.Equals(userId));
         }
 
+        public async Task ResetDB()
+        {
+          await db.UserTokens.ExecuteDeleteAsync();
+        }
+
         public async Task<bool> Save()
         {
             var saved = await db.SaveChangesAsync();

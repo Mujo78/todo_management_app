@@ -22,4 +22,10 @@ describe("Login functionality testing", () => {
 
     cy.contains("Forgot Your Password?").should("be.visible");
   });
+
+  it("Should successfully log in", () => {
+    cy.login();
+
+    cy.contains("User Testing One").should("be.visible");
+  });
 });

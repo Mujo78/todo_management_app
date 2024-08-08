@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO.Auth;
 using server.Exceptions;
+using server.Filters;
 using server.Services.IService;
 
 namespace server.Controllers
@@ -85,5 +86,13 @@ namespace server.Controllers
             return Ok("Logged out successfully.");
         }
 
+        [HttpDelete("/reset-database")]
+        [TypeFilter(typeof(TestingOnly))]
+        [ApiExplorerSettings(IgnoreApi =true)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        public async Task ResetTestingDatabase()
+        {
+            await authService.ResetDatabase();
+        }
     }
 }

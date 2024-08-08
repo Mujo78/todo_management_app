@@ -55,6 +55,34 @@ describe("Signup functionality tests", () => {
 
     cy.contains("Passwords must match");
   });
+
+  it("Should return Email already used", () => {
+    signupFn({
+      name: "User One Testing",
+      email: "user-testing@example.com",
+      password: "Password&123456",
+      confirmPassword: "Password&123456",
+    });
+
+    cy.contains("Email is already used!");
+  });
+
+  it("Should successfully create user account", () => {
+    signupFn({
+      name: "User Two Testing",
+      email: `user-testing-${Date.now()}@example.com`,
+      password: "Password&123456",
+      confirmPassword: "Password&123456",
+    });
+
+    cy.contains("Please check your inbox for verification email.").should(
+      "be.visible"
+    );
+  });
+
+  after(() => {
+    cy.request("DELETE", "https://localhost:7196/reset-database");
+  });
 });
 
 type signupArgs = {

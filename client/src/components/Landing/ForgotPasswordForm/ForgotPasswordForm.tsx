@@ -99,6 +99,7 @@ const ForgotPasswordForm: React.FC = () => {
         <Button
           onClick={handleNavigate}
           startIcon={<ArrowBack />}
+          aria-label="goBackBtn"
           variant="outlined"
         >
           Back to Log In page

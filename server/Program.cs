@@ -16,6 +16,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Asp.Versioning;
 using server.Utils.Email;
 using Microsoft.AspNetCore.ResponseCompression;
+using server.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddScoped<TestingOnly>();
 
 builder.Services.TryAddSingleton<IBackgroundJobService, BackgroundJobService>();
 builder.Services.AddTransient<IMailService, MailService>();
@@ -143,6 +146,7 @@ app.UseCors(MyAllowAllOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseResponseCompression();
+
 app.MapControllers();
 
 var backgroundService = app.Services.GetRequiredService<IBackgroundJobService>();

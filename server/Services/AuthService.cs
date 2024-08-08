@@ -190,5 +190,10 @@ namespace server.Services
 
             return null;
         }
+
+        public async Task ResetDatabase()
+        {
+            await repository.ResetDB();
+        }
     }
 }
