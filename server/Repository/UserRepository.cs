@@ -88,7 +88,8 @@ namespace server.Repository
         public async Task VerifyEmailAddress(User user, UserToken token)
         {
             user.EmailConfirmed = true;
-            db.Users.Update(user);
+            db.Users.Attach(user);
+            db.UserTokens.Attach(token);
 
             db.UserTokens.Remove(token);
 

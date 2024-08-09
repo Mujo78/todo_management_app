@@ -42,7 +42,19 @@ namespace server.Repository
 
         public async Task ResetDB()
         {
-          await db.UserTokens.ExecuteDeleteAsync();
+            var tokenArray = new List<string>()
+            {
+                "25f78624-0c9b-4b63-b61e-d5b297e56f82",
+                "5508116c-f287-4e54-8e9d-b556fdc9eeeb"
+            };
+            var newAddedTokens = await db.UserTokens.Where(token => !tokenArray.Contains(token.Token)).ToListAsync();
+            
+            if(newAddedTokens.Count != 0)
+            {
+                db.UserTokens.RemoveRange(newAddedTokens);
+            }
+
+            await db.SaveChangesAsync();
         }
 
         public async Task<bool> Save()
