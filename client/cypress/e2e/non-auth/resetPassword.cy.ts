@@ -1,4 +1,4 @@
-describe("template spec", () => {
+describe("Reset Password functionality testing", () => {
   beforeEach(() => {
     cy.visit("/password-reset/5508116c-f287-4e54-8e9d-b556fdc9eeeb");
   });

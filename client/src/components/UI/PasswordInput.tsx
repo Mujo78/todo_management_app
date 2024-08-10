@@ -46,6 +46,7 @@ const PasswordInput = <TFieldValues extends FieldValues>({
           id={label}
           data-testid={label}
           label={label}
+          required
           aria-label={label}
           type={toggle ? "text" : "password"}
           InputProps={{

@@ -13,7 +13,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vitest/globals"],
+    "types": ["vitest/globals", "cypress"],
 
     /* Linting */
     "strict": true,
@@ -21,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "./src/setup.ts"],
+  "include": ["src", "./src/setup.ts", "cypress/**/*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

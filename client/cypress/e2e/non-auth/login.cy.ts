@@ -48,6 +48,7 @@ describe("Login functionality testing", () => {
   it("Should successfully log in", () => {
     cy.login();
 
-    cy.contains("User Testing One").should("be.visible");
+    cy.wait(2000);
+    cy.getCookie("refreshToken").should("exist");
   });
 });

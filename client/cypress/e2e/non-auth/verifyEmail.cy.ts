@@ -1,4 +1,4 @@
-describe("template spec", () => {
+describe("Verify Email functionality testing", () => {
   it("Should show text informations to the user", () => {
     cy.visit("/verify-email/c8f37f0c-b813-4b42-b3f5-6883e653456e");
 

@@ -1,4 +1,4 @@
-describe("template spec", () => {
+describe("Forgot Password functionality testing", () => {
   beforeEach(() => {
     cy.visit("/forgot-password");
   });

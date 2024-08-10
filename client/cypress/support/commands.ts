@@ -9,6 +9,11 @@ declare namespace Cypress {
       newPassword: string,
       confirmNewPassword: string
     ): Chainable<void>;
+    changePassword(
+      oldPassword: string,
+      newPassword: string,
+      confirmNewPassword: string
+    ): Chainable<void>;
   }
 }
 
@@ -39,3 +44,15 @@ Cypress.Commands.add("resetPassword", (newPassword, confirmNewPassword) => {
     .type(confirmNewPassword);
   cy.get('button[type="submit"]').click();
 });
+
+Cypress.Commands.add(
+  "changePassword",
+  (oldPassword, newPassword, confirmNewPassword) => {
+    cy.get('input[name="oldPassword"]').should("be.visible").type(oldPassword);
+    cy.get('input[name="newPassword"]').should("be.visible").type(newPassword);
+    cy.get('input[name="confirmNewPassword"]')
+      .should("be.visible")
+      .type(confirmNewPassword);
+    cy.get('button[type="submit"]').click();
+  }
+);
