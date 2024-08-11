@@ -65,6 +65,7 @@ const DeleteProfileModal: React.FC<Props> = ({ setShow, show, total }) => {
             onClick={handleClose}
             sx={{ flexGrow: { xs: 1, sm: 0 } }}
             variant="outlined"
+            aria-label="closeDeleteProfileModalbtn"
           >
             Close
           </Button>
@@ -74,6 +75,7 @@ const DeleteProfileModal: React.FC<Props> = ({ setShow, show, total }) => {
             onClick={handleDeleteProfile}
             isPending={isPending}
             error
+            label="conrimDeleteProfilebtn"
           >
             Confirm
           </LoadingButton>

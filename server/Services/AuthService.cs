@@ -108,12 +108,21 @@ namespace server.Services
             var existingRefreshToken = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided.");
             var user = await repository.GetUser(existingRefreshToken.UserId) ?? throw new NotFoundException("User not found.");
 
-            if (!existingRefreshToken.IsValid) httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken", new CookieOptions
+            if (!existingRefreshToken.IsValid)
             {
-                Secure = true,
-                HttpOnly = true,
-                SameSite = SameSiteMode.None,
-            });
+                httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken", new CookieOptions
+                {
+                    Secure = true,
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                });
+
+                httpContextAccessor.HttpContext?.Response.Cookies.Delete("checkToken", new CookieOptions
+                {
+                    Secure = true,
+                    SameSite = SameSiteMode.None
+                });
+            }
 
             bool isTokenValid = IsAccessTokenValid(accessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
             if (!isTokenValid) throw new BadRequestException("Invalid token provided.");
@@ -122,6 +131,44 @@ namespace server.Services
 
             return new AccessTokenDTO()
             {
+                AccessToken = newAccessToken
+            };
+        }
+        public async Task<LoginDataDTO> GetAccessTokenWithRefresh(string refreshToken)
+        {
+            var existingRefreshToken = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided.");
+            var user = await repository.GetUser(existingRefreshToken.UserId) ?? throw new NotFoundException("User not found.");
+
+            if (!existingRefreshToken.IsValid)
+            {
+                httpContextAccessor.HttpContext?.Response.Cookies.Delete("refreshToken", new CookieOptions
+                {
+                    Secure = true,
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                });
+
+                httpContextAccessor.HttpContext?.Response.Cookies.Delete("checkToken", new CookieOptions
+                {
+                    Secure = true,
+                    SameSite = SameSiteMode.None
+                });
+            }
+
+            var newAccessToken = CreateAccessToken(user, existingRefreshToken.JwtTokenId);
+
+            var userDTO = new UserDTO()
+            {
+                Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
+                Name = user.Name,
+                CreatedAt = user.CreatedAt,
+                Id = user.Id,
+            };
+
+            return new LoginDataDTO()
+            {
+                User = userDTO,
                 AccessToken = newAccessToken
             };
         }
@@ -195,5 +242,6 @@ namespace server.Services
         {
             await repository.ResetDB();
         }
+
     }
 }

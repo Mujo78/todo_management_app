@@ -99,6 +99,7 @@ const Profile = () => {
                 <Button
                   sx={{ ml: "auto" }}
                   color="error"
+                  aria-label="deleteModalProfileBtn"
                   onClick={handleDeleteAccount}
                 >
                   Delete Account

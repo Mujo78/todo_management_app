@@ -36,7 +36,15 @@ namespace server.Controllers
                 Expires = DateTime.Now.AddDays(7)
             };
 
+            var checkOptions = new CookieOptions
+            {
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = options.Expires
+            };
+
             Response.Cookies.Append("refreshToken", tokenToReturn.RefreshToken, options);
+            Response.Cookies.Append("checkToken", "true", checkOptions);
 
             LoginDataDTO loginDataDTO = new()
             {
@@ -64,6 +72,21 @@ namespace server.Controllers
             return Ok(tokenResponse);
         }
 
+        [HttpPost("refresh-token")]
+        [ProducesResponseType(typeof(LoginDataDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> RefreshAccessTokenWithRefreshAction()
+        {
+            string refreshToken = Request.Cookies["refreshToken"]!;
+            if (string.IsNullOrEmpty(refreshToken)) throw new BadRequestException("Invalid token provided.");
+
+            var tokenResponse = await authService.GetAccessTokenWithRefresh(refreshToken);
+            return Ok(tokenResponse);
+        }
+
         [Authorize]
         [HttpDelete("logout")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
@@ -82,6 +105,11 @@ namespace server.Controllers
                 Secure = true,
                 HttpOnly = true,
                 SameSite = SameSiteMode.None,
+            });
+            Response.Cookies.Delete("checkToken", new CookieOptions
+            {
+                Secure = true,
+                SameSite = SameSiteMode.None
             });
             return Ok("Logged out successfully.");
         }

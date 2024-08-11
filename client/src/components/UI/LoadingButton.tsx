@@ -5,6 +5,7 @@ interface Props {
   isPending: boolean;
   children: React.ReactNode;
   fullWidth?: boolean;
+  label?: string;
   sx?: SxProps<Theme>;
   onClick?: () => void;
   error?: boolean;
@@ -16,12 +17,14 @@ const LoadingButton: React.FC<Props> = ({
   error,
   fullWidth,
   children,
+  label,
   sx,
 }) => {
   return (
     <Button
       onClick={onClick}
       type="submit"
+      aria-label={label}
       color={error ? "error" : "primary"}
       variant="contained"
       fullWidth={fullWidth}

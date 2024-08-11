@@ -16,6 +16,7 @@ type Props<TFieldValues extends FieldValues> = {
   error: boolean | undefined;
   children?: React.ReactNode;
   label?: string;
+  disabled?: boolean;
   errorMessage: string | undefined;
 };
 
@@ -27,6 +28,7 @@ const PasswordInput = <TFieldValues extends FieldValues>({
   errorMessage,
   label,
   name,
+  disabled,
 }: Props<TFieldValues>) => {
   const [toggle, setToggle] = useState<boolean>(false);
 
@@ -46,6 +48,7 @@ const PasswordInput = <TFieldValues extends FieldValues>({
           id={label}
           data-testid={label}
           label={label}
+          disabled={disabled}
           required
           aria-label={label}
           type={toggle ? "text" : "password"}

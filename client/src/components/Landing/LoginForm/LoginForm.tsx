@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormHelperText, Stack, TextField, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
@@ -13,20 +13,30 @@ import {
 } from "../../utils/user/userUtils";
 import LoadingButton from "../../UI/LoadingButton";
 import { Link } from "react-router-dom";
+import useRefreshAuth from "../../../features/auth/useRefreshAuth";
+import Cookies from "js-cookie";
 
 const LoginForm: React.FC = () => {
+  const cookie = Cookies.get("checkToken");
   const { control, formState, handleSubmit, reset } = useForm<LogindDataType>({
     resolver: yupResolver(loginValidationSchema),
   });
   const { errors, isDirty } = formState;
 
   const { error, isPending, login } = useLogin();
+  const { isPending: isRefreshPending, resumeSession } = useRefreshAuth();
 
   const onSubmit = (values: LogindDataType) => {
     if (!isPending && isDirty) {
       login(values, { onSuccess: () => reset() });
     }
   };
+
+  useEffect(() => {
+    if (cookie) {
+      resumeSession(undefined);
+    }
+  }, [cookie, resumeSession]);
 
   return (
     <Stack gap={4} my="auto" flexGrow={1}>
@@ -59,6 +69,7 @@ const LoginForm: React.FC = () => {
               aria-label="Email"
               autoComplete="true"
               required
+              disabled={isRefreshPending}
               type="email"
               fullWidth
               error={
@@ -81,6 +92,7 @@ const LoginForm: React.FC = () => {
           control={control}
           label="Password"
           name="password"
+          disabled={isRefreshPending}
           defaultValue=""
           error={
             !!errors.password ||
@@ -98,7 +110,7 @@ const LoginForm: React.FC = () => {
           )}
         </PasswordInput>
 
-        <LoadingButton isPending={isPending} fullWidth>
+        <LoadingButton isPending={isPending || isRefreshPending} fullWidth>
           Log in
         </LoadingButton>
       </Stack>

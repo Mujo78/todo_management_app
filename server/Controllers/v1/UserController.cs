@@ -124,6 +124,11 @@ namespace server.Controllers.v1
                     HttpOnly = true,
                     SameSite = SameSiteMode.None,
                 });
+                Response.Cookies.Delete("checkToken", new CookieOptions
+                {
+                    Secure = true,
+                    SameSite = SameSiteMode.None
+                });
                 return Ok("Profile succesfully deleted.");
             }
             catch (Exception ex)
