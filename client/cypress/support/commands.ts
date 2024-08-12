@@ -3,7 +3,7 @@
 
 declare namespace Cypress {
   interface Chainable {
-    login(): Chainable<void>;
+    login(email?: string): Chainable<void>;
     forgotPassword(): Chainable<void>;
     resetPassword(
       newPassword: string,
@@ -14,15 +14,16 @@ declare namespace Cypress {
       newPassword: string,
       confirmNewPassword: string
     ): Chainable<void>;
+    openMenu(): Chainable<void>;
   }
 }
 
-Cypress.Commands.add("login", () => {
+Cypress.Commands.add("login", (email) => {
   cy.visit("/");
 
-  cy.get('input[name="email"]')
-    .should("be.visible")
-    .type("user-testing@example.com");
+  const emailToUse = email ?? "user-testing@example.com";
+
+  cy.get('input[name="email"]').should("be.visible").type(emailToUse);
   cy.get('input[name="password"]').should("be.visible").type("Password&123456");
   cy.get('button[type="submit"]').click();
 });
@@ -56,3 +57,11 @@ Cypress.Commands.add(
     cy.get('button[type="submit"]').click();
   }
 );
+
+Cypress.Commands.add("openMenu", () => {
+  cy.get('button[aria-label="account of current user"]')
+    .should("be.visible")
+    .click();
+
+  cy.get(".MuiMenu-list").should("be.visible");
+});

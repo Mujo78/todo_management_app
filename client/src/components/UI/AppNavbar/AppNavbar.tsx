@@ -89,16 +89,23 @@ const AppNavbar: React.FC = () => {
           >
             {!matches && (
               <MenuList>
-                <MenuItem onClick={() => handleNavigate("/home")}>
+                <MenuItem
+                  aria-label="HomeLink"
+                  onClick={() => handleNavigate("/home")}
+                >
                   Home
                 </MenuItem>
-                <MenuItem onClick={() => handleNavigate("/profile")}>
+                <MenuItem
+                  aria-label="ProfileLink"
+                  onClick={() => handleNavigate("/profile")}
+                >
                   Profile
                 </MenuItem>
                 <Divider />
               </MenuList>
             )}
             <MenuItem
+              aria-label="LogoutBtnLink"
               onClick={handleLogout}
               sx={{ display: "flex", gap: "10px" }}
             >

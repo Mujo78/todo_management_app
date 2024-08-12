@@ -51,6 +51,15 @@ namespace server.Data
                         Email = "user-testing-third@example.com",
                         EmailConfirmed = true,
                         Password = BCrypt.Net.BCrypt.HashPassword("Password&123456")
+                    },
+                    new User
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "User To Delete",
+                        CreatedAt = DateTime.Now,
+                        Email = "user-testing-to-delete@example.com",
+                        EmailConfirmed = true,
+                        Password = BCrypt.Net.BCrypt.HashPassword("Password&123456")
                     }
                     );
                 modelBuilder.Entity<UserToken>().HasData(

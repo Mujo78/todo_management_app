@@ -50,4 +50,27 @@ describe("Edit Profile functionality testing", () => {
 
     cy.contains("Profile successfully updated.").should("be.visible");
   });
+
+  after(() => {
+    cy.getAllLocalStorage().then((localStorage) => {
+      const token = localStorage["http://localhost:5173"].auth;
+      if (token) {
+        const options = {
+          method: "PUT",
+          url: "https://localhost:7196/api/v1/users",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: {
+            id: "5979e203-2d8e-4b99-bde3-2881fefe96e4",
+            name: "User Testing One",
+            createdAt: new Date(),
+            email: "user-testing@example.com",
+            emailConfirmed: true,
+          },
+        };
+        cy.request(options);
+      }
+    });
+  });
 });

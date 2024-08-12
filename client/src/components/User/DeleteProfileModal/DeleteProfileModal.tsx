@@ -75,7 +75,7 @@ const DeleteProfileModal: React.FC<Props> = ({ setShow, show, total }) => {
             onClick={handleDeleteProfile}
             isPending={isPending}
             error
-            label="conrimDeleteProfilebtn"
+            label="confirmDeleteProfilebtn"
           >
             Confirm
           </LoadingButton>
