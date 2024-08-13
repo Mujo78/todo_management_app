@@ -15,9 +15,6 @@ function useCreateTask() {
   } = useMutation<TaskType, Error | AxiosError, CreateUpdateTaskType>({
     mutationKey: ["createTask"],
     mutationFn: CreateTaskFn,
-    onSuccess: () => {
-      toast.success("Successfully created a new task.");
-    },
     onError: (error) => {
       const errorToShow = formatErrorMessage(error);
 

@@ -51,6 +51,7 @@ const DeleteTaskModal: React.FC<Props> = ({ setShow, show, title, taskId }) => {
           <Button
             onClick={handleClose}
             variant="outlined"
+            aria-label="CloseDeleteTaskModalBtn"
             sx={{ flexGrow: { xs: 1, sm: 0 } }}
           >
             Close
@@ -59,6 +60,7 @@ const DeleteTaskModal: React.FC<Props> = ({ setShow, show, title, taskId }) => {
           <LoadingButton
             sx={{ flexGrow: { xs: 1, sm: 0 } }}
             onClick={handleDeleteProfile}
+            label="ConfirmDeleteTaskModalBtn"
             isPending={isPending}
             error
           >

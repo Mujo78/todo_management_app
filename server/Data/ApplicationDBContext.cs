@@ -21,6 +21,9 @@ namespace server.Data
                 Guid firstUserId = Guid.Parse("5979e203-2d8e-4b99-bde3-2881fefe96e4");
                 Guid secondUserId = Guid.Parse("6fe71ee1-830f-4e00-8257-cd3591423505");
                 Guid thirdUserId = Guid.Parse("8d3716ab-ae98-473f-9a6b-5d53b8d46682");
+
+                Guid firstTaskId = Guid.Parse("c4b62272-2cdb-436b-a1b3-d770e6f11b44");
+
                 string verificationToken = "25f78624-0c9b-4b63-b61e-d5b297e56f82";
                 string resetPasswordToken = "5508116c-f287-4e54-8e9d-b556fdc9eeeb";
 
@@ -82,6 +85,46 @@ namespace server.Data
                         Token = resetPasswordToken,
                     }
                     );
+
+                modelBuilder.Entity<Assignment>().HasData(
+                    new Assignment
+                    {
+                        Id = firstTaskId,
+                        Title = "First Task Created",
+                        CreatedAt = DateTime.Now,
+                        Description = "",
+                        DueDate = DateTime.Now.AddDays(2),
+                        Priority = Utils.Enums.Priority.High,
+                        Status = Utils.Enums.Status.Open,
+                        UpdatedAt = DateTime.Now,
+                        UserId = firstUserId
+                    },
+                    new Assignment
+                    {
+                        Id = Guid.NewGuid(),
+                        Title = "Second Task Created",
+                        CreatedAt = DateTime.Now,
+                        Description = "",
+                        DueDate = DateTime.Now.AddDays(2),
+                        Priority = Utils.Enums.Priority.High,
+                        Status = Utils.Enums.Status.Failed,
+                        UpdatedAt = DateTime.Now,
+                        UserId = firstUserId
+                    },
+                    new Assignment
+                    {
+                        Id = Guid.NewGuid(),
+                        Title = "Third Task Created",
+                        CreatedAt = DateTime.Now,
+                        Description = "",
+                        DueDate = DateTime.Now.AddDays(2),
+                        Priority = Utils.Enums.Priority.High,
+                        Status = Utils.Enums.Status.Completed,
+                        UpdatedAt = DateTime.Now,
+                        UserId = firstUserId
+                    }
+                    );
+                ;
             }
 
             modelBuilder.Entity<User>()

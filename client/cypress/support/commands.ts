@@ -1,6 +1,14 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="cypress" />
 
+interface CreateUpdateTaskType {
+  title: string;
+  description?: string;
+  dueDate: string;
+  priority: number;
+  status?: number | 0;
+}
+
 declare namespace Cypress {
   interface Chainable {
     login(email?: string): Chainable<void>;
@@ -15,6 +23,8 @@ declare namespace Cypress {
       confirmNewPassword: string
     ): Chainable<void>;
     openMenu(): Chainable<void>;
+    addTask(data: CreateUpdateTaskType): Chainable<void>;
+    editTask(data: CreateUpdateTaskType): Chainable<void>;
   }
 }
 
@@ -64,4 +74,39 @@ Cypress.Commands.add("openMenu", () => {
     .click();
 
   cy.get(".MuiMenu-list").should("be.visible");
+});
+
+Cypress.Commands.add("addTask", (data) => {
+  const { title, dueDate, priority, description } = data;
+
+  const descriptionToUse = description ?? "";
+
+  cy.get('input[name="title"]').should("be.visible").type(title);
+  cy.get('input[name="dueDate"]').should("be.visible").type(dueDate);
+  cy.get('textarea[name="description"]')
+    .should("be.visible")
+    .type(descriptionToUse);
+
+  cy.get('div[aria-label="Priority"]').should("be.visible").click();
+
+  cy.get(`li[data-value="${priority}"]`).click();
+
+  cy.get('button[type="submit"]').click();
+});
+
+Cypress.Commands.add("editTask", (data) => {
+  const { title, dueDate, priority, description } = data;
+
+  cy.get('input[name="title"]').should("be.visible").clear().type(title);
+  cy.get('input[name="dueDate"]').should("be.visible").type(dueDate);
+  cy.get('textarea[name="description"]')
+    .should("be.visible")
+    .clear()
+    .type(description!);
+
+  cy.get('div[aria-label="Priority"]').should("be.visible").click();
+
+  cy.get(`li[data-value="${priority}"]`).click();
+
+  cy.get('button[type="submit"]').click();
 });

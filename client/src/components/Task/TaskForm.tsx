@@ -297,6 +297,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
                 width: { xs: "100%", sm: "fit-content" },
               }}
               color="error"
+              aria-label="DeleteTaskBtn"
               onClick={handleDelete}
               variant="text"
             >
