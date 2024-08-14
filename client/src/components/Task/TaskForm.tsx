@@ -304,20 +304,23 @@ const TaskForm = <TFieldValues extends FieldValues>({
               Delete Task
             </Button>
           )}
-          <Button
-            type={isDateDisabled ? "button" : "submit"}
-            variant="contained"
-            sx={{
-              width: { xs: "100%", sm: "fit-content" },
-              margin: "0 0 0 auto",
-            }}
-          >
-            {isPending ? (
-              <CircularProgress size={30} sx={{ color: "white" }} />
-            ) : (
-              "Save"
-            )}
-          </Button>
+
+          {!isDateDisabled && (
+            <Button
+              type={isDateDisabled ? "button" : "submit"}
+              variant="contained"
+              sx={{
+                width: { xs: "100%", sm: "fit-content" },
+                margin: "0 0 0 auto",
+              }}
+            >
+              {isPending ? (
+                <CircularProgress size={30} sx={{ color: "white" }} />
+              ) : (
+                "Save"
+              )}
+            </Button>
+          )}
         </Stack>
       </Stack>
     </Stack>

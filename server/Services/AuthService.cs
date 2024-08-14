@@ -44,7 +44,7 @@ namespace server.Services
                 Name = user.Name,
                 Email = user.Email,
                 EmailConfirmed = user.EmailConfirmed,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = user.CreatedAt,
             };
 
             UserTokenDTO token = new()

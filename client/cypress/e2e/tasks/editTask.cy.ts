@@ -8,25 +8,25 @@ describe("Edit Task functionality testing", () => {
     cy.wait(1500);
   });
 
-  it.skip("Should show form filled with fetched data", () => {
+  it("Should show form filled with fetched data", () => {
     cy.contains("Edit task").should("be.visible");
     cy.get('button[aria-label="BackButton"]').should("be.visible");
     cy.get('button[aria-label="DeleteTaskBtn"]').should("be.visible");
   });
 
-  it.skip("Should show message when task is not found", () => {
+  it("Should show message when task is not found", () => {
     cy.visit("/edit-task/c4b62272-2cdb-436b-a1b3-d770e6f11b43");
     cy.wait(1500);
 
     cy.contains("Assignment not found.").should("be.visible");
   });
 
-  it.skip("Should navigate back to the home page", () => {
+  it("Should navigate back to the home page", () => {
     cy.get('button[aria-label="BackButton"]').should("be.visible").click();
     cy.location("pathname").should("eq", "/home");
   });
 
-  it.skip("Should show form validation errors", () => {
+  it("Should show form validation errors", () => {
     const date = subDays(new Date(), 2);
     const dateToUseOnlyHere = format(date, "MM/dd/yyyy hh:mm PM");
 
@@ -43,7 +43,7 @@ describe("Edit Task functionality testing", () => {
     cy.contains("Date can not be in the past!").should("be.visible");
   });
 
-  it.skip("Should show delete task modal and close it", () => {
+  it("Should show delete task modal and close it", () => {
     cy.get('button[aria-label="DeleteTaskBtn"]').should("be.visible").click();
 
     cy.contains(
@@ -85,6 +85,38 @@ describe("Edit Task functionality testing", () => {
     });
 
     cy.contains("Task successfully updated.").should("be.visible");
+  });
+
+  it("Should disable form if task is completed, with possibility of deleting task", () => {
+    cy.visit("/edit-task/27884557-1ed9-4429-abb5-d2588e5d4e59");
+    cy.wait(1500);
+
+    cy.get('input[name="title"]').should("be.visible").and("be.disabled");
+    cy.get('input[name="dueDate"]').should("be.visible").and("be.disabled");
+    cy.get('textarea[name="description"]')
+      .should("be.visible")
+      .and("be.disabled");
+
+    cy.get("#select-priority").should("have.attr", "aria-disabled", "true");
+    cy.get("#select-status").should("have.attr", "aria-disabled", "true");
+    cy.get('button[type="submit"]').should("not.exist");
+    cy.get('button[aria-label="DeleteTaskBtn"]').should("be.visible");
+  });
+
+  it("Should disable all form fields except dueDate if task is failed", () => {
+    cy.visit("/edit-task/876e65d2-eb5c-4ab7-ad46-fe9c4a8884f7");
+    cy.wait(1500);
+
+    cy.get('input[name="title"]').should("be.visible").and("be.disabled");
+    cy.get('input[name="dueDate"]').should("be.visible").and("not.be.disabled");
+    cy.get('textarea[name="description"]')
+      .should("be.visible")
+      .and("be.disabled");
+
+    cy.get("#select-priority").should("have.attr", "aria-disabled", "true");
+    cy.get("#select-status").should("have.attr", "aria-disabled", "true");
+    cy.get('button[type="submit"]').should("be.visible");
+    cy.get('button[aria-label="DeleteTaskBtn"]').should("be.visible");
   });
 
   after(() => {
