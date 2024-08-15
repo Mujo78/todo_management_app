@@ -68,5 +68,7 @@ describe("Delete Task functionality testing", () => {
         cy.request(options);
       }
     });
+
+    cy.reload();
   });
 });

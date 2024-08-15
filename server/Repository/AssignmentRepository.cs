@@ -2,6 +2,7 @@
 using server.Data;
 using server.Models;
 using server.Repository.IRepository;
+using server.Utils;
 
 namespace server.Repository
 {
@@ -70,6 +71,13 @@ namespace server.Repository
         public async Task<IEnumerable<Assignment>> GetAssignmentsById(List<Guid> assignmentsIds, Guid? userId)
         {
             return await db.Assignments.Where(a => a.UserId.Equals(userId) && assignmentsIds.Contains(a.Id)).ToListAsync();
+        }
+
+        public async Task SeedTestingDatabase()
+        {
+            var listData = SeedAssignments.GetSeedData();
+            await db.AddRangeAsync(listData);
+            await db.SaveChangesAsync();
         }
     }
 }

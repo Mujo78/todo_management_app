@@ -184,6 +184,11 @@ namespace server.Services
             }
         }
 
+        public async Task SeedDatabase()
+        {
+            await repository.SeedTestingDatabase();
+        }
+
         public async Task<IEnumerable<Assignment>> FindAssignmentsByIds(List<Guid> assignmentsIds)
         {
             var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");

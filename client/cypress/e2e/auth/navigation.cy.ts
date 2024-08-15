@@ -4,6 +4,8 @@ describe("Navigation functionality through the app testing", () => {
     cy.wait(1500);
   });
 
+  const todaysDate = new Date().toDateString();
+
   describe("AppSidebar component testing", () => {
     it("Should navigate to the profile page", () => {
       cy.get('li[aria-label="Profile"]').should("be.visible").click();
@@ -39,11 +41,19 @@ describe("Navigation functionality through the app testing", () => {
   });
 
   describe("AppNavbar component testing", () => {
-    it("Should show dropdown with links to navigate provided", () => {
+    it("Should display todays date, menu and logo", () => {
+      cy.get("a").should("have.text", "TaskMaster");
+      cy.contains(todaysDate).should("be.visible");
+      cy.get('button[aria-label="account of current user"]').should(
+        "be.visible"
+      );
+    });
+
+    it("Should display dropdown with links to navigate provided", () => {
       cy.openMenu();
     });
 
-    it("Should show logout button", () => {
+    it("Should display logout button", () => {
       cy.openMenu();
       cy.get('li[aria-label="LogoutBtnLink"]').should("be.visible");
     });
@@ -108,6 +118,18 @@ describe("Navigation functionality through the app testing", () => {
         .click();
 
       cy.location("pathname").should("eq", "/home");
+    });
+
+    it("Should not display elements of appNavbar when tabNavigation is displayed", () => {
+      cy.get("a").should("have.text", "TaskMaster");
+      cy.contains(todaysDate).should("not.be.visible");
+
+      cy.openMenu();
+      cy.wait(1000);
+
+      cy.get('li[aria-label="ProfileLink"]').should("not.exist");
+      cy.get('li[aria-label="HomeLink"]').should("not.exist");
+      cy.get('li[aria-label="LogoutBtnLink"]').should("be.visible");
     });
   });
 });

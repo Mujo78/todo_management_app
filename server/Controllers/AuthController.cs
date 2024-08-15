@@ -117,7 +117,8 @@ namespace server.Controllers
         [HttpDelete("/reset-database")]
         [TypeFilter(typeof(TestingOnly))]
         [ApiExplorerSettings(IgnoreApi =true)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task ResetTestingDatabase()
         {
             await authService.ResetDatabase();

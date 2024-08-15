@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Box, Stack, Tab, Tabs } from "@mui/material";
+import { Box, Stack, Tab, Tabs, Tooltip } from "@mui/material";
 import { Login, HowToReg } from "@mui/icons-material";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Info from "../../components/Landing/Info";
@@ -47,13 +47,17 @@ const LandingPage = () => {
             aria-label="icon tabs"
             role="navigation"
           >
-            <Tab component={Link} to="" icon={<Login />} aria-label="login" />
-            <Tab
-              component={Link}
-              to="signup"
-              icon={<HowToReg />}
-              aria-label="signup"
-            />
+            <Tooltip title="Login">
+              <Tab component={Link} to="" icon={<Login />} aria-label="login" />
+            </Tooltip>
+            <Tooltip title="Signup">
+              <Tab
+                component={Link}
+                to="signup"
+                icon={<HowToReg />}
+                aria-label="signup"
+              />
+            </Tooltip>
           </Tabs>
         </Box>
         <Box

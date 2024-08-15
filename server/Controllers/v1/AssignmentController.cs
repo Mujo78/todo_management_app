@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using server.DTO;
 using server.DTO.Assignment;
 using server.Exceptions;
+using server.Filters;
 using server.Services.IService;
 
 namespace server.Controllers.v1
@@ -137,6 +138,17 @@ namespace server.Controllers.v1
         {
             await assignmentService.MakeAssignmentsCompleted(assignmentIds);
             return Ok("Assignments successfully finished.");
+        }
+
+        [AllowAnonymous]
+        [HttpPost("/seed-database-assignments")]
+        [TypeFilter(typeof(TestingOnly))]
+        [ApiExplorerSettings(IgnoreApi=true)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task SeedDatabaseWithAssignments()
+        {
+            await assignmentService.SeedDatabase();
         }
     }
 }

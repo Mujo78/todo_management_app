@@ -31,15 +31,39 @@ describe("template spec", () => {
     cy.login();
     cy.wait(1500);
 
-    cy.get('span[aria-label="Label-First Task Created-task"]')
-      .find('input[type="checkbox"]')
-      .click();
-
-    cy.wait(1000);
+    cy.chooseTaskToAction();
 
     cy.get('button[aria-label="MakeTasksFinished"]').should("be.visible");
     cy.get('button[aria-label="RemoveSelectedTasks"]').should("be.visible");
     cy.get('button[aria-label="RemoveAllTasks"]').should("be.visible");
+  });
+
+  it("Should hide header options after unchecking all checked cards", () => {
+    cy.login();
+    cy.wait(1500);
+
+    cy.chooseTaskToAction();
+
+    cy.get('button[aria-label="MakeTasksFinished"]').should("be.visible");
+    cy.get('button[aria-label="RemoveSelectedTasks"]').should("be.visible");
+    cy.get('button[aria-label="RemoveAllTasks"]').should("be.visible");
+
+    cy.chooseTaskToAction();
+
+    cy.get('button[aria-label="MakeTasksFinished"]').should("not.exist");
+    cy.get('button[aria-label="RemoveSelectedTasks"]').should("not.exist");
+  });
+
+  it("Should not display header options, nor pagination when there are no tasks available", () => {
+    cy.login("user-testing-third@example.com");
+    cy.wait(1500);
+
+    cy.get('button[aria-label="MakeTasksFinished"]').should("not.exist");
+    cy.get('button[aria-label="RemoveSelectedTasks"]').should("not.exist");
+    cy.get('button[aria-label="RemoveAllTasks"]').should("not.exist");
+
+    cy.get('nav[aria-label="pagination navigation"]').should("not.exist");
+    cy.contains("No data available.").should("be.visible");
   });
 
   it("Should display pagination and navigate to the second page", () => {

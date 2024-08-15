@@ -25,6 +25,7 @@ declare namespace Cypress {
     openMenu(): Chainable<void>;
     addTask(data: CreateUpdateTaskType): Chainable<void>;
     editTask(data: CreateUpdateTaskType): Chainable<void>;
+    chooseTaskToAction(title?: string): Chainable<void>;
   }
 }
 
@@ -109,4 +110,13 @@ Cypress.Commands.add("editTask", (data) => {
   cy.get(`li[data-value="${priority}"]`).click();
 
   cy.get('button[type="submit"]').click();
+});
+
+Cypress.Commands.add("chooseTaskToAction", (title) => {
+  const titleToUse = title ?? "First Task Created";
+  cy.get(`span[aria-label="Label-${titleToUse}-task"]`)
+    .find('input[type="checkbox"]')
+    .click();
+
+  cy.wait(1000);
 });
