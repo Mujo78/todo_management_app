@@ -15,5 +15,6 @@ namespace server.Services.IService
         Task DeleteAllAssignmentsAsync();
         Task DeleteSelectedAssignmentsAsync(List<Guid> assignmentsIds);
         Task SeedDatabase();
+        Task DeleteTestingAssignment();
     }
 }

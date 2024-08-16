@@ -150,5 +150,16 @@ namespace server.Controllers.v1
         {
             await assignmentService.SeedDatabase();
         }
+
+        [AllowAnonymous]
+        [HttpDelete("/database-assignments-delete-added")]
+        [TypeFilter(typeof(TestingOnly))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task DeleteAssignmentAddedInTestingEnv()
+        {
+            await assignmentService.DeleteTestingAssignment();
+        }
     }
 }

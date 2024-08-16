@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using server.Data;
+using server.Exceptions;
 using server.Models;
 using server.Repository.IRepository;
 using server.Utils;
@@ -77,6 +78,15 @@ namespace server.Repository
         {
             var listData = SeedAssignments.GetSeedData();
             await db.AddRangeAsync(listData);
+            await db.SaveChangesAsync();
+        }
+
+        public async Task DeleteAssignmentForTesting()
+        {
+            var assignmentToDelete = await db.Assignments.FirstOrDefaultAsync(task => task.Title.Equals("Task Number One For Testing"));
+            if (assignmentToDelete == null) throw new NotFoundException("Assignment not found.");
+            
+            db.Assignments.Remove(assignmentToDelete);
             await db.SaveChangesAsync();
         }
     }

@@ -12,5 +12,6 @@ namespace server.Services.IService
         Task ResetPassword(string token, ResetPasswordDTO resetPasswordDTO);
         Task ChangePassword(ChangePasswordDTO changePasswordDTO);
         Task DeleteMyProfile();
+        Task SeedDatabaseWithUser();
     }
 }

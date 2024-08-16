@@ -57,10 +57,18 @@ describe("Add Task functionality testing", () => {
     cy.addTask({
       dueDate: dateToUse,
       priority: 2,
-      title: `Task Number-${Date.now()}`,
+      title: `Task Number One For Testing`,
       description: "Description goes here!",
     });
 
     cy.contains("Successfully created a new task.").should("be.visible");
+  });
+
+  after(() => {
+    cy.request(
+      "DELETE",
+      "https://localhost:7196/database-assignments-delete-added"
+    );
+    cy.reload();
   });
 });

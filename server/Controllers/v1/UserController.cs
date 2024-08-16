@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO.Auth;
 using server.DTO.User;
+using server.Filters;
+using server.Services;
 using server.Services.IService;
 
 namespace server.Controllers.v1
@@ -147,6 +149,17 @@ namespace server.Controllers.v1
         {
             await userService.VerifyEmail(token);
             return Ok("Successfully verified email address.");
+        }
+
+        [AllowAnonymous]
+        [HttpPost("/seed-database-user")]
+        [TypeFilter(typeof(TestingOnly))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task SeedDatabaseWithAssignments()
+        {
+            await userService.SeedDatabaseWithUser();
         }
     }
 }

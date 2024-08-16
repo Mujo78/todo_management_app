@@ -189,6 +189,11 @@ namespace server.Services
             await repository.SeedTestingDatabase();
         }
 
+        public async Task DeleteTestingAssignment()
+        {
+            await repository.DeleteAssignmentForTesting();
+        }
+
         public async Task<IEnumerable<Assignment>> FindAssignmentsByIds(List<Guid> assignmentsIds)
         {
             var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");

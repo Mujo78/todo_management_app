@@ -230,5 +230,24 @@ namespace server.Services
 
             return (user, userToken);
         }
+
+        public async Task SeedDatabaseWithUser()
+        {
+            var userExist = await repository.GetUser("user-testing-to-delete@example.com");
+            if (userExist != null) throw new ConflictException("User already created.");
+
+
+            var user = new User
+            {
+                Id = Guid.NewGuid(),
+                Name = "User To Delete",
+                CreatedAt = DateTime.Now,
+                Email = "user-testing-to-delete@example.com",
+                EmailConfirmed = true,
+                Password = BCrypt.Net.BCrypt.HashPassword("Password&123456")
+            };
+            await repository.SeedTestingDatabaseUser(user);
+
+        }
     }
 }

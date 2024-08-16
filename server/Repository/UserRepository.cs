@@ -100,5 +100,11 @@ namespace server.Repository
         {
             return db.UserTokens.Any(n => n.UserId.Equals(user.Id) && n.TokenType.Equals(TokenType.PasswordReset) && n.ExpiresAt > DateTime.Now);
         }
+
+        public async Task SeedTestingDatabaseUser(User user)
+        {
+            await db.Users.AddAsync(user);
+            await db.SaveChangesAsync();
+        }
     }
 }

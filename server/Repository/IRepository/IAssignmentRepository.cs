@@ -15,5 +15,6 @@ namespace server.Repository.IRepository
         bool AssignmentExists(string title, Guid? userId);
         bool AssignmentExists(string title, Guid taskId, Guid? userId);
         Task SeedTestingDatabase();
+        Task DeleteAssignmentForTesting();
     }
 }
