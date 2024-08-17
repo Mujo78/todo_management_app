@@ -3,6 +3,7 @@ import { Box, Stack, Tab, Tabs, Tooltip } from "@mui/material";
 import { Login, HowToReg } from "@mui/icons-material";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Info from "../../components/Landing/Info";
+import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
 
 const LandingPage = () => {
   const location = useLocation().pathname === "/signup";
@@ -39,6 +40,9 @@ const LandingPage = () => {
         pt={{ xs: 4, sm: 0 }}
         flexGrow={1}
       >
+        <Box position="absolute" top={{ xs: 7, sm: 15 }}>
+          <LanguageSwitch label={false} />
+        </Box>
         <Box maxWidth="100%">
           <Tabs
             centered

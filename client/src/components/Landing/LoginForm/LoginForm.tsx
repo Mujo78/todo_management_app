@@ -110,7 +110,11 @@ const LoginForm: React.FC = () => {
           )}
         </PasswordInput>
 
-        <LoadingButton isPending={isPending || isRefreshPending} fullWidth>
+        <LoadingButton
+          label="loginBtn"
+          isPending={isPending || isRefreshPending}
+          fullWidth
+        >
           Log in
         </LoadingButton>
       </Stack>

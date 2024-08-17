@@ -1,6 +1,7 @@
 import { Box, Stack } from "@mui/material";
 import ForgotPasswordInfo from "../../components/Landing/ForgotPasswordInfo";
 import ForgotPasswordForm from "../../components/Landing/ForgotPasswordForm/ForgotPasswordForm";
+import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
 
 const ForgotPassword = () => {
   return (
@@ -34,6 +35,9 @@ const ForgotPassword = () => {
           <ForgotPasswordForm />
         </Box>
       </Stack>
+      <Box position="absolute" top={{ xs: 7, sm: 10 }} right={0}>
+        <LanguageSwitch label={false} />
+      </Box>
     </Stack>
   );
 };

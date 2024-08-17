@@ -14,10 +14,7 @@ vi.mock("../../../app//authSlice.ts", () => ({
 
 const baseModalFn = async () => {
   await waitFor(() => {
-    const buttonDelete = screen.getByRole("button", {
-      name: "Delete Task",
-    });
-
+    const buttonDelete = screen.getByLabelText("DeleteTaskBtn");
     expect(buttonDelete).toBeInTheDocument();
 
     fireEvent.click(buttonDelete);
@@ -39,17 +36,13 @@ describe("Delete task modal component testing", () => {
         "Are you sure you want to delete your task: Test Assignment Four?",
         { selector: "h2" }
       );
-      const closeButton = screen.getByRole("button", { name: "Close" });
+      const closeButton = screen.getByLabelText("CloseDeleteTaskModalBtn");
 
       expect(taskTitle).toBeInTheDocument();
       expect(closeButton).toBeInTheDocument();
 
       fireEvent.click(closeButton);
-      expect(
-        await screen.findByRole("button", {
-          name: "Delete Task",
-        })
-      ).toBeVisible();
+      expect(await screen.findByLabelText("DeleteTaskBtn")).toBeVisible();
     });
   });
 
@@ -67,7 +60,7 @@ describe("Delete task modal component testing", () => {
     await baseModalFn();
 
     await waitFor(() => {
-      const btnDelete = screen.getByRole("button", { name: "Confirm" });
+      const btnDelete = screen.getByLabelText("ConfirmDeleteTaskModalBtn");
       expect(btnDelete).toBeInTheDocument();
 
       fireEvent.click(btnDelete);
@@ -84,7 +77,7 @@ describe("Delete task modal component testing", () => {
     await baseModalFn();
 
     await waitFor(async () => {
-      const btnDelete = screen.getByRole("button", { name: "Confirm" });
+      const btnDelete = screen.getByLabelText("ConfirmDeleteTaskModalBtn");
       expect(btnDelete).toBeInTheDocument();
 
       fireEvent.click(btnDelete);

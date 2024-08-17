@@ -1,6 +1,7 @@
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import ResetPasswordForm from "../../components/Landing/ResetPasswordForm/ResetPasswordForm";
+import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
 
 const ResetPassword = () => {
   return (
@@ -11,6 +12,7 @@ const ResetPassword = () => {
           component={Link}
           to="/"
           sx={{ textDecoration: "none" }}
+          mt={{ xs: 5, sm: 0 }}
           textAlign="center"
           fontWeight="bold"
           color="primary"
@@ -41,6 +43,9 @@ const ResetPassword = () => {
       <Typography textAlign="center" variant="body2" color="dark.light">
         Copyright © 2024 TaskMaster
       </Typography>
+      <Box position="absolute" top={{ xs: 7, sm: 10 }} left={0}>
+        <LanguageSwitch label={false} />
+      </Box>
     </Stack>
   );
 };

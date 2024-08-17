@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ExitToApp } from "@mui/icons-material";
 import useLogout from "../../../features/auth/useLogout";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import LanguageSwitch from "../LanguageSwitch/LanguageSwitch";
 
 const AppNavbar: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -88,7 +89,7 @@ const AppNavbar: React.FC = () => {
             onClose={handleClose}
           >
             {!matches && (
-              <MenuList>
+              <MenuList sx={{ pb: 0 }}>
                 <MenuItem
                   aria-label="HomeLink"
                   onClick={() => handleNavigate("/home")}
@@ -101,9 +102,12 @@ const AppNavbar: React.FC = () => {
                 >
                   Profile
                 </MenuItem>
-                <Divider />
               </MenuList>
             )}
+            <Box width="100%" display="flex" justifyContent="center">
+              <LanguageSwitch label />
+            </Box>
+            <Divider />
             <MenuItem
               aria-label="LogoutBtnLink"
               onClick={handleLogout}

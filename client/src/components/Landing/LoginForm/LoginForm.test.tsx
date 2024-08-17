@@ -13,7 +13,7 @@ const loginWithErrors = async (
   const userPasswordInput = screen
     .getByTestId("Password")
     .querySelector("input")!;
-  const userSubmitBtn = screen.getByRole("button");
+  const userSubmitBtn = screen.getByLabelText("loginBtn");
 
   fireEvent.change(userEmailInput, {
     target: { value: email },
@@ -73,7 +73,7 @@ describe("LoginFrom component tests", () => {
     const userPasswordInput = screen
       .getByTestId("Password")
       .querySelector("input")!;
-    const userSubmitBtn = screen.getByRole("button");
+    const userSubmitBtn = screen.getByLabelText("loginBtn");
 
     fireEvent.change(userEmailInput, {
       target: { value: "correct@gmail.com" },

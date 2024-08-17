@@ -159,7 +159,7 @@ describe("Edit Task component testing", () => {
     renderWithRouter(["/edit-task/:taskId"]);
 
     await waitFor(() => {
-      const buttonDelete = screen.getByRole("button", { name: "Delete Task" });
+      const buttonDelete = screen.getByLabelText("DeleteTaskBtn");
       expect(buttonDelete).toBeInTheDocument();
     });
   });

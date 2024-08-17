@@ -33,9 +33,7 @@ describe("Forgot Password Form component testing", () => {
   it("Should go back to the login page", () => {
     renderWithRouter(["/forgot-password"]);
 
-    const goBackButton = screen.getByRole("button", {
-      name: "Back to Log In page",
-    });
+    const goBackButton = screen.getByLabelText("goBackBtn");
     expect(goBackButton).toBeInTheDocument();
 
     fireEvent.click(goBackButton);

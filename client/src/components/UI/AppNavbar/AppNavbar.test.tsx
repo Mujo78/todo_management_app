@@ -16,8 +16,8 @@ const openDropdown = () => {
   fireEvent.click(btnMe);
 };
 
-const navigateTo = (linkName: string) => {
-  const profileNavLink = screen.getByRole("menuitem", { name: linkName });
+const navigateTo = (labelName: string) => {
+  const profileNavLink = screen.getByLabelText(labelName);
   expect(profileNavLink).toBeInTheDocument();
 
   fireEvent.click(profileNavLink);
@@ -56,7 +56,7 @@ describe("AppNavbar component testing", () => {
     renderWithRouter(["/home"]);
 
     openDropdown();
-    navigateTo("Profile");
+    navigateTo("ProfileLink");
 
     expect(window.location.pathname === "/profile");
   });
@@ -65,10 +65,10 @@ describe("AppNavbar component testing", () => {
     renderWithRouter(["/home"]);
 
     openDropdown();
-    navigateTo("Profile");
+    navigateTo("ProfileLink");
     expect(window.location.pathname === "/profile");
 
-    navigateTo("Home");
+    navigateTo("HomeLink");
     expect(window.location.pathname === "/home");
   });
 
@@ -77,7 +77,7 @@ describe("AppNavbar component testing", () => {
 
     openDropdown();
 
-    const logoutBtn = screen.getByRole("menuitem", { name: "Log out" });
+    const logoutBtn = screen.getByLabelText("LogoutBtnLink");
     expect(logoutBtn).toBeInTheDocument();
   });
 
@@ -87,7 +87,7 @@ describe("AppNavbar component testing", () => {
 
     openDropdown();
 
-    const logoutBtn = screen.getByRole("menuitem", { name: "Log out" });
+    const logoutBtn = screen.getByLabelText("LogoutBtnLink");
     expect(logoutBtn).toBeInTheDocument();
 
     fireEvent.click(logoutBtn);
@@ -104,7 +104,7 @@ describe("AppNavbar component testing", () => {
 
     openDropdown();
 
-    const logoutBtn = screen.getByRole("menuitem", { name: "Log out" });
+    const logoutBtn = screen.getByLabelText("LogoutBtnLink");
     expect(logoutBtn).toBeInTheDocument();
 
     fireEvent.click(logoutBtn);

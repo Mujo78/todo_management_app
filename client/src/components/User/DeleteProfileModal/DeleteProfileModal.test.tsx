@@ -11,9 +11,7 @@ vi.mock("../../../app/authSlice.ts", () => ({
 
 const baseModalFn = async () => {
   await waitFor(() => {
-    const buttonDelete = screen.getByRole("button", {
-      name: "Delete Account",
-    });
+    const buttonDelete = screen.getByLabelText("deleteModalProfileBtn");
     expect(buttonDelete).toBeInTheDocument();
 
     fireEvent.click(buttonDelete);
@@ -45,16 +43,14 @@ describe("Delete profile modal component testing", () => {
       );
       expect(numberOfTasks).toBeInTheDocument();
 
-      const buttonClose = await screen.findByRole("button", {
-        name: "Close",
-      });
+      const buttonClose = await screen.findByLabelText(
+        "closeDeleteProfileModalbtn"
+      );
       expect(buttonClose).toBeInTheDocument();
       fireEvent.click(buttonClose);
 
       expect(
-        await screen.findByRole("button", {
-          name: "Delete Account",
-        })
+        await screen.findByLabelText("deleteModalProfileBtn")
       ).toBeVisible();
     });
   });
@@ -64,9 +60,9 @@ describe("Delete profile modal component testing", () => {
     renderWithRouter(["/profile"]);
     await baseModalFn();
     await waitFor(async () => {
-      const buttonDelete = await screen.findByRole("button", {
-        name: "Confirm",
-      });
+      const buttonDelete = await screen.findByLabelText(
+        "confirmDeleteProfilebtn"
+      );
       expect(buttonDelete).toBeInTheDocument();
       fireEvent.click(buttonDelete);
 
@@ -80,9 +76,9 @@ describe("Delete profile modal component testing", () => {
     renderWithRouter(["/profile"]);
     await baseModalFn();
     await waitFor(async () => {
-      const buttonDelete = await screen.findByRole("button", {
-        name: "Confirm",
-      });
+      const buttonDelete = await screen.findByLabelText(
+        "confirmDeleteProfilebtn"
+      );
       expect(buttonDelete).toBeInTheDocument();
       fireEvent.click(buttonDelete);
 

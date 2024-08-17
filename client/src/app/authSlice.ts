@@ -16,7 +16,9 @@ export interface LoginData {
 interface AuthState {
   auth: LoginData | null;
   isAuthenticated: boolean;
+  lng: string;
 
+  setLng: (newLng: string) => void;
   setUser: (auth: LoginData) => void;
   updateUserInfo: (data: UserType) => void;
   logout: () => void;
@@ -26,7 +28,12 @@ interface AuthState {
 export const authSlice: StateCreator<AuthState, [], []> = (set, get) => ({
   auth: null,
   isAuthenticated: false,
+  lng: "en",
 
+  setLng: (newLng) => {
+    localStorage.setItem("lng", newLng);
+    set({ lng: newLng });
+  },
   setUser: (auth) => {
     localStorage.setItem("auth", auth.accessToken);
     localStorage.setItem("user", JSON.stringify(auth.user));
@@ -46,8 +53,11 @@ export const authSlice: StateCreator<AuthState, [], []> = (set, get) => ({
     set({ auth: null, isAuthenticated: false });
   },
   initialize: () => {
+    const langugage = localStorage.getItem("lng") ?? "en";
     const userString = localStorage.getItem("user");
     const accessToken = localStorage.getItem("auth");
+
+    set({ lng: langugage });
 
     if (accessToken && userString) {
       const user = JSON.parse(userString);

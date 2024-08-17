@@ -150,7 +150,7 @@ const SignupForm: React.FC = () => {
           Please check your inbox for verification email.
         </SuccessAlert>
 
-        <LoadingButton fullWidth isPending={isPending}>
+        <LoadingButton label="signupBtn" fullWidth isPending={isPending}>
           Register
         </LoadingButton>
       </Stack>

@@ -20,7 +20,7 @@ const signupBaseFn = async (
     .getByTestId("Confirm Password")
     .querySelector("input")!;
 
-  const userSubmitBtn = screen.getByRole("button");
+  const userSubmitBtn = screen.getByLabelText("signupBtn");
 
   fireEvent.input(userNameInput, {
     target: { value: name },

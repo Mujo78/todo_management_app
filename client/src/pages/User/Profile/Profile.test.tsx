@@ -18,9 +18,7 @@ describe("Profile component testing", () => {
     renderWithRouter(["/profile"]);
     await waitFor(() => {
       const userEmail = screen.getByText("correct@gmail.com");
-      const buttonDelete = screen.getByRole("button", {
-        name: "Delete Account",
-      });
+      const buttonDelete = screen.getByLabelText("deleteModalProfileBtn");
 
       expect(userEmail).toBeInTheDocument();
       expect(buttonDelete).toBeInTheDocument();

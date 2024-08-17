@@ -1,9 +1,10 @@
-import { CircularProgress, Stack, Typography } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { useCallback, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import useVerifyEmail from "../../features/user/useVerifyEmail";
 import { formatErrorMessage } from "../../components/utils/user/userUtils";
 import SuccessAlert from "../../components/UI/SuccessAlert";
+import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
 
 const VerifyEmail = () => {
   const { token } = useParams();
@@ -32,6 +33,7 @@ const VerifyEmail = () => {
           to="/"
           textAlign="center"
           sx={{ textDecoration: "none" }}
+          mt={{ xs: 5, sm: 0 }}
           fontWeight="bold"
           color="primary"
         >
@@ -74,6 +76,10 @@ const VerifyEmail = () => {
       >
         Copyright © 2024 TaskMaster
       </Typography>
+
+      <Box position="absolute" top={{ xs: 7, sm: 10 }} left={0}>
+        <LanguageSwitch label={false} />
+      </Box>
     </Stack>
   );
 };
