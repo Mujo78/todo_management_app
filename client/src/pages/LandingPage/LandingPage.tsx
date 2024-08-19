@@ -4,8 +4,10 @@ import { Login, HowToReg } from "@mui/icons-material";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Info from "../../components/Landing/Info";
 import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
+import { useTranslation } from "react-i18next";
 
 const LandingPage = () => {
+  const { t } = useTranslation();
   const location = useLocation().pathname === "/signup";
   const initialValue = useMemo(() => (location ? 1 : 0), [location]);
   const [value, setValue] = useState<number>(initialValue);
@@ -51,10 +53,10 @@ const LandingPage = () => {
             aria-label="icon tabs"
             role="navigation"
           >
-            <Tooltip title="Login">
+            <Tooltip title={t("landingPage.loginTab")}>
               <Tab component={Link} to="" icon={<Login />} aria-label="login" />
             </Tooltip>
-            <Tooltip title="Signup">
+            <Tooltip title={t("landingPage.signupTab")}>
               <Tab
                 component={Link}
                 to="signup"

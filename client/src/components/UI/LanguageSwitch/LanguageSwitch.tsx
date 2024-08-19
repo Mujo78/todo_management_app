@@ -2,6 +2,7 @@ import React from "react";
 import LanguageIcon from "@mui/icons-material/Language";
 import { Box, Button, Menu, MenuItem, Typography } from "@mui/material";
 import useAuthStore from "../../../app/authSlice";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   label: boolean;
@@ -9,6 +10,10 @@ type Props = {
 
 const LanguageSwitch: React.FC<Props> = ({ label }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const {
+    t,
+    i18n: { changeLanguage, language },
+  } = useTranslation();
   const { setLng, lng } = useAuthStore();
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -19,7 +24,10 @@ const LanguageSwitch: React.FC<Props> = ({ label }) => {
   };
 
   const handleChooseLng = (newLng: string) => {
-    setLng(newLng);
+    if (newLng !== language) {
+      changeLanguage(newLng);
+      setLng(newLng);
+    }
   };
 
   return (
@@ -41,7 +49,7 @@ const LanguageSwitch: React.FC<Props> = ({ label }) => {
             component="span"
             fontWeight={500}
           >
-            Language
+            {t("languages.language")}
           </Typography>
         )}
         <LanguageIcon
@@ -67,17 +75,17 @@ const LanguageSwitch: React.FC<Props> = ({ label }) => {
       >
         <MenuItem
           aria-label="EnglishLngItem"
-          selected={lng === "eng"}
+          selected={lng === "eng" || lng !== "bs"}
           onClick={() => handleChooseLng("eng")}
         >
-          English
+          {t("languages.englishLng")}
         </MenuItem>
         <MenuItem
           aria-label="BosnianLngItem"
           selected={lng === "bs"}
           onClick={() => handleChooseLng("bs")}
         >
-          Bosnian
+          {t("languages.bosnianLng")}
         </MenuItem>
       </Menu>
     </Box>

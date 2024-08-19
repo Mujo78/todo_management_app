@@ -1,0 +1,44 @@
+{
+  "translation": {
+    "languages": {
+      "language": "Jezik",
+      "englishLng": "Engleski",
+      "bosnianLng": "Bosanski"
+    },
+    "landingPage": {
+      "loginTab": "Prijava",
+      "signupTab": "Registracija"
+    },
+    "landingPageInfo": {
+      "title": "Dobrodošli u TaskMaster",
+      "text": "Povećajte svoju produktivnost uz TaskMaster. Kreirajte, organizirajte i pratite svoje zadatke bez napora.",
+      "subtitle": "Zašto TaskMaster?",
+      "subtitleListFirst": "<strong> - Jednostavno upravljanje zadacima: </strong> sa lakoćom dodajte, uređujte i brišite zadatake",
+      "subtitleListSecond": "<strong> - Podsjetnici: </strong> Nikada ne propustite rok s automatskim podsjetnicima.",
+      "subtitleListThird": "<strong> - Odredite prioritete: </strong> Fokusirajte se na ono što je najvažnije.",
+      "finalWord": "Pridružite se hiljadama korisnika koji preuzimaju kontrolu nad svojim zadacima već danas!"
+    },
+    "loginForm": {
+      "loginTitle": "Prijavite se na Vaš račun",
+      "loginPassword": "Lozinka",
+      "loginBtn": "Prijava",
+      "forgotPassword": "Zaboravljena lozinka?"
+    },
+    "signupForm": {
+      "signupTitle": "Registrujte se danas!",
+      "signupName": "Ime",
+      "signupPassword": "Lozinka",
+      "signupConfirmPassword": "Potvrdi Lozinku",
+      "signupBtn": "Registracija"
+    },
+    "forgotPasswordForm": {
+      "forgotPasswordTitle": "Zaboravili ste lozinku?",
+      "forgotPasswordBtn": "Submit",
+      "forgotPasswordBackBtn": "Nazad na stranicu za prijavu"
+    },
+    "forgotPasswordInfo": {
+      "infoSubtitle": "Uputstva",
+      "instructions": "Unesite email adresu koja je povezana sa vašim računom i mi ćemo vam poslati link za resetovanje vaše lozinke."
+    }
+  }
+}

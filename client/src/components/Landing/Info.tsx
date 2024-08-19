@@ -8,9 +8,12 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import { Trans, useTranslation } from "react-i18next";
 
 const Info: React.FC = () => {
+  const { t } = useTranslation();
   const matches = useMediaQuery("(max-width:600px)");
+
   return (
     <Stack
       gap={{ xs: 1.5, sm: 1.5, md: 3 }}
@@ -22,11 +25,10 @@ const Info: React.FC = () => {
         fontWeight="bold"
         textAlign="center"
       >
-        Welcome to TaskMaster
+        {t("landingPageInfo.title")}
       </Typography>
       <Typography paragraph textAlign="center">
-        Boost your productivity with TaskMaster. Create, organize, and track
-        your tasks effortlessly.
+        {t("landingPageInfo.text")}
       </Typography>
       <Box>
         <Typography
@@ -34,30 +36,34 @@ const Info: React.FC = () => {
           fontWeight="600"
           textAlign="center"
         >
-          Why TaskMaster?
+          {t("landingPageInfo.subtitle")}
         </Typography>
         <List component="ol">
           <ListItem disablePadding>
             <ListItemText>
-              <strong>- Easy Task Management:</strong> Add, edit, and delete
-              tasks with ease.
+              <Trans i18nKey="landingPageInfo.subtitleListFirst">
+                <strong>Easy Task Management</strong>
+              </Trans>
             </ListItemText>
           </ListItem>
           <ListItem disablePadding>
             <ListItemText>
-              <strong>- Reminders:</strong> Never miss a deadline with automatic
-              reminders.
+              <Trans i18nKey="landingPageInfo.subtitleListSecond">
+                <strong>Easy Task Management</strong>
+              </Trans>
             </ListItemText>
           </ListItem>
           <ListItem disablePadding>
             <ListItemText>
-              <strong>- Prioritize:</strong> Focus on what matters most.
+              <Trans i18nKey="landingPageInfo.subtitleListThird">
+                <strong>Easy Task Management</strong>
+              </Trans>
             </ListItemText>
           </ListItem>
         </List>
       </Box>
       <Typography paragraph textAlign="center">
-        Join thousands of users taking control of their tasks today!
+        {t("landingPageInfo.finalWord")}
       </Typography>
     </Stack>
   );

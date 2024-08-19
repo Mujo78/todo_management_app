@@ -15,8 +15,10 @@ import LoadingButton from "../../UI/LoadingButton";
 import { Link } from "react-router-dom";
 import useRefreshAuth from "../../../features/auth/useRefreshAuth";
 import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next";
 
 const LoginForm: React.FC = () => {
+  const { t } = useTranslation();
   const cookie = Cookies.get("checkToken");
   const { control, formState, handleSubmit, reset } = useForm<LogindDataType>({
     resolver: yupResolver(loginValidationSchema),
@@ -47,7 +49,7 @@ const LoginForm: React.FC = () => {
         textAlign="center"
         role="title"
       >
-        Log in to Your Account
+        {t("loginForm.loginTitle")}
       </Typography>
       <Stack
         onSubmit={handleSubmit(onSubmit)}
@@ -90,7 +92,7 @@ const LoginForm: React.FC = () => {
 
         <PasswordInput
           control={control}
-          label="Password"
+          label={t("loginForm.loginPassword")}
           name="password"
           disabled={isRefreshPending}
           defaultValue=""
@@ -115,7 +117,7 @@ const LoginForm: React.FC = () => {
           isPending={isPending || isRefreshPending}
           fullWidth
         >
-          Log in
+          {t("loginForm.loginBtn")}
         </LoadingButton>
       </Stack>
       <Typography
@@ -128,7 +130,7 @@ const LoginForm: React.FC = () => {
         role="link"
         color="primary.main"
       >
-        Forgot Password?
+        {t("loginForm.forgotPassword")}
       </Typography>
     </Stack>
   );

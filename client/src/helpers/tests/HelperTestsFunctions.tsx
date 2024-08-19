@@ -18,35 +18,39 @@ import ChangePassword from "../../pages/User/ChangePassword/ChangePassword";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
 import AddNewTask from "../../pages/Task/AddNewTask/AddNewTask";
 import EditTask from "../../pages/Task/EditTask/EditTask";
+import { I18nextProvider } from "react-i18next";
+import in18n from "./init18n";
 
 export const renderWithRouter = (initialEntries: string[]) => {
   return render(
     <MemoryRouter initialEntries={initialEntries}>
       <QueryClientProvider client={queryClient}>
-        <Routes>
-          <Route path="/" element={<LandingPage />}>
-            <Route path="" element={<LoginForm />} />
-            <Route path="signup" element={<SignupForm />} />
-          </Route>
-
-          <Route path="/" element={<HomeLayout />} loader={UserRequired}>
-            <Route path="home" element={<HomePage />} />
-            <Route path="/profile" element={<ProfileLayout />}>
-              <Route path="" element={<Profile />} />
-              <Route path="edit" element={<EditProfile />} />
-              <Route path="change-password" element={<ChangePassword />} />
+        <I18nextProvider i18n={in18n}>
+          <Routes>
+            <Route path="/" element={<LandingPage />}>
+              <Route path="" element={<LoginForm />} />
+              <Route path="signup" element={<SignupForm />} />
             </Route>
 
-            <Route path="/add-task" element={<AddNewTask />} />
-            <Route path="/edit-task/:taskId" element={<EditTask />} />
-          </Route>
+            <Route path="/" element={<HomeLayout />} loader={UserRequired}>
+              <Route path="home" element={<HomePage />} />
+              <Route path="/profile" element={<ProfileLayout />}>
+                <Route path="" element={<Profile />} />
+                <Route path="edit" element={<EditProfile />} />
+                <Route path="change-password" element={<ChangePassword />} />
+              </Route>
 
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/password-reset/:token" element={<ResetPassword />} />
-          <Route path="/verify-email/:token" element={<VerifyEmail />} />
+              <Route path="/add-task" element={<AddNewTask />} />
+              <Route path="/edit-task/:taskId" element={<EditTask />} />
+            </Route>
 
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/password-reset/:token" element={<ResetPassword />} />
+            <Route path="/verify-email/:token" element={<VerifyEmail />} />
+
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </I18nextProvider>
       </QueryClientProvider>
     </MemoryRouter>
   );

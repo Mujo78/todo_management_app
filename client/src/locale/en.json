@@ -1,0 +1,44 @@
+{
+  "translation": {
+    "languages": {
+      "language": "Language",
+      "englishLng": "English",
+      "bosnianLng": "Bosnian"
+    },
+    "landingPage": {
+      "loginTab": "Login",
+      "signupTab": "Signup"
+    },
+    "landingPageInfo": {
+      "title": "Welcome to TaskMaster",
+      "text": "Boost your productivity with TaskMaster. Create, organize, and track your tasks effortlessly.",
+      "subtitle": "Why TaskMaster?",
+      "subtitleListFirst": "<0> - Easy Task Management: </0> Add, edit, and delete tasks with ease.",
+      "subtitleListSecond": "<0> - Reminders: </0> Never miss a deadline with automatic reminders.",
+      "subtitleListThird": "<0> - Prioritize: </0> Focus on what matters most.",
+      "finalWord": "Join thousands of users taking control of their tasks today!"
+    },
+    "loginForm": {
+      "loginTitle": "Log in to Your Account",
+      "loginPassword": "Password",
+      "loginBtn": "Log in",
+      "forgotPassword": "Forgot Password?"
+    },
+    "signupForm": {
+      "signupTitle": "Sign up today!",
+      "signupName": "Name",
+      "signupPassword": "Password",
+      "signupConfirmPassword": "Confirm Password",
+      "signupBtn": "Register"
+    },
+    "forgotPasswordForm": {
+      "forgotPasswordTitle": "Forgot Your Password?",
+      "forgotPasswordBtn": "Submit",
+      "forgotPasswordBackBtn": "Back to Log In page"
+    },
+    "forgotPasswordInfo": {
+      "infoSubtitle": "Forgot Password Instructions",
+      "instructions": "Enter the email address associated with your account and we'll send you a link to reset your password."
+    }
+  }
+}

@@ -13,8 +13,10 @@ import {
 } from "../../utils/user/userUtils";
 import SuccessAlert from "../../UI/SuccessAlert";
 import LoadingButton from "../../UI/LoadingButton";
+import { useTranslation } from "react-i18next";
 
 const SignupForm: React.FC = () => {
+  const { t } = useTranslation();
   const { control, formState, handleSubmit, reset } =
     useForm<UserAccountDataType>({
       resolver: yupResolver(signupValidationSchema),
@@ -35,7 +37,7 @@ const SignupForm: React.FC = () => {
   return (
     <Stack gap={4} my="auto" flexGrow={1}>
       <Typography variant="h4" fontWeight={700} textAlign="center">
-        Sign up today!
+        {t("signupForm.signupTitle")}
       </Typography>
       <Stack
         component="form"
@@ -52,7 +54,7 @@ const SignupForm: React.FC = () => {
             <TextField
               {...field}
               variant="outlined"
-              label="Name"
+              label={t("signupForm.signupName")}
               id="Name"
               aria-label="Name"
               required
@@ -106,7 +108,7 @@ const SignupForm: React.FC = () => {
 
         <PasswordInput
           name="password"
-          label="Password"
+          label={t("signupForm.signupPassword")}
           defaultValue=""
           control={control}
           error={
@@ -128,7 +130,7 @@ const SignupForm: React.FC = () => {
         <PasswordInput
           name="confirmPassword"
           defaultValue=""
-          label="Confirm Password"
+          label={t("signupForm.signupConfirmPassword")}
           control={control}
           error={
             !!errors.confirmPassword || isErrorForKey(error, "ConfirmPassword")
@@ -151,7 +153,7 @@ const SignupForm: React.FC = () => {
         </SuccessAlert>
 
         <LoadingButton label="signupBtn" fullWidth isPending={isPending}>
-          Register
+          {t("signupForm.signupBtn")}
         </LoadingButton>
       </Stack>
     </Stack>

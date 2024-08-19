@@ -20,8 +20,10 @@ import {
 import SuccessAlert from "../../UI/SuccessAlert";
 import LoadingButton from "../../UI/LoadingButton";
 import useForgotPassword from "../../../features/user/useForgotPassword";
+import { useTranslation } from "react-i18next";
 
 const ForgotPasswordForm: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { control, formState, handleSubmit, reset } =
     useForm<ForgotPasswordType>({
@@ -45,7 +47,7 @@ const ForgotPasswordForm: React.FC = () => {
   return (
     <Stack gap={3} flexGrow={1}>
       <Typography variant="h4" fontWeight={700} mt={2} textAlign="center">
-        Forgot Your Password?
+        {t("forgotPasswordForm.forgotPasswordTitle")}
       </Typography>
       <Stack
         gap={2}
@@ -94,7 +96,7 @@ const ForgotPasswordForm: React.FC = () => {
         </SuccessAlert>
 
         <LoadingButton isPending={isPending} fullWidth>
-          Submit
+          {t("forgotPasswordForm.forgotPasswordBtn")}
         </LoadingButton>
         <Button
           onClick={handleNavigate}
@@ -102,7 +104,7 @@ const ForgotPasswordForm: React.FC = () => {
           aria-label="goBackBtn"
           variant="outlined"
         >
-          Back to Log In page
+          {t("forgotPasswordForm.forgotPasswordBackBtn")}
         </Button>
       </Stack>
     </Stack>
