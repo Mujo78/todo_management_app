@@ -14,8 +14,10 @@ import {
 } from "../../utils/user/userUtils";
 import SuccessAlert from "../../UI/SuccessAlert";
 import LoadingButton from "../../UI/LoadingButton";
+import { useTranslation } from "react-i18next";
 
 const ResetPasswordForm: React.FC = () => {
+  const { t } = useTranslation();
   const { token } = useParams();
   const { control, formState, handleSubmit, reset } =
     useForm<ResetPasswordType>({
@@ -42,11 +44,13 @@ const ResetPasswordForm: React.FC = () => {
     >
       <PasswordInput
         control={control}
-        label="New Password"
+        label={t("resetPasswordForm.newPassword")}
         name="newPassword"
         defaultValue=""
         error={!!errors.newPassword || isErrorForKey(error, "NewPassword")}
-        errorMessage={errors.newPassword?.message}
+        errorMessage={
+          errors.newPassword?.message && t(errors.newPassword.message)
+        }
       >
         {!errors.newPassword && isErrorForKey(error, "NewPassword") && (
           <FormHelperText component="span" error>
@@ -56,7 +60,7 @@ const ResetPasswordForm: React.FC = () => {
       </PasswordInput>
 
       <PasswordInput
-        label="Confirm Password"
+        label={t("resetPasswordForm.confirmNewPassword")}
         control={control}
         name="confirmNewPassword"
         defaultValue=""
@@ -64,7 +68,10 @@ const ResetPasswordForm: React.FC = () => {
           !!errors.confirmNewPassword ||
           isErrorForKey(error, "ConfirmNewPassword")
         }
-        errorMessage={errors.confirmNewPassword?.message}
+        errorMessage={
+          errors.confirmNewPassword?.message &&
+          t(errors.confirmNewPassword.message)
+        }
       >
         {!errors.confirmNewPassword &&
           (isError || isErrorForKey(error, "ConfirmNewPassword")) && (
@@ -77,10 +84,12 @@ const ResetPasswordForm: React.FC = () => {
       </PasswordInput>
 
       <SuccessAlert isSuccess={isSuccess}>
-        Password successfully changed.
+        {t("resetPasswordForm.successMessage")}
       </SuccessAlert>
 
-      <LoadingButton isPending={isPending}>Submit</LoadingButton>
+      <LoadingButton isPending={isPending}>
+        {t("resetPasswordForm.submitBtn")}
+      </LoadingButton>
     </Stack>
   );
 };

@@ -17,8 +17,11 @@ import { ExitToApp } from "@mui/icons-material";
 import useLogout from "../../../features/auth/useLogout";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import LanguageSwitch from "../LanguageSwitch/LanguageSwitch";
+import { useTranslation } from "react-i18next";
+import { format } from "date-fns";
 
 const AppNavbar: React.FC = () => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const matches = useMediaQuery("(max-width:600px)");
   const { userLogout } = useLogout();
@@ -60,7 +63,7 @@ const AppNavbar: React.FC = () => {
           TaskMaster
         </MUILink>
         <Typography display={{ xs: "none", sm: "block" }} paragraph my="auto">
-          {new Date().toDateString()}
+          {format(new Date(), "dd/MM/yyyy")}
         </Typography>
         <Box>
           <IconButton
@@ -70,7 +73,7 @@ const AppNavbar: React.FC = () => {
             onClick={handleClick}
             color="inherit"
           >
-            Me
+            {t("appNavbar.me")}
             <ArrowDropDownIcon />
           </IconButton>
           <Menu
@@ -94,13 +97,13 @@ const AppNavbar: React.FC = () => {
                   aria-label="HomeLink"
                   onClick={() => handleNavigate("/home")}
                 >
-                  Home
+                  {t("appNavbar.home")}
                 </MenuItem>
                 <MenuItem
                   aria-label="ProfileLink"
                   onClick={() => handleNavigate("/profile")}
                 >
-                  Profile
+                  {t("appNavbar.profile")}
                 </MenuItem>
               </MenuList>
             )}
@@ -114,7 +117,7 @@ const AppNavbar: React.FC = () => {
               sx={{ display: "flex", gap: "10px" }}
             >
               <ExitToApp />
-              Log out
+              {t("appNavbar.logOut")}
             </MenuItem>
           </Menu>
         </Box>

@@ -5,8 +5,10 @@ import useVerifyEmail from "../../features/user/useVerifyEmail";
 import { formatErrorMessage } from "../../components/utils/user/userUtils";
 import SuccessAlert from "../../components/UI/SuccessAlert";
 import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
+import { useTranslation } from "react-i18next";
 
 const VerifyEmail = () => {
+  const { t } = useTranslation();
   const { token } = useParams();
   const { verifyEmail, isPending, error, isError, isSuccess } =
     useVerifyEmail();
@@ -40,16 +42,14 @@ const VerifyEmail = () => {
           TaskMaster
         </Typography>
         <Typography variant="h5" textAlign="center" fontWeight={600}>
-          Verify your email address
+          {t("verifyEmail.subtitle")}
         </Typography>
         <Typography
           paragraph
           textAlign="center"
           maxWidth={{ sm: "60%", md: "40%" }}
         >
-          By verifying your email, you will confirm that you want to use this as
-          your TaskMaster account email address. Once it's done you will be able
-          to start with creating and achieving your daily goals.
+          {t("verifyEmail.text")}
         </Typography>
 
         <Stack alignItems="center">
@@ -62,7 +62,7 @@ const VerifyEmail = () => {
           ) : (
             isSuccess && (
               <SuccessAlert isSuccess={isSuccess}>
-                Successfully verified email address.
+                {t("verifyEmail.successMessage")}
               </SuccessAlert>
             )
           )}

@@ -14,8 +14,10 @@ import {
 } from "@mui/material";
 import useAuthStore from "../../../app/authSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const AppSidebar: React.FC = () => {
+  const { t } = useTranslation();
   const matches = useMediaQuery("(min-width:900px)");
   const navigate = useNavigate();
   const location = useLocation().pathname;
@@ -80,7 +82,7 @@ const AppSidebar: React.FC = () => {
               >
                 <Assignment />
               </ListItemIcon>
-              {matches && <ListItemText primary="Tasks" />}
+              {matches && <ListItemText primary={t("appSidebar.tasks")} />}
             </ListItemButton>
           </ListItem>
           <ListItem
@@ -97,7 +99,7 @@ const AppSidebar: React.FC = () => {
               >
                 <PersonOutline />
               </ListItemIcon>
-              {matches && <ListItemText primary="Profile" />}
+              {matches && <ListItemText primary={t("appSidebar.profile")} />}
             </ListItemButton>
           </ListItem>
         </List>
@@ -109,7 +111,7 @@ const AppSidebar: React.FC = () => {
         startIcon={<AddTask />}
         sx={{ borderRadius: 5, py: 1.5 }}
       >
-        {matches && "Add a new task"}
+        {matches && t("appSidebar.addANewTask")}
       </Button>
     </Stack>
   );

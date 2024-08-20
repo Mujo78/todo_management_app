@@ -4,6 +4,7 @@ import { mockStore, serviceWorker } from "../../../msw/Worker";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
 import { invalidTokenLogoutHandler } from "../../../msw/handlers";
+import { format } from "date-fns";
 
 vi.mock("../../../app//authSlice.ts", () => ({
   default: vi.fn(),
@@ -46,7 +47,7 @@ describe("AppNavbar component testing", () => {
 
   it("Should display todays date on larger screens", () => {
     renderWithRouter(["/home"]);
-    const todaysDate = new Date().toDateString();
+    const todaysDate = format(new Date(), "dd/MM/yyyy");
 
     const dateInTheNavbar = screen.getByText(todaysDate);
     expect(dateInTheNavbar).toBeInTheDocument();

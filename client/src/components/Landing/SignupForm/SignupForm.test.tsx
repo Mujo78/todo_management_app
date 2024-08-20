@@ -54,7 +54,7 @@ describe("SignupForm component tests", () => {
 
   it.each([
     [
-      "Passwords must match",
+      "Passwords must match.",
       "user@gmail.com",
       "Name goes here.",
       "Password&1234567",

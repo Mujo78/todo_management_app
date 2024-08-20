@@ -1,9 +1,11 @@
 import { Add, Person, Task } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const TabNavigation: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation().pathname;
   const [value, setValue] = useState<string>("");
@@ -33,20 +35,20 @@ const TabNavigation: React.FC = () => {
         <BottomNavigationAction
           value="/home"
           aria-label="TabNavBtnTasks"
-          label="Tasks"
+          label={t("tabNavigation.tasks")}
           icon={<Task />}
         />
         <BottomNavigationAction
           value="/add-task"
           aria-label="TabNavBtnAdd"
-          label="Add"
+          label={t("tabNavigation.add")}
           icon={<Add />}
         />
         <BottomNavigationAction
           LinkComponent={Link}
           value="/profile"
           aria-label="TabNavBtnProfile"
-          label="Profile"
+          label={t("tabNavigation.profile")}
           icon={<Person />}
         />
       </BottomNavigation>

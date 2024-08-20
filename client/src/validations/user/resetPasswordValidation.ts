@@ -5,15 +5,18 @@ const regPattern =
 
 export const resetPasswordValidationSchema = Yup.object({
   newPassword: Yup.string()
-    .required("Password is required.")
-    .min(8, "Password must be at least 8 characters long.")
+    .required("resetPasswordFormValidation.passwordRequired")
+    .min(8, "resetPasswordFormValidation.passwordLength")
     .matches(regPattern, {
-      message:
-        "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+      message: "resetPasswordFormValidation.passwordWeakness",
     }),
   confirmNewPassword: Yup.string()
-    .required("Confirm password is required.")
-    .test("password-match", "Passwords must match", function (value) {
-      return value === this.parent.newPassword;
-    }),
+    .required("resetPasswordFormValidation.confirmNewPasswordRequired")
+    .test(
+      "password-match",
+      "resetPasswordFormValidation.passwordsMustMatch",
+      function (value) {
+        return value === this.parent.newPassword;
+      }
+    ),
 });

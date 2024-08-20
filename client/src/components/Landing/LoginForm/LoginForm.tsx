@@ -68,9 +68,9 @@ const LoginForm: React.FC = () => {
               variant="outlined"
               label="Email"
               id="Email"
+              required
               aria-label="Email"
               autoComplete="true"
-              required
               disabled={isRefreshPending}
               type="email"
               fullWidth
@@ -81,7 +81,7 @@ const LoginForm: React.FC = () => {
               }
               helperText={
                 errors.email
-                  ? errors.email.message
+                  ? errors.email.message && t(errors.email.message)
                   : isErrorForKey(error, "Email") &&
                     !isErrorForKey(error, "Incorrect") &&
                     formatErrorFieldMessage(error, "Email")
@@ -101,7 +101,7 @@ const LoginForm: React.FC = () => {
             (isErrorForKey(error, "Password") &&
               !isErrorForKey(error, "Incorrect"))
           }
-          errorMessage={errors.password?.message}
+          errorMessage={errors.password?.message && t(errors.password?.message)}
         >
           {!errors.password && (
             <FormHelperText component="span" error>

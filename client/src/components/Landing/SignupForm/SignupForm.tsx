@@ -2,7 +2,7 @@ import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack, Typography, TextField, FormHelperText } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { signupValidationSchema } from "../../../validations/user/signupValidation";
+import getSignupValidationSchema from "../../../validations/user/signupValidation";
 import PasswordInput from "../../UI/PasswordInput";
 import { UserAccountDataType } from "../../../features/user/api";
 import useSignup from "../../../features/user/useSignup";
@@ -17,9 +17,10 @@ import { useTranslation } from "react-i18next";
 
 const SignupForm: React.FC = () => {
   const { t } = useTranslation();
+
   const { control, formState, handleSubmit, reset } =
     useForm<UserAccountDataType>({
-      resolver: yupResolver(signupValidationSchema),
+      resolver: yupResolver(getSignupValidationSchema()),
     });
   const { errors, isDirty } = formState;
   const { signup, error, isError, isPending, isSuccess } = useSignup();
@@ -62,8 +63,8 @@ const SignupForm: React.FC = () => {
               fullWidth
               error={!!errors.name || isErrorForKey(error, "Name")}
               helperText={
-                errors.name
-                  ? errors.name.message
+                errors.name?.message
+                  ? t(errors.name.message)
                   : isErrorForKey(error, "Name") &&
                     !errors.name && (
                       <FormHelperText component="span" error>
@@ -92,8 +93,8 @@ const SignupForm: React.FC = () => {
               fullWidth
               error={!!errors.email || isErrorForKey(error, "Email")}
               helperText={
-                errors.email ? (
-                  errors.email.message
+                errors.email?.message ? (
+                  t(errors.email.message)
                 ) : isErrorForKey(error, "Email") && !errors.email ? (
                   <FormHelperText component="span" error>
                     {formatErrorFieldMessage(error, "Email")}
@@ -116,7 +117,7 @@ const SignupForm: React.FC = () => {
             (isErrorForKey(error, "Password") &&
               !isErrorForKey(error, "Confirm Password"))
           }
-          errorMessage={errors.password?.message}
+          errorMessage={errors.password?.message && t(errors.password.message)}
         >
           {!errors.password &&
             isErrorForKey(error, "Password") &&
@@ -135,7 +136,9 @@ const SignupForm: React.FC = () => {
           error={
             !!errors.confirmPassword || isErrorForKey(error, "ConfirmPassword")
           }
-          errorMessage={errors.confirmPassword?.message}
+          errorMessage={
+            errors.confirmPassword?.message && t(errors.confirmPassword.message)
+          }
         >
           {!errors.confirmPassword &&
             isError &&
@@ -149,7 +152,7 @@ const SignupForm: React.FC = () => {
         </PasswordInput>
 
         <SuccessAlert isSuccess={isSuccess}>
-          Please check your inbox for verification email.
+          {t("signupForm.successMessage")}
         </SuccessAlert>
 
         <LoadingButton label="signupBtn" fullWidth isPending={isPending}>

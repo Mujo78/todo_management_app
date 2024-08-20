@@ -13,7 +13,7 @@ i18next.use(initReactI18next).init({
   },
   lng: "eng",
   fallbackLng: "eng",
-  debug: true,
+  //debug: true,
 });
 
 export default i18next;

@@ -2,8 +2,11 @@ import { Box, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import ResetPasswordForm from "../../components/Landing/ResetPasswordForm/ResetPasswordForm";
 import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
+import { useTranslation } from "react-i18next";
 
 const ResetPassword = () => {
+  const { t } = useTranslation();
+
   return (
     <Stack gap={3} width="100%" height="100vh" p={{ xs: 2, sm: 6 }}>
       <Stack maxWidth="100%" alignItems="center" gap={2}>
@@ -20,15 +23,15 @@ const ResetPassword = () => {
           TaskMaster
         </Typography>
         <Typography variant="h5" textAlign="center" fontWeight={600}>
-          Reset Password
+          {t("resetPassword.subtitle")}
         </Typography>
         <Typography
           paragraph
           textAlign="start"
           maxWidth={{ sm: "60%", md: "40%" }}
         >
-          - Create a new password that you don't use on any other site, <br />-
-          Strong password contains letters, numbers and special characters
+          - {t("resetPassword.firstSentence")} <br />-{" "}
+          {t("resetPassword.secondSentence")}
         </Typography>
       </Stack>
       <Stack

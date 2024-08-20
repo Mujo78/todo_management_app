@@ -6,8 +6,10 @@ import useDeleteAllTasks from "../../../features/tasks/useDeleteAllTasks";
 import { useNavigate } from "react-router-dom";
 import useMakeTasksFinished from "../../../features/tasks/useMakeTasksFinished";
 import useDeleteSelectedTasks from "../../../features/tasks/useDeleteSelectedTasks";
+import { useTranslation } from "react-i18next";
 
 const TaskOptionsHeader: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { tasksToAction, tasks } = useTaskStore();
 
@@ -45,7 +47,7 @@ const TaskOptionsHeader: React.FC = () => {
             variant="contained"
             onClick={makeTasksCompleted}
           >
-            <Tooltip title="Make finished">
+            <Tooltip title={t("headerOptions.makeFinished")}>
               <Check />
             </Tooltip>
           </Button>
@@ -55,7 +57,7 @@ const TaskOptionsHeader: React.FC = () => {
             onClick={removeSelectedTasks}
             variant="contained"
           >
-            <Tooltip title="Remove selected">
+            <Tooltip title={t("headerOptions.removeSelected")}>
               <Delete />
             </Tooltip>
           </Button>
@@ -69,7 +71,7 @@ const TaskOptionsHeader: React.FC = () => {
           sx={{ marginLeft: "auto" }}
           variant="contained"
         >
-          <Tooltip title="Remove all">
+          <Tooltip title={t("headerOptions.removeAll")}>
             <DeleteSweep />
           </Tooltip>
         </Button>

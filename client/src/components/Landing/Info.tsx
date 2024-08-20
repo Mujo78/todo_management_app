@@ -49,14 +49,14 @@ const Info: React.FC = () => {
           <ListItem disablePadding>
             <ListItemText>
               <Trans i18nKey="landingPageInfo.subtitleListSecond">
-                <strong>Easy Task Management</strong>
+                <strong>Reminders</strong>
               </Trans>
             </ListItemText>
           </ListItem>
           <ListItem disablePadding>
             <ListItemText>
               <Trans i18nKey="landingPageInfo.subtitleListThird">
-                <strong>Easy Task Management</strong>
+                <strong>Prioritize</strong>
               </Trans>
             </ListItemText>
           </ListItem>

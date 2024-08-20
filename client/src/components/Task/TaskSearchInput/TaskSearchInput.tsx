@@ -2,8 +2,10 @@ import { Stack, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useSearchQuery } from "../../../hooks/useSearchQuery";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const TaskSearchInput: React.FC = () => {
+  const { t } = useTranslation();
   const [taskName, setTaskName] = useState<string>("");
   const navigate = useNavigate();
   const query = useSearchQuery();
@@ -38,7 +40,7 @@ const TaskSearchInput: React.FC = () => {
         value={taskName}
         onChange={handleChange}
         variant="outlined"
-        label="Search"
+        label={t("searchHeader")}
         aria-label="Search"
         autoComplete="true"
         fullWidth

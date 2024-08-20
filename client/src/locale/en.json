@@ -24,12 +24,30 @@
       "loginBtn": "Log in",
       "forgotPassword": "Forgot Password?"
     },
+    "loginFormValidation": {
+      "emailRequired": "Email is required.",
+      "emailValid": "Please provide a valid email address.",
+      "passwordRequired": "Password is required."
+    },
     "signupForm": {
       "signupTitle": "Sign up today!",
       "signupName": "Name",
       "signupPassword": "Password",
       "signupConfirmPassword": "Confirm Password",
-      "signupBtn": "Register"
+      "signupBtn": "Register",
+      "successMessage": "Please check your inbox for verification email."
+    },
+    "signupFormValidation": {
+      "nameRequired": "Name is required.",
+      "nameLength": "Name must be at least 5 characters long.",
+      "emailRequired": "Email is required.",
+      "emailValid": "Please provide a valid email address.",
+      "invalidEmailWord": "Invalid email address, please provide valid email to create an account.",
+      "passwordRequired": "Password is required.",
+      "passwordLength": "Password must be at least 8 characters long.",
+      "passwordWeakness": "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+      "confirmPasswordRequired": "Confirm password is required.",
+      "passwordsMustMatch": "Passwords must match."
     },
     "forgotPasswordForm": {
       "forgotPasswordTitle": "Forgot Your Password?",
@@ -39,6 +57,51 @@
     "forgotPasswordInfo": {
       "infoSubtitle": "Forgot Password Instructions",
       "instructions": "Enter the email address associated with your account and we'll send you a link to reset your password."
-    }
+    },
+    "resetPassword": {
+      "subtitle": "Reset Password",
+      "firstSentence": "Create a new password that you don't use on any other site,",
+      "secondSentence": "Strong password contains letters, numbers and special characters"
+    },
+    "resetPasswordFormValidation": {
+      "passwordRequired": "Password is required.",
+      "passwordLength": "Password must be at least 8 characters long.",
+      "passwordWeakness": "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+      "confirmNewPasswordRequired": "Confirm password is required.",
+      "passwordsMustMatch": "Passwords must match."
+    },
+    "resetPasswordForm": {
+      "newPassword": "New Password",
+      "confirmNewPassword": "Confirm Password",
+      "submitBtn": "Submit",
+      "successMessage": "Password successfully changed."
+    },
+    "verifyEmail": {
+      "subtitle": "Verify your email address",
+      "text": "By verifying your email, you will confirm that you want to use this as your TaskMaster account email address. Once it's done you will be able to start with creating and achieving your daily goals.",
+      "successMessage": "Successfully verified email address."
+    },
+    "appNavbar": {
+      "me": "Me",
+      "home": "Home",
+      "profile": "Profile",
+      "logOut": "Log out"
+    },
+    "appSidebar": {
+      "tasks": "Tasks",
+      "profile": "Profile",
+      "addANewTask": "Add a new task"
+    },
+    "tabNavigation": {
+      "tasks": "Zadaci",
+      "add": "Dodaj",
+      "profile": "Profil"
+    },
+    "headerOptions": {
+      "makeFinished": "Make finished",
+      "removeSelected": "Remove selected",
+      "removeAll": "Remove all"
+    },
+    "searchHeader": "Search"
   }
 }
