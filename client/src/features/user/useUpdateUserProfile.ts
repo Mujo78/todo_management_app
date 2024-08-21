@@ -4,8 +4,10 @@ import { UpdateProfileFn } from "./api";
 import useAuthStore, { UserType } from "../../app/authSlice";
 import toast from "react-hot-toast";
 import { formatErrorMessage } from "../../components/utils/user/userUtils";
+import { useTranslation } from "react-i18next";
 
 function useUpdateProfile() {
+  const { t } = useTranslation();
   const { updateUserInfo } = useAuthStore();
   const {
     mutate: updateMyProfile,
@@ -18,7 +20,7 @@ function useUpdateProfile() {
     mutationFn: UpdateProfileFn,
     onSuccess: (data) => {
       updateUserInfo(data);
-      toast.success("Profile successfully updated.");
+      toast.success(t("editProfileFormValidation.successMessage"));
     },
     onError: (error) => {
       const errorToShow = formatErrorMessage(error);

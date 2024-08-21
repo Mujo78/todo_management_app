@@ -81,6 +81,11 @@
       "text": "By verifying your email, you will confirm that you want to use this as your TaskMaster account email address. Once it's done you will be able to start with creating and achieving your daily goals.",
       "successMessage": "Successfully verified email address."
     },
+    "homePage": {
+      "addTaskBtn": "Add task",
+      "noDataAvailable": "No data available.",
+      "clearBtn": "Clear"
+    },
     "appNavbar": {
       "me": "Me",
       "home": "Home",
@@ -102,6 +107,69 @@
       "removeSelected": "Remove selected",
       "removeAll": "Remove all"
     },
-    "searchHeader": "Search"
+    "searchHeader": "Search",
+    "tasks": "",
+    "profileLinks": {
+      "overview": "Overview",
+      "edit": "Edit",
+      "changePassword": "Change Password"
+    },
+    "profileOverview": {
+      "title": "Overview",
+      "name": "Name/Username:",
+      "joined": "Joined:",
+      "deleteAccountBtn": "Delete Account",
+      "tasks": "Tasks",
+      "average": "Average",
+      "tasksCount": {
+        "open": "Open",
+        "completed": "Completed",
+        "failed": "Failed",
+        "total": "Total"
+      },
+      "deleteAccountModal": {
+        "title": "Are you sure you want to delete your profile?",
+        "text": "By deleting your profile, you will:",
+        "firstRow": "lose your profile forever,",
+        "secondRow": "your tasks will be deleted",
+        "closeBtn": "Close",
+        "confirmBtn": "Confirm"
+      }
+    },
+    "editProfile": {
+      "title": "Edit Profile",
+      "name": "Name/Username",
+      "saveBtn": "Save changes"
+    },
+    "editProfileFormValidation": {
+      "nameRequired": "Name is required.",
+      "nameLength": "Name must be at least 5 characters long.",
+      "emailRequired": "Email is required.",
+      "emailValid": "Please provide a valid email address.",
+      "invalidEmailWord": "Invalid email address, please provide valid email to create an account.",
+      "successMessage": "Profile successfully updated."
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "password": "Password",
+      "newPassword": "New Password",
+      "confirmNewPassword": "Confirm New Password",
+      "saveBtn": "Save changes"
+    },
+    "changePasswordFormValidation": {
+      "passwordRequired": "Password is required.",
+      "newPasswordRequired": "New Password is required.",
+      "newPasswordLength": "Password must be at least 8 characters long.",
+      "newPasswordWeakness": "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+      "confirmPasswordRequired": "Confirm password is required.",
+      "passwordsMustMatch": "Confirm Password must match with new password.",
+      "successMessage": "Password successfully changed."
+    },
+    "errorPage": {
+      "title": "Page not found",
+      "text": "Sorry, we couldn't find the page you're looking for.",
+      "home": "Home",
+      "contactUs": "Contact Us"
+    }
   }
 }

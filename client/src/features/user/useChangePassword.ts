@@ -6,8 +6,10 @@ import {
   isErrorForKey,
 } from "../../components/utils/user/userUtils";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 function useChangePassword() {
+  const { t } = useTranslation();
   const {
     mutate: changePassword,
     isPending,
@@ -22,7 +24,7 @@ function useChangePassword() {
     mutationKey: ["changePassword"],
     mutationFn: ChangePasswordFn,
     onSuccess: () => {
-      toast.success("Password successfully changed.");
+      toast.success(t("changePasswordFormValidation.successMessage"));
     },
     onError: (error) => {
       const errorToShow = formatErrorMessage(error);

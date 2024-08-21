@@ -12,8 +12,10 @@ import TaskCard from "../../components/Task/TaskCard/TaskCard";
 import useTaskStore from "../../app/taskSlice";
 import TaskOptionsHeader from "../../components/Task/TaskOptionsHeader/TaskOptionsHeader";
 import useMakeTaskFailed from "../../features/tasks/useMakeTaskFailed";
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
+  const { t } = useTranslation();
   const { setTasks, tasks, findExpiredTask } = useTaskStore();
   const navigate = useNavigate();
   const query = useSearchQuery();
@@ -70,23 +72,23 @@ const HomePage = () => {
     >
       <Stack direction="row" gap={2} maxWidth="100%">
         <TaskSearchInput />
-        <Button
-          sx={{
-            display: {
-              xs: "none",
-              sm: "flex",
-            },
-            my: 0.1,
-          }}
-          aria-label="AddNewTask"
-          color="info"
-          variant="contained"
-          onClick={() => handleNavigate("/add-task")}
-        >
-          <Tooltip title="Add task">
+        <Tooltip title={t("homePage.addTaskBtn")}>
+          <Button
+            sx={{
+              display: {
+                xs: "none",
+                sm: "flex",
+              },
+              my: 0.1,
+            }}
+            aria-label="AddNewTask"
+            color="info"
+            variant="contained"
+            onClick={() => handleNavigate("/add-task")}
+          >
             <AddIcon />
-          </Tooltip>
-        </Button>
+          </Button>
+        </Tooltip>
       </Stack>
       <TaskOptionsHeader />
       <Stack gap={2} width="100%">
@@ -99,7 +101,7 @@ const HomePage = () => {
         ) : isSuccess &&
           ((tasks?.data && tasks.data.length === 0) || !tasks) ? (
           <Alert icon={<InfoIcon />} color="secondary">
-            No data available.
+            {t("homePage.noDataAvailable")}
           </Alert>
         ) : (
           tasks?.data &&
@@ -115,7 +117,7 @@ const HomePage = () => {
           variant="contained"
           sx={{ width: "fit-content", margin: "auto 0 0 auto" }}
         >
-          Clear
+          {t("homePage.clearBtn")}
         </Button>
       )}
       {tasks?.data && tasks.data.length > 0 && (

@@ -11,8 +11,10 @@ import {
   isErrorForKey,
 } from "../../../components/utils/user/userUtils";
 import LoadingButton from "../../../components/UI/LoadingButton";
+import { useTranslation } from "react-i18next";
 
 const ChangePassword = () => {
+  const { t } = useTranslation();
   const {
     control,
     handleSubmit,
@@ -42,13 +44,15 @@ const ChangePassword = () => {
         control={control}
         defaultValue=""
         name="oldPassword"
-        label="Password"
+        label={t("changePassword.password")}
         error={
           !!errors.oldPassword ||
           isErrorForKey(error, "old password") ||
           isErrorForKey(error, "OldPassword")
         }
-        errorMessage={errors.oldPassword?.message}
+        errorMessage={
+          errors.oldPassword?.message && t(errors.oldPassword.message)
+        }
       >
         {!errors.oldPassword &&
           (isErrorForKey(error, "old password") ||
@@ -65,13 +69,15 @@ const ChangePassword = () => {
         control={control}
         defaultValue=""
         name="newPassword"
-        label="New Password"
+        label={t("changePassword.newPassword")}
         error={
           !!errors.newPassword ||
           isErrorForKey(error, "new password") ||
           isErrorForKey(error, "NewPassword")
         }
-        errorMessage={errors.newPassword?.message}
+        errorMessage={
+          errors.newPassword?.message && t(errors.newPassword.message)
+        }
       >
         {!errors.newPassword &&
           (isErrorForKey(error, "new password") ||
@@ -87,12 +93,15 @@ const ChangePassword = () => {
         control={control}
         defaultValue=""
         name="confirmNewPassword"
-        label="Confirm New Password"
+        label={t("changePassword.confirmNewPassword")}
         error={
           !!errors.confirmNewPassword ||
           isErrorForKey(error, "ConfirmNewPassword")
         }
-        errorMessage={errors.confirmNewPassword?.message}
+        errorMessage={
+          errors.confirmNewPassword?.message &&
+          t(errors.confirmNewPassword.message)
+        }
       >
         {!errors.confirmNewPassword &&
           isErrorForKey(error, "ConfirmNewPassword") && (
@@ -107,7 +116,7 @@ const ChangePassword = () => {
         isPending={isPending}
         sx={{ flexGrow: { xs: 1, sm: 0 }, ml: { sm: "auto" } }}
       >
-        Save changes
+        {t("changePassword.saveBtn")}
       </LoadingButton>
     </Stack>
   );

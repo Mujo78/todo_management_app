@@ -12,6 +12,7 @@ import React from "react";
 import useDeleteProfile from "../../../features/user/useDeleteProfile";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "../../UI/LoadingButton";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   show: boolean;
@@ -20,6 +21,7 @@ interface Props {
 }
 
 const DeleteProfileModal: React.FC<Props> = ({ setShow, show, total }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { deleteProfile, isPending } = useDeleteProfile();
 
@@ -44,13 +46,17 @@ const DeleteProfileModal: React.FC<Props> = ({ setShow, show, total }) => {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        Are you sure you want to delete your profile?
+        {t("profileOverview.deleteAccountModal.title")}
       </DialogTitle>
       <DialogContent>
-        By deleting your profile, you will:
+        {t("profileOverview.deleteAccountModal.text")}
         <List>
-          <ListItem>- lose your profile forever,</ListItem>
-          <ListItem>- your tasks will be deleted ({total})</ListItem>
+          <ListItem>
+            - {t("profileOverview.deleteAccountModal.firstRow")}
+          </ListItem>
+          <ListItem>
+            - {t("profileOverview.deleteAccountModal.secondRow")} ({total})
+          </ListItem>
         </List>
       </DialogContent>
       <DialogActions>
@@ -67,7 +73,7 @@ const DeleteProfileModal: React.FC<Props> = ({ setShow, show, total }) => {
             variant="outlined"
             aria-label="closeDeleteProfileModalbtn"
           >
-            Close
+            {t("profileOverview.deleteAccountModal.closeBtn")}
           </Button>
 
           <LoadingButton
@@ -77,7 +83,7 @@ const DeleteProfileModal: React.FC<Props> = ({ setShow, show, total }) => {
             error
             label="confirmDeleteProfilebtn"
           >
-            Confirm
+            {t("profileOverview.deleteAccountModal.confirmBtn")}
           </LoadingButton>
         </Stack>
       </DialogActions>

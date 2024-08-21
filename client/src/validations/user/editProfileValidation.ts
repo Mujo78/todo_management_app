@@ -2,14 +2,14 @@ import * as Yup from "yup";
 
 export const editProfileValidationSchema = Yup.object({
   name: Yup.string()
-    .required("Name is required.")
-    .min(5, "Name must be at least 5 characters long."),
+    .required("editProfileFormValidation.nameRequired")
+    .min(5, "editProfileFormValidation.nameLength"),
   email: Yup.string()
-    .required("Email is required.")
-    .email("Please provide valid email.")
+    .required("editProfileFormValidation.emailRequired")
+    .email("editProfileFormValidation.emailValid")
     .test(
       "email-validation",
-      "Invalid email address, please provide valid email to create an account.",
+      "editProfileFormValidation.invalidEmailWord",
       function (value) {
         if (
           value.includes(

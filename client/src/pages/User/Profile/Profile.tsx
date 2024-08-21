@@ -13,8 +13,11 @@ import { formatErrorMessage } from "../../../components/utils/user/userUtils";
 import { BarChart, BarSeriesType, Gauge } from "@mui/x-charts";
 import DeleteProfileModal from "../../../components/User/DeleteProfileModal/DeleteProfileModal";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { format } from "date-fns";
 
 const Profile = () => {
+  const { t } = useTranslation();
   const [show, setShow] = useState<boolean>(false);
   const { data, isLoading, isError, error, isSuccess } = useQuery<
     MyInfoType,
@@ -35,9 +38,9 @@ const Profile = () => {
 
     return Object.entries(data.assignmentCount).map(([key, value]) => ({
       data: [value],
-      label: key.charAt(0).toUpperCase() + key.slice(1),
+      label: t(`profileOverview.tasksCount.${key}`),
     }));
-  }, [data]);
+  }, [data, t]);
 
   return (
     <>
@@ -55,7 +58,9 @@ const Profile = () => {
             >
               <Grid item xs={12} container>
                 <Grid item display={{ xs: "none", sm: "block" }} xs={0} sm={3}>
-                  <Typography variant="body1">Name/Username:</Typography>
+                  <Typography variant="body1">
+                    {t("profileOverview.name")}
+                  </Typography>
                 </Grid>
                 <Grid item xs={12} sm={9}>
                   <Typography
@@ -83,7 +88,9 @@ const Profile = () => {
               </Grid>
               <Grid item xs={12} container>
                 <Grid item xs={0} sm={3} display={{ xs: "none", sm: "block" }}>
-                  <Typography variant="body1">Joined:</Typography>
+                  <Typography variant="body1">
+                    {t("profileOverview.joined")}
+                  </Typography>
                 </Grid>
                 <Grid item xs={12} sm={9}>
                   <Typography
@@ -91,7 +98,7 @@ const Profile = () => {
                     color="dark.light"
                     variant="body1"
                   >
-                    {new Date(data.user.createdAt).toDateString()}
+                    {format(new Date(data.user.createdAt), "dd/MM/yyyy")}
                   </Typography>
                 </Grid>
               </Grid>
@@ -102,7 +109,7 @@ const Profile = () => {
                   aria-label="deleteModalProfileBtn"
                   onClick={handleDeleteAccount}
                 >
-                  Delete Account
+                  {t("profileOverview.deleteAccountBtn")}
                 </Button>
               </Grid>
             </Stack>
@@ -114,7 +121,12 @@ const Profile = () => {
             >
               <BarChart
                 loading={isLoading}
-                xAxis={[{ scaleType: "band", data: ["Tasks"] }]}
+                xAxis={[
+                  {
+                    scaleType: "band",
+                    data: [`${t("profileOverview.tasks")}`],
+                  },
+                ]}
                 series={assignmentArray as BarSeriesType[]}
                 height={300}
               />
@@ -133,7 +145,7 @@ const Profile = () => {
                   textAlign="center"
                   variant="body1"
                 >
-                  Average
+                  {t("profileOverview.average")}
                 </Typography>
               </Stack>
             </Stack>

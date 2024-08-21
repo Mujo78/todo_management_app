@@ -8,8 +8,10 @@ import {
   HttpsOutlined,
 } from "@mui/icons-material";
 import SuspenseFallback from "../../UI/SuspenseFallback";
+import { useTranslation } from "react-i18next";
 
 const ProfileLayout: React.FC = () => {
+  const { t } = useTranslation();
   const location = useLocation().pathname;
   const matches = useMediaQuery("(max-width:600px)");
 
@@ -24,10 +26,10 @@ const ProfileLayout: React.FC = () => {
       >
         <Typography color="white" variant="h5">
           {location === "/profile"
-            ? "Overview"
+            ? t("profileOverview.title")
             : location.includes("edit")
-            ? "Edit Profile"
-            : location.includes("password") && "Change Password"}
+            ? t("editProfile.title")
+            : location.includes("password") && t("changePassword.title")}
         </Typography>
       </Box>
 
@@ -41,15 +43,19 @@ const ProfileLayout: React.FC = () => {
           gap={4}
         >
           <AppLink to="/profile" underline>
-            {matches ? <DashboardCustomizeOutlined /> : "Overview"}
+            {matches ? (
+              <DashboardCustomizeOutlined />
+            ) : (
+              t("profileLinks.overview")
+            )}
           </AppLink>
 
           <AppLink to="/profile/edit" underline>
-            {matches ? <EditOutlined /> : "Edit"}
+            {matches ? <EditOutlined /> : t("profileLinks.edit")}
           </AppLink>
 
           <AppLink to="/profile/change-password" underline>
-            {matches ? <HttpsOutlined /> : "Change password"}
+            {matches ? <HttpsOutlined /> : t("profileLinks.changePassword")}
           </AppLink>
         </Box>
 

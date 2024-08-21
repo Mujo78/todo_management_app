@@ -11,8 +11,10 @@ import {
   isErrorForKey,
 } from "../../../components/utils/user/userUtils";
 import LoadingButton from "../../../components/UI/LoadingButton";
+import { useTranslation } from "react-i18next";
 
 const EditProfile = () => {
+  const { t } = useTranslation();
   const { auth } = useAuthStore();
 
   const {
@@ -59,15 +61,15 @@ const EditProfile = () => {
           <TextField
             {...field}
             variant="outlined"
-            label="Name/Username"
+            label={t("editProfile.name")}
             autoComplete="true"
             required
             type="text"
             fullWidth
             error={!!errors.name || isErrorForKey(error, "Name")}
             helperText={
-              errors.name
-                ? errors.name.message
+              errors.name?.message
+                ? t(errors.name.message)
                 : isErrorForKey(error, "Name") &&
                   formatErrorFieldMessage(error, "Name")
             }
@@ -91,8 +93,8 @@ const EditProfile = () => {
             fullWidth
             error={!!errors.email || isErrorForKey(error, "Email")}
             helperText={
-              errors.email
-                ? errors.email.message
+              errors.email?.message
+                ? t(errors.email.message)
                 : !errors.email &&
                   isErrorForKey(error, "Email") &&
                   formatErrorFieldMessage(error, "Email")
@@ -105,7 +107,7 @@ const EditProfile = () => {
         isPending={isPending}
         sx={{ flexGrow: { xs: 1, sm: 0 }, ml: { sm: "auto" } }}
       >
-        Save changes
+        {t("editProfile.saveBtn")}
       </LoadingButton>
     </Stack>
   );

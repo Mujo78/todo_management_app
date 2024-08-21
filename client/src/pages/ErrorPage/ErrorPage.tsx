@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
-import { Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
 
 const ErrorPage = () => {
+  const { t } = useTranslation();
   const mailsupport = `mailto:${import.meta.env.VITE_EMAIL_SUPPORT}`;
 
   return (
@@ -18,10 +21,8 @@ const ErrorPage = () => {
           <Typography variant="h2" fontWeight="bold">
             404
           </Typography>
-          <Typography variant="h4">Page not found</Typography>
-          <Typography paragraph>
-            Sorry, we couldn’t find the page you’re looking for.
-          </Typography>
+          <Typography variant="h4">{t("errorPage.title")}</Typography>
+          <Typography paragraph>{t("errorPage.text")}</Typography>
         </Stack>
         <Stack
           flexDirection="row"
@@ -37,7 +38,7 @@ const ErrorPage = () => {
               color="secondary"
               component={Link}
             >
-              Home
+              {t("errorPage.home")}
             </Button>
           </Typography>
           <Typography component="span" maxWidth="100%">
@@ -48,11 +49,14 @@ const ErrorPage = () => {
               component={Link}
               to={mailsupport}
             >
-              Contact Us
+              {t("errorPage.contactUs")}
             </Button>
           </Typography>
         </Stack>
       </Stack>
+      <Box position="absolute" top={10}>
+        <LanguageSwitch label={false} />
+      </Box>
     </Stack>
   );
 };

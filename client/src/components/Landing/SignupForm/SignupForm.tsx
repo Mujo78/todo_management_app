@@ -2,7 +2,7 @@ import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack, Typography, TextField, FormHelperText } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import getSignupValidationSchema from "../../../validations/user/signupValidation";
+import { signupValidationSchema } from "../../../validations/user/signupValidation";
 import PasswordInput from "../../UI/PasswordInput";
 import { UserAccountDataType } from "../../../features/user/api";
 import useSignup from "../../../features/user/useSignup";
@@ -20,7 +20,7 @@ const SignupForm: React.FC = () => {
 
   const { control, formState, handleSubmit, reset } =
     useForm<UserAccountDataType>({
-      resolver: yupResolver(getSignupValidationSchema()),
+      resolver: yupResolver(signupValidationSchema),
     });
   const { errors, isDirty } = formState;
   const { signup, error, isError, isPending, isSuccess } = useSignup();

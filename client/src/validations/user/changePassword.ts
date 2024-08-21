@@ -4,19 +4,20 @@ const regPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 export const changePasswordValidationSchema = Yup.object({
-  oldPassword: Yup.string().required("Password is required."),
+  oldPassword: Yup.string().required(
+    "changePasswordFormValidation.passwordRequired"
+  ),
   newPassword: Yup.string()
-    .required("New Password is required.")
-    .min(8, "Password must be at least 8 characters long.")
+    .required("changePasswordFormValidation.newPasswordRequired")
+    .min(8, "changePasswordFormValidation.newPasswordLength")
     .matches(regPattern, {
-      message:
-        "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+      message: "changePasswordFormValidation.newPasswordWeakness",
     }),
   confirmNewPassword: Yup.string()
-    .required("Confirm password is required.")
+    .required("changePasswordFormValidation.confirmPasswordRequired")
     .test(
       "password-match",
-      "Confirm Password must match with new password.",
+      "changePasswordFormValidation.passwordsMustMatch",
       function (value) {
         return value === this.parent.newPassword;
       }

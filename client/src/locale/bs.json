@@ -81,6 +81,11 @@
       "text": "Potvrdom vaše e-pošte, potvrdit ćete da ovu želite koristiti kao adresu e-pošte vašeg TaskMaster naloga. Kada to bude gotovo, moći ćete početi sa kreiranjem i postizanjem svojih dnevnih ciljeva.",
       "successMessage": "Uspješno potvrđena email adresa."
     },
+    "homePage": {
+      "addTaskBtn": "Dodaj zadatak",
+      "noDataAvailable": "Nema dostupnih podataka.",
+      "clearBtn": "Izbriši"
+    },
     "appNavbar": {
       "me": "Ja",
       "home": "Početna",
@@ -102,6 +107,69 @@
       "removeSelected": "Ukloni označeno",
       "removeAll": "Ukloni sve"
     },
-    "searchHeader": "Pretraži"
+    "searchHeader": "Pretraži",
+    "tasks": "",
+    "profileLinks": {
+      "overview": "Pregled",
+      "edit": "Uredi",
+      "changePassword": "Promjena lozinke"
+    },
+    "profileOverview": {
+      "title": "Pregled profila",
+      "name": "Ime/Korisničko ime:",
+      "joined": "Pridružio se:",
+      "deleteAccountBtn": "Izbriši račun",
+      "tasks": "Zadaci",
+      "average": "Prosjek",
+      "tasksCount": {
+        "open": "Trenutni",
+        "completed": "Dovršeno",
+        "failed": "Neuspješno",
+        "total": "Ukupno"
+      },
+      "deleteAccountModal": {
+        "title": "Jeste li sigurni da želite izbrisati svoj račun?",
+        "text": "Brisanjem profila, vi ćete:",
+        "firstRow": "izgubiti račun zauvijek,",
+        "secondRow": "obrisati sve zadatke",
+        "closeBtn": "Zatvori",
+        "confirmBtn": "Potvrdi"
+      }
+    },
+    "editProfile": {
+      "title": "Uređivanje profila",
+      "name": "Ime/Korisničko ime",
+      "saveBtn": "Spremi"
+    },
+    "editProfileFormValidation": {
+      "nameRequired": "Ime je obavezno.",
+      "nameLength": "Ime mora sadržavati najmanje 5 znakova.",
+      "emailRequired": "Email je obavezan.",
+      "emailValid": "Molimo unesite validnu email adresu.",
+      "invalidEmailWord": "Nevažeća email adresa, molimo unesite validnu email adresu.",
+      "successMessage": "Profil uspješno ažuriran."
+    },
+    "changePassword": {
+      "title": "Promjena lozinke",
+      "password": "Lozinka",
+      "newPassword": "Nova Lozinka",
+      "confirmNewPassword": "Potvrdi Lozinku",
+      "saveBtn": "Spremi"
+    },
+    "changePasswordFormValidation": {
+      "passwordRequired": "Lozinka je obavezna.",
+      "newPasswordRequired": "Nova lozinka je obavezna.",
+      "newPasswordLength": "Lozinka mora imati najmanje 8 znakova.",
+      "newPasswordWeakness": "Lozinka mora sadržavati bar jedno veliko slovo, jedno malo slovo, jednu cifru, i jedan specijalni znak.",
+      "confirmPasswordRequired": "Potvrda lozinke je obavezna.",
+      "passwordsMustMatch": "Potvrda lozinke mora odgovarati novoj lozinki.",
+      "successMessage": "Lozinka uspješno promijenjena."
+    },
+    "errorPage": {
+      "title": "Stranica nije pronađena",
+      "text": "Žao nam je, nismo mogli pronaći stranicu koju tražite.",
+      "home": "Početna",
+      "contactUs": "Kontaktirajte nas"
+    }
   }
 }
