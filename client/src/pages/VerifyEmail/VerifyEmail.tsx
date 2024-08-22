@@ -2,7 +2,7 @@ import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { useCallback, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import useVerifyEmail from "../../features/user/useVerifyEmail";
-import { formatErrorMessage } from "../../components/utils/user/userUtils";
+import { formatErrorMessage } from "../../utils/user/userUtils";
 import SuccessAlert from "../../components/UI/SuccessAlert";
 import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
 import { useTranslation } from "react-i18next";

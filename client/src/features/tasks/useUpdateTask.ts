@@ -3,10 +3,7 @@ import { UpdateTaskArgs, UpdateTaskFn } from "./api";
 import { AxiosError } from "axios";
 import { TaskType } from "../../app/taskSlice";
 import toast from "react-hot-toast";
-import {
-  formatErrorMessage,
-  isErrorForKey,
-} from "../../components/utils/user/userUtils";
+import { formatErrorMessage, isErrorForKey } from "../../utils/user/userUtils";
 
 function useUpdateTask() {
   const {

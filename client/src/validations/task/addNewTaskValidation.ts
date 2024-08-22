@@ -19,14 +19,14 @@ const statuses = [Status.Open, Status.InProgress, Status.Completed];
 
 export const addTaskValidationSchema = Yup.object({
   title: Yup.string()
-    .required("Title is required.")
-    .min(10, "Title must be at least 10 characters long."),
+    .required("taskFormValidation.titleRequired")
+    .min(10, "taskFormValidation.titleLength"),
   description: Yup.string(),
 
   dueDate: Yup.date()
-    .typeError("Invalid date!")
-    .required("Due date is required.")
-    .test("valid-date", "Date can not be in the past!", (value) => {
+    .typeError("taskFormValidation.invalidDate")
+    .required("taskFormValidation.dueDateRequired")
+    .test("valid-date", "taskFormValidation.dueDatePast", (value) => {
       if (isDate(value) && !isAfter(value, new Date())) {
         return false;
       }
@@ -34,11 +34,11 @@ export const addTaskValidationSchema = Yup.object({
     }),
 
   priority: Yup.number()
-    .typeError("Please choose valid priority for your task.")
-    .required("Priority is required.")
-    .oneOf(priorities, "Priority must be: Low, Medium or High."),
+    .typeError("taskFormValidation.priorityValid")
+    .required("taskFormValidation.priorityRequired")
+    .oneOf(priorities, "taskFormValidation.priorityValidOption"),
   status: Yup.number()
-    .typeError("Please choose valid status for your task.")
-    .required("Status is required.")
-    .oneOf(statuses, "Status must be: Open, In Progress or Completed."),
+    .typeError("taskFormValidation.statusValid")
+    .required("taskFormValidation.statusRequired")
+    .oneOf(statuses, "taskFormValidation.statusValidOption"),
 });

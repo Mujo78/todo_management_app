@@ -20,7 +20,7 @@ const PaginationModified: React.FC<Props> = ({
   };
 
   return (
-    <Stack alignItems="center" mt="auto">
+    <Stack alignItems="center" mt="auto" mb={2}>
       <Pagination
         size="large"
         page={currentPage}

@@ -10,7 +10,7 @@ import {
   formatErrorFieldMessage,
   formatErrorMessage,
   isErrorForKey,
-} from "../../utils/user/userUtils";
+} from "../../../utils/user/userUtils";
 import LoadingButton from "../../UI/LoadingButton";
 import { Link } from "react-router-dom";
 import useRefreshAuth from "../../../features/auth/useRefreshAuth";

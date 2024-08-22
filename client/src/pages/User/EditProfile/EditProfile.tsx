@@ -9,7 +9,7 @@ import useUpdateProfile from "../../../features/user/useUpdateUserProfile";
 import {
   formatErrorFieldMessage,
   isErrorForKey,
-} from "../../../components/utils/user/userUtils";
+} from "../../../utils/user/userUtils";
 import LoadingButton from "../../../components/UI/LoadingButton";
 import { useTranslation } from "react-i18next";
 

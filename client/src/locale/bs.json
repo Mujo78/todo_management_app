@@ -108,7 +108,53 @@
       "removeAll": "Ukloni sve"
     },
     "searchHeader": "Pretraži",
-    "tasks": "",
+    "addTask": {
+      "title": "Dodaj novi zadatak",
+      "successMessage": "Uspješno kreiran novi zadatak."
+    },
+    "editTask": {
+      "title": "Uređivanje zadatka",
+      "successMessage": "Zadatak uspješno ažuriran."
+    },
+    "taskForm": {
+      "title": "Naziv",
+      "dueDateAndTime": "Rok (datum i vrijeme)",
+      "description": "Opis",
+      "priority": {
+        "label": "Prioritet",
+        "low": "Nisko",
+        "medium": "Srednje",
+        "high": "Visoko"
+      },
+      "status": {
+        "label": "Status",
+        "open": "Otvoren",
+        "completed": "Dovršeno",
+        "failed": "Neuspješno"
+      },
+      "goBackBtn": "Nazad",
+      "deleteTaskBtn": "Izbriši zadatak",
+      "saveBtn": "Spremi"
+    },
+    "taskFormValidation": {
+      "titleRequired": "Naziv je obavezan.",
+      "titleLength": "Naziv mora mora sadržavati najmanje 10 znakova.",
+      "invalidDate": "Nevažeći datum!",
+      "dueDateRequired": "Rok je obavezan.",
+      "dueDatePast": "Rok ne može biti u prošlosti!",
+      "priorityValid": "Molimo izaberite važeći prioritet za zadatak.",
+      "priorityRequired": "Prioritet je obavezan.",
+      "priorityValidOption": "Prioritet mora biti: Nizak, Srednji ili Visok.",
+      "statusValid": "Molimo izaberite važeći status za zadatak.",
+      "statusRequired": "Status je obavezan.",
+      "statusValidOption": "Status mora biti: Otvoren, Neuspješan ili Završen."
+    },
+    "deleteTaskModal": {
+      "title": "Jeste li sigurni da želite izbrisati zadatak: ",
+      "closeBtn": "Zatvori",
+      "confirmBtn": "Potvrdi",
+      "successMessage": "Zadatak uspješno obrisan."
+    },
     "profileLinks": {
       "overview": "Pregled",
       "edit": "Uredi",

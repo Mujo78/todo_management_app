@@ -108,7 +108,53 @@
       "removeAll": "Remove all"
     },
     "searchHeader": "Search",
-    "tasks": "",
+    "addTask": {
+      "title": "Add a new Task",
+      "successMessage": "Successfully created a new task."
+    },
+    "editTask": {
+      "title": "Edit task",
+      "successMessage": "Task successfully updated."
+    },
+    "taskForm": {
+      "title": "Title",
+      "dueDateAndTime": "Due Date and Time",
+      "description": "Description",
+      "priority": {
+        "label": "Priority",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "status": {
+        "label": "Status",
+        "open": "Open",
+        "completed": "Completed",
+        "failed": "Failed"
+      },
+      "goBackBtn": "Back",
+      "deleteTaskBtn": "Delete Task",
+      "saveBtn": "Save"
+    },
+    "taskFormValidation": {
+      "titleRequired": "Title is required.",
+      "titleLength": "Title must be at least 10 characters long.",
+      "invalidDate": "Invalid date!",
+      "dueDateRequired": "Due date is required.",
+      "dueDatePast": "Date can not be in the past!",
+      "priorityValid": "Please choose valid priority for your task.",
+      "priorityRequired": "Priority is required.",
+      "priorityValidOption": "Priority must be: Low, Medium or High.",
+      "statusValid": "Please choose valid status for your task.",
+      "statusRequired": "Status is required.",
+      "statusValidOption": "Status must be: Open, Failed or Completed."
+    },
+    "deleteTaskModal": {
+      "title": "Are you sure you want to delete your task: ",
+      "closeBtn": "Close",
+      "confirmBtn": "Confirm",
+      "successMessage": "Task successfully deleted."
+    },
     "profileLinks": {
       "overview": "Overview",
       "edit": "Edit",

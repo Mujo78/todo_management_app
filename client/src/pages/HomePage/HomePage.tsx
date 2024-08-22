@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import TaskSearchInput from "../../components/Task/TaskSearchInput/TaskSearchInput";
 import { useSearchQuery } from "../../hooks/useSearchQuery";
 import PaginationModified from "../../components/UI/Pagination";
-import { formatErrorMessage } from "../../components/utils/user/userUtils";
+import { formatErrorMessage } from "../../utils/user/userUtils";
 import InfoIcon from "@mui/icons-material/Info";
 import TaskCard from "../../components/Task/TaskCard/TaskCard";
 import useTaskStore from "../../app/taskSlice";

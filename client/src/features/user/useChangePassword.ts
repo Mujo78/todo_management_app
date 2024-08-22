@@ -1,10 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { ChangePasswordFn, ChangePasswordType } from "./api";
-import {
-  formatErrorMessage,
-  isErrorForKey,
-} from "../../components/utils/user/userUtils";
+import { formatErrorMessage, isErrorForKey } from "../../utils/user/userUtils";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 

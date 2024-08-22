@@ -1,10 +1,12 @@
+import { format } from "date-fns";
+
 describe("Navigation functionality through the app testing", () => {
   beforeEach(() => {
     cy.login();
     cy.wait(1500);
   });
 
-  const todaysDate = new Date().toDateString();
+  const todaysDate = format(new Date(), "dd/MM/yyyy");
 
   describe("AppSidebar component testing", () => {
     it("Should navigate to the profile page", () => {

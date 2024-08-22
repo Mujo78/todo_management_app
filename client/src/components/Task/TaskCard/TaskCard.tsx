@@ -2,7 +2,7 @@ import { Badge, Card, Checkbox, Stack, Typography } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useTaskStore, { TaskType } from "../../../app/taskSlice";
-import { formatPriority } from "../../utils/task/taskUtils";
+import { formatPriority } from "../../../utils/task/taskUtils";
 import { format } from "date-fns";
 
 interface Props {

@@ -23,21 +23,19 @@ const baseCheckForGetMethodOnFormFields = async () => {
     const pageTitle = screen.getByText("Edit task", { selector: "h5" });
     const titleEl = screen.getByLabelText("Title").querySelector("input")!;
     const descriptionEl = screen.getAllByLabelText("Description")![0];
-
     const priorityEl = screen
       .getByLabelText("Priority")
       .querySelector("input")!;
-    const statusEl = screen
-      .getAllByLabelText("Status")[1]
-      .querySelector("input")!;
+    const statusEl = screen.getByLabelText("Status").querySelector("input")!;
+
     const submitBtn = screen.getByRole("button", { name: "Save" });
 
-    expect(titleEl).toHaveValue("Test Assignment Four");
-    expect(descriptionEl).toHaveValue("Description");
-    expect(priorityEl).toHaveValue("2");
-    expect(statusEl).toHaveValue("0");
-    expect(pageTitle).toBeInTheDocument();
     expect(submitBtn).toBeInTheDocument();
+    expect(statusEl).toHaveValue("0");
+    expect(priorityEl).toHaveValue("2");
+    expect(descriptionEl).toHaveValue("Description");
+    expect(pageTitle).toBeInTheDocument();
+    expect(titleEl).toHaveValue("Test Assignment Four");
   });
 };
 

@@ -31,13 +31,17 @@ const LanguageSwitch: React.FC<Props> = ({ label }) => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: label ? "100%" : "fit-content",
+      }}
+    >
       <Button
         aria-label="LanguageBtn"
         sx={{
           display: "flex",
           gap: 0.5,
-          width: "fit-content",
+          width: label ? "100%" : "fit-content",
         }}
         onClick={handleClick}
       >

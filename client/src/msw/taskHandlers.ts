@@ -332,9 +332,7 @@ export const baseChangeTaskFormFn = async (
   const descriptionEl = screen.getAllByLabelText("Description")![0];
 
   const priorityEl = screen.getByLabelText("Priority").querySelector("input")!;
-  const statusEl = screen
-    .getAllByLabelText("Status")[1]
-    .querySelector("input")!;
+  const statusEl = screen.getByLabelText("Status").querySelector("input")!;
   const submitBtn = screen.getByRole("button", { name: "Save" });
 
   expect(titleEl).toBeInTheDocument();

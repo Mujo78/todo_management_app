@@ -25,6 +25,7 @@ dist-ssr
 
 .env
 
+cypress/downloads/*
 cypress/screenshots
 cypress/videos
 cypress/logs

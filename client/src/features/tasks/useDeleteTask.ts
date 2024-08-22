@@ -2,9 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { DeleteTaskFn } from "./api";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
-import { formatErrorMessage } from "../../components/utils/user/userUtils";
+import { formatErrorMessage } from "../../utils/user/userUtils";
+import { useTranslation } from "react-i18next";
 
 function useDeleteTask() {
+  const { t } = useTranslation();
   const { mutate: deleteTask, isPending } = useMutation<
     string,
     Error | AxiosError,
@@ -13,7 +15,7 @@ function useDeleteTask() {
     mutationKey: ["deleteTask"],
     mutationFn: DeleteTaskFn,
     onSuccess: () => {
-      toast.success("Tasks successfully deleted.");
+      toast.success(t("deleteTaskModal.successMessage"));
     },
     onError: (error) => {
       toast.error(formatErrorMessage(error));

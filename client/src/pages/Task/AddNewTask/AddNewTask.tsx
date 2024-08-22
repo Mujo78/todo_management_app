@@ -5,8 +5,10 @@ import { CreateUpdateTaskType } from "../../../app/taskSlice";
 import useCreateTask from "../../../features/tasks/useCreateNewTask";
 import SuccessAlert from "../../../components/UI/SuccessAlert";
 import TaskForm from "../../../components/Task/TaskForm";
+import { useTranslation } from "react-i18next";
 
 const AddNewTask = () => {
+  const { t } = useTranslation();
   const { control, formState, handleSubmit, reset } =
     useForm<CreateUpdateTaskType>({
       resolver: yupResolver(addTaskValidationSchema),
@@ -30,10 +32,10 @@ const AddNewTask = () => {
       isError={isError}
       isPending={isPending}
       onSubmit={onSubmit}
-      title="Add a new Task"
+      title={t("addTask.title")}
     >
       <SuccessAlert isSuccess={isSuccess}>
-        Successfully created a new task.
+        {t("addTask.successMessage")}
       </SuccessAlert>
     </TaskForm>
   );

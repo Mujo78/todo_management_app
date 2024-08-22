@@ -16,7 +16,7 @@ import {
   formatErrorFieldMessage,
   formatErrorMessage,
   isErrorForKey,
-} from "../../utils/user/userUtils";
+} from "../../../utils/user/userUtils";
 import SuccessAlert from "../../UI/SuccessAlert";
 import LoadingButton from "../../UI/LoadingButton";
 import useForgotPassword from "../../../features/user/useForgotPassword";

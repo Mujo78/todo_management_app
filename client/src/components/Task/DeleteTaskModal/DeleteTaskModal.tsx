@@ -9,6 +9,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "../../UI/LoadingButton";
 import useDeleteTask from "../../../features/tasks/useDeleteTask";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   show: boolean;
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const DeleteTaskModal: React.FC<Props> = ({ setShow, show, title, taskId }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const { deleteTask, isPending } = useDeleteTask();
@@ -39,7 +41,7 @@ const DeleteTaskModal: React.FC<Props> = ({ setShow, show, title, taskId }) => {
       sx={{ p: 0 }}
     >
       <DialogTitle sx={{ p: { xs: 1, sm: 3 } }} id="alert-dialog-title">
-        Are you sure you want to delete your task: {title}?
+        {t("deleteTaskModal.title")} {title}?
       </DialogTitle>
       <DialogActions>
         <Stack
@@ -54,7 +56,7 @@ const DeleteTaskModal: React.FC<Props> = ({ setShow, show, title, taskId }) => {
             aria-label="CloseDeleteTaskModalBtn"
             sx={{ flexGrow: { xs: 1, sm: 0 } }}
           >
-            Close
+            {t("deleteTaskModal.closeBtn")}
           </Button>
 
           <LoadingButton
@@ -64,7 +66,7 @@ const DeleteTaskModal: React.FC<Props> = ({ setShow, show, title, taskId }) => {
             isPending={isPending}
             error
           >
-            Confirm
+            {t("deleteTaskModal.confirmBtn")}
           </LoadingButton>
         </Stack>
       </DialogActions>

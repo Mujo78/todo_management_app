@@ -11,9 +11,11 @@ import SuccessAlert from "../../../components/UI/SuccessAlert";
 import { Alert, CircularProgress, Stack } from "@mui/material";
 import DeleteTaskModal from "../../../components/Task/DeleteTaskModal/DeleteTaskModal";
 import { Info } from "@mui/icons-material";
-import { formatErrorMessage } from "../../../components/utils/user/userUtils";
+import { formatErrorMessage } from "../../../utils/user/userUtils";
+import { useTranslation } from "react-i18next";
 
 const EditTask = () => {
+  const { t } = useTranslation();
   const [show, setShow] = useState<boolean>(false);
   const { taskId } = useParams();
 
@@ -58,7 +60,7 @@ const EditTask = () => {
       ) : data ? (
         <>
           <TaskForm
-            title="Edit task"
+            title={t("editTask.title")}
             control={control}
             error={errorUpdate}
             errors={errors}
@@ -71,7 +73,7 @@ const EditTask = () => {
             isDateDisabled={data?.status === 1}
           >
             <SuccessAlert isSuccess={isUpdatingSuccess}>
-              Task successfully updated.
+              {t("editTask.successMessage")}
             </SuccessAlert>
           </TaskForm>
           {show && taskId && (

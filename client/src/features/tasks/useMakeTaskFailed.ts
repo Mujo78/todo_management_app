@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { MakeTaskFailedFn } from "./api";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
-import { formatErrorMessage } from "../../components/utils/user/userUtils";
+import { formatErrorMessage } from "../../utils/user/userUtils";
 import useTaskStore, { TaskType } from "../../app/taskSlice";
 
 function useMakeTaskFailed() {

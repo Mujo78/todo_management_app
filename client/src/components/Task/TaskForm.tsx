@@ -10,6 +10,7 @@ import {
   Select,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -26,11 +27,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   formatErrorFieldMessage,
   isErrorForKey,
-} from "../utils/user/userUtils";
+} from "../../utils/user/userUtils";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 
 interface Props<TFieldValues extends FieldValues> {
   children: React.ReactNode;
@@ -61,6 +63,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
   setShow,
   isDateDisabled,
 }: Props<TFieldValues>) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleNavigateBack = () => {
@@ -77,13 +80,15 @@ const TaskForm = <TFieldValues extends FieldValues>({
   return (
     <Stack gap={4} mx="auto" pt={3} flexGrow={1}>
       <Box display="flex">
-        <Button
-          aria-label="BackButton"
-          color="secondary"
-          onClick={handleNavigateBack}
-        >
-          <ArrowBack />
-        </Button>
+        <Tooltip title={t("taskForm.goBackBtn")}>
+          <Button
+            aria-label="BackButton"
+            color="secondary"
+            onClick={handleNavigateBack}
+          >
+            <ArrowBack />
+          </Button>
+        </Tooltip>
         <Typography variant="h5" fontWeight={400} mx="auto" textAlign="center">
           {title}
         </Typography>
@@ -110,17 +115,17 @@ const TaskForm = <TFieldValues extends FieldValues>({
                 {...field}
                 variant="outlined"
                 disabled={isPending || isDisabled}
-                label="Title"
+                label={t("taskForm.title")}
                 aria-label="Title"
+                required
                 sx={{
                   flexGrow: 1,
                 }}
                 autoComplete="true"
-                required
                 error={!!errors.title || isErrorForKey(error, "Title")}
                 helperText={
-                  errors.title
-                    ? errors.title.message
+                  errors.title?.message
+                    ? t(errors.title.message as string)
                     : isError &&
                       !errors.title &&
                       formatErrorFieldMessage(error, "Title")
@@ -157,8 +162,11 @@ const TaskForm = <TFieldValues extends FieldValues>({
                       textField: {
                         error:
                           !!errors.dueDate || isErrorForKey(error, "DueDate"),
-                        helperText: errors.dueDate
-                          ? (errors.dueDate.message as React.ReactNode)
+                        helperText: errors.dueDate?.message
+                          ? t(
+                              errors.dueDate
+                                .message as React.ReactNode as string
+                            )
                           : isErrorForKey(error, "DueDate") &&
                             !errors.dueDate &&
                             (formatErrorFieldMessage(
@@ -168,7 +176,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
                       },
                     }}
                     {...field}
-                    label="Due Date and Time"
+                    label={t("taskForm.dueDateAndTime")}
                   />
                 </DemoContainer>
               </LocalizationProvider>
@@ -187,7 +195,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
               {...field}
               variant="outlined"
               disabled={isPending || isDisabled}
-              label="Description"
+              label={t("taskForm.description")}
               autoComplete="true"
               minRows={4}
               maxRows={6}
@@ -198,8 +206,8 @@ const TaskForm = <TFieldValues extends FieldValues>({
                 component: "span",
               }}
               helperText={
-                errors.description &&
-                (errors.description.message as React.ReactNode)
+                errors.description?.message &&
+                t(errors.description.message as React.ReactNode as string)
               }
             />
           )}
@@ -217,7 +225,9 @@ const TaskForm = <TFieldValues extends FieldValues>({
                 fullWidth
                 required
               >
-                <InputLabel id="select-priority-label">Priority</InputLabel>
+                <InputLabel id="select-priority-label">
+                  {t("taskForm.priority.label")}
+                </InputLabel>
                 <Select
                   labelId="select-priority-label"
                   aria-label="Priority"
@@ -226,13 +236,13 @@ const TaskForm = <TFieldValues extends FieldValues>({
                   {...field}
                   label="Priority"
                 >
-                  <MenuItem value={0}>Low</MenuItem>
-                  <MenuItem value={1}>Medium</MenuItem>
-                  <MenuItem value={2}>High</MenuItem>
+                  <MenuItem value={0}>{t("taskForm.priority.low")}</MenuItem>
+                  <MenuItem value={1}>{t("taskForm.priority.medium")}</MenuItem>
+                  <MenuItem value={2}>{t("taskForm.priority.high")}</MenuItem>
                 </Select>
                 <FormHelperText>
-                  {errors.priority
-                    ? (errors.priority.message as React.ReactNode)
+                  {errors.priority?.message
+                    ? t(errors.priority.message as React.ReactNode as string)
                     : isErrorForKey(error, "Priority") &&
                       !errors.priority &&
                       (formatErrorFieldMessage(
@@ -252,9 +262,12 @@ const TaskForm = <TFieldValues extends FieldValues>({
               <FormControl
                 variant="outlined"
                 fullWidth
+                required
                 error={!!errors.status || isErrorForKey(error, "Status")}
               >
-                <InputLabel id="select-status-label">Status</InputLabel>
+                <InputLabel id="select-status-label">
+                  {t("taskForm.status.label")}
+                </InputLabel>
                 <Select
                   labelId="select-status-label"
                   id="select-status"
@@ -264,13 +277,15 @@ const TaskForm = <TFieldValues extends FieldValues>({
                   {...field}
                   label="Status"
                 >
-                  <MenuItem value={0}>Open</MenuItem>
-                  <MenuItem value={1}>Completed</MenuItem>
-                  <MenuItem value={2}>Failed</MenuItem>
+                  <MenuItem value={0}>{t("taskForm.status.open")}</MenuItem>
+                  <MenuItem value={1}>
+                    {t("taskForm.status.completed")}
+                  </MenuItem>
+                  <MenuItem value={2}>{t("taskForm.status.failed")}</MenuItem>
                 </Select>
                 <FormHelperText>
-                  {errors.status
-                    ? (errors.status.message as React.ReactNode)
+                  {errors.status?.message
+                    ? t(errors.status.message as React.ReactNode as string)
                     : isErrorForKey(error, "Status") &&
                       !errors.status &&
                       (formatErrorFieldMessage(
@@ -301,7 +316,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
               onClick={handleDelete}
               variant="text"
             >
-              Delete Task
+              {t("taskForm.deleteTaskBtn")}
             </Button>
           )}
 
@@ -317,7 +332,7 @@ const TaskForm = <TFieldValues extends FieldValues>({
               {isPending ? (
                 <CircularProgress size={30} sx={{ color: "white" }} />
               ) : (
-                "Save"
+                t("taskForm.saveBtn")
               )}
             </Button>
           )}
