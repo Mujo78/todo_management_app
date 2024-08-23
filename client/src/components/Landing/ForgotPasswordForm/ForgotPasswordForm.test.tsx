@@ -55,7 +55,7 @@ describe("Forgot Password Form component testing", () => {
   it("Should be success", async () => {
     await forgotPasswordBaseFn(
       "correct@gmail.com",
-      "Please check your inbox for reset password link."
+      "Check your email inbox to proceed with restarting your password."
     );
   });
 });

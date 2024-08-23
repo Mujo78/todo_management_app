@@ -23,11 +23,11 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Registration([FromBody] RegistrationDTO registrationDTO)
         {
-            if (registrationDTO == null) return BadRequest("Please provide valid data for registration.");
+            if (registrationDTO == null) return BadRequest("registrationService.registrationValidData");
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             await userService.Register(registrationDTO);
-            return Ok("Please check your inbox, for verification email.");
+            return Ok("registrationService.successMessage");
         }
 
         [HttpPost("forgot-password")]
@@ -37,11 +37,11 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
         {
-            if (forgotPasswordDTO == null) return BadRequest("Please provide valid email address.");
+            if (forgotPasswordDTO == null) return BadRequest("forgotPasswordService.forgotPasswordValidData");
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             await userService.ForgotPassword(forgotPasswordDTO.Email);
-            return Ok("Check your email inbox to proceede with restarting your password.");
+            return Ok("forgotPasswordService.successMessage");
         }
 
         [HttpPatch("reset-password/{token}")]
@@ -51,11 +51,11 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> ResetPassword([FromRoute] string token, [FromBody] ResetPasswordDTO resetPasswordDTO)
         {
-            if (resetPasswordDTO == null) return BadRequest("Please provide valid data to change password.");
+            if (resetPasswordDTO == null) return BadRequest("resetPasswordService.resetPasswordValidData");
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             await userService.ResetPassword(token, resetPasswordDTO);
-            return Ok("Password successfully changed.");
+            return Ok("resetPasswordService.successMessage");
         }
 
         [Authorize]
@@ -148,7 +148,7 @@ namespace server.Controllers.v1
         public async Task<ActionResult> VerifyEmail([FromRoute] string token)
         {
             await userService.VerifyEmail(token);
-            return Ok("Successfully verified email address.");
+            return Ok("verifyEmailService");
         }
 
         [AllowAnonymous]

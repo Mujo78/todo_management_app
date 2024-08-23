@@ -77,13 +77,13 @@ const LoginForm: React.FC = () => {
               error={
                 !!errors.email ||
                 (isErrorForKey(error, "Email") &&
-                  !isErrorForKey(error, "Incorrect"))
+                  !isErrorForKey(error, t("loginService.incorrect")))
               }
               helperText={
                 errors.email
                   ? errors.email.message && t(errors.email.message)
                   : isErrorForKey(error, "Email") &&
-                    !isErrorForKey(error, "Incorrect") &&
+                    !isErrorForKey(error, t("loginService.incorrect")) &&
                     formatErrorFieldMessage(error, "Email")
               }
             />

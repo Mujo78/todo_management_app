@@ -73,11 +73,11 @@ namespace server.Services
 
         public async Task Register(RegistrationDTO registrationDTO)
         {
-            if (!registrationDTO.Password.Equals(registrationDTO.ConfirmPassword)) throw new BadRequestException("Password and Confirm password must match.");
+            if (!registrationDTO.Password.Equals(registrationDTO.ConfirmPassword)) throw new BadRequestException("registrationService.passwordsMustMatch");
 
             using var transaction = db.Database.BeginTransaction();
             bool emailTaken = repository.EmailAlreadyUsed(registrationDTO.Email);
-            if (emailTaken) throw new ConflictException("Email is already used!");
+            if (emailTaken) throw new ConflictException("registrationService.emailAlreadyUsed");
 
             User user = new()
             {
@@ -130,10 +130,10 @@ namespace server.Services
 
         public async Task ForgotPassword(string email)
         {
-            var user = await repository.GetUser(email) ?? throw new NotFoundException("User not found.");
+            var user = await repository.GetUser(email) ?? throw new NotFoundException("forgotPasswordService.userNotFound");
             bool tokenFounded = repository.ResetPasswordTokenIsValidAndExists(user);
 
-            if (tokenFounded) throw new ConflictException("Reset password link already created. Please check your inbox.");
+            if (tokenFounded) throw new ConflictException("forgotPasswordService.resetLinkAlreadyCreated");
 
             UserToken token = new()
             {
@@ -197,12 +197,12 @@ namespace server.Services
         public async Task ResetPassword(string token, ResetPasswordDTO resetPasswordDTO)
         {
             if (!resetPasswordDTO.NewPassword.Equals(resetPasswordDTO.ConfirmNewPassword))
-                throw new BadRequestException("New password and confirm password must match.");
+                throw new BadRequestException("resetPasswordService.passwordsMustMatch");
 
             var (user, userToken) = await ValidateUserAndUserToken(token);
 
             if (BCrypt.Net.BCrypt.Verify(resetPasswordDTO.NewPassword, user.Password))
-                throw new BadRequestException("New password cannot be the same as the old password.");
+                throw new BadRequestException("resetPasswordService.newPasswordSameAsOld");
 
             using var transaction = db.Database.BeginTransaction();
 
@@ -221,12 +221,12 @@ namespace server.Services
 
         public async Task<(User user, UserToken userToken)> ValidateUserAndUserToken(string token)
         {
-            var userToken = await repository.GetUserToken(token) ?? throw new NotFoundException("Invalid token provided. Token not found.");
+            var userToken = await repository.GetUserToken(token) ?? throw new NotFoundException("validateUserTokenService.invalidTokenNotFound");
 
             bool isValid = repository.IsUserTokenValid(userToken);
-            if (!isValid) throw new BadRequestException("Invalid token provided.");
+            if (!isValid) throw new BadRequestException("validateUserTokenService.invalidToken");
 
-            var user = await repository.GetUser(userToken.UserId) ?? throw new NotFoundException("User not found.");
+            var user = await repository.GetUser(userToken.UserId) ?? throw new NotFoundException("validateUserTokenService.userNotFound");
 
             return (user, userToken);
         }

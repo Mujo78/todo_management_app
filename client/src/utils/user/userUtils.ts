@@ -1,4 +1,5 @@
 import { AxiosError, isAxiosError } from "axios";
+import { t } from "i18next";
 
 export function formatErrorFieldMessage(
   error: Error | AxiosError<unknown, unknown> | null,
@@ -6,11 +7,13 @@ export function formatErrorFieldMessage(
 ) {
   if (isAxiosError(error)) {
     if (error.response?.data.errors && error.response?.data.errors[key]) {
-      return error.response?.data.errors[key][0];
+      return t(error.response?.data.errors[key][0]);
     } else if (
-      error?.response?.data?.detail?.toLowerCase().includes(key.toLowerCase())
+      t(error?.response?.data?.detail)
+        ?.toLowerCase()
+        .includes(key.toLowerCase())
     ) {
-      return error?.response?.data.detail;
+      return t(error?.response?.data.detail);
     }
     return "";
   }
@@ -24,7 +27,9 @@ export function isErrorForKey(
     if (error.response?.data.errors && error.response?.data.errors[key]) {
       return true;
     } else if (
-      error?.response?.data?.detail?.toLowerCase().includes(key.toLowerCase())
+      t(error?.response?.data?.detail)
+        ?.toLowerCase()
+        .includes(key.toLowerCase())
     ) {
       return true;
     }
@@ -40,10 +45,10 @@ export function formatErrorMessage(
     error?.response &&
     error?.response?.status !== 409
   ) {
-    return error.response?.data.detail;
+    return t(error.response?.data.detail);
   } else if (isAxiosError(error) && error.response?.status === 409) {
     return undefined;
   } else {
-    return error?.message ?? undefined;
+    return error?.message ? t(error.message) : undefined;
   }
 }

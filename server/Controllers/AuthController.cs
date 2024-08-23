@@ -22,7 +22,7 @@ namespace server.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
         {
-            if (loginDTO == null) return BadRequest("Please provide valid data to login.");
+            if (loginDTO == null) return BadRequest("loginService.loginValidData");
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var tokenToReturn = await authService.Login(loginDTO);

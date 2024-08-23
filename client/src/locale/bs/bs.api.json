@@ -1,0 +1,32 @@
+{
+  "loginService": {
+    "loginValidData": "Molimo unesite važeće podatke za prijavu.",
+    "accountDoesntExists": "Račun ne postoji.",
+    "incorrectEmailOrPassword": "Netočna email adresa ili lozinka.",
+    "incorrect": "netočna"
+  },
+  "registrationService": {
+    "registrationValidData": "Molimo unesite važeće podatke za registraciju.",
+    "successMessage": "Molimo provjerite svoj inbox za potvrdu e-pošte.",
+    "passwordsMustMatch": "Lozinka i Potvrda lozinke moraju biti isti.",
+    "emailAlreadyUsed": "Email se već koristi!"
+  },
+  "forgotPasswordService": {
+    "forgotPasswordValidData": "Molimo unesite važeću email adresu.",
+    "successMessage": "Provjerite svoj inbox za potvrdu e-pošte.",
+    "userNotFound": "Korisnik nije pronađen.",
+    "resetLinkAlreadyCreated": "Link za poništavanje lozinke je već kreiran. Molimo provjerite inbox."
+  },
+  "resetPasswordService": {
+    "resetPasswordValidData": "Molimo unesite važeće podatke za promjenu lozinke.",
+    "successMessage": "Lozinka uspješno promijenjena.",
+    "passwordsMustMatch": "Nova lozinka i potvrda lozinke moraju biti iste.",
+    "newPasswordSameAsOld": "Nova lozinka ne može biti ista kao stara lozinka."
+  },
+  "validateUserTokenService": {
+    "invalidTokenNotFound": "Dostavljen nevažeći token. Token nije pronađen.",
+    "invalidToken": "Dostavljen nevažeći token.",
+    "userNotFound": "Korisnik nije pronađen."
+  },
+  "verifyEmailService": "Uspješno potvrđena email adresa."
+}

@@ -1,0 +1,32 @@
+{
+  "loginService": {
+    "loginValidData": "Please provide valid data to login.",
+    "accountDoesntExists": "Account doesn't exists.",
+    "incorrectEmailOrPassword": "Incorrect email or password.",
+    "incorrect": "incorrect"
+  },
+  "registrationService": {
+    "registrationValidData": "Please provide valid data for registration.",
+    "successMessage": "Please check your inbox, for verification email.",
+    "passwordsMustMatch": "Password and Confirm password must match.",
+    "emailAlreadyUsed": "Email is already used!"
+  },
+  "forgotPasswordService": {
+    "forgotPasswordValidData": "Please provide valid email address.",
+    "successMessage": "Check your email inbox to proceede with restarting your password.",
+    "userNotFound": "User not found.",
+    "resetLinkAlreadyCreated": "Reset password link already created. Please check your inbox."
+  },
+  "resetPasswordService": {
+    "resetPasswordValidData": "Please provide valid data to change password.",
+    "successMessage": "Password successfully changed.",
+    "passwordsMustMatch": "New password and confirm password must match.",
+    "newPasswordSameAsOld": "New password cannot be the same as the old password."
+  },
+  "validateUserTokenService": {
+    "invalidTokenNotFound": "Invalid token provided. Token not found.",
+    "invalidToken": "Invalid token provided.",
+    "userNotFound": "User not found."
+  },
+  "verifyEmailService": "Successfully verified email address."
+}

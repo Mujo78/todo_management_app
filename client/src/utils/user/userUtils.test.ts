@@ -5,6 +5,7 @@ import {
   formatErrorMessage,
   isErrorForKey,
 } from "./userUtils";
+import "../../i18n";
 
 vi.mock("axios", () => ({
   isAxiosError: vi.fn(),
@@ -28,7 +29,7 @@ const returnFieldErrorObj = (value: string) => {
     response: {
       data: {
         errors: {
-          Email: [`${value} is required.`],
+          Email: [value],
         },
       },
     },
@@ -53,7 +54,7 @@ const returnErrorMessageObj = (value: string) => {
 
 describe("Testing formatErrorFieldMessage Fn", () => {
   it("Should return error for an email field", () => {
-    const errorToUse = returnFieldErrorObj("Email");
+    const errorToUse = returnFieldErrorObj("Email is required.");
 
     vi.mocked(isAxiosError).mockReturnValue(true);
 
@@ -61,6 +62,7 @@ describe("Testing formatErrorFieldMessage Fn", () => {
       errorToUse as AxiosError,
       "Email"
     );
+
     expect(errorMessage).toBe("Email is required.");
   });
 

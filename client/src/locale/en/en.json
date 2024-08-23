@@ -1,0 +1,224 @@
+{
+  "languages": {
+    "language": "Language",
+    "englishLng": "English",
+    "bosnianLng": "Bosnian"
+  },
+  "landingPage": {
+    "loginTab": "Login",
+    "signupTab": "Signup"
+  },
+  "landingPageInfo": {
+    "title": "Welcome to TaskMaster",
+    "text": "Boost your productivity with TaskMaster. Create, organize, and track your tasks effortlessly.",
+    "subtitle": "Why TaskMaster?",
+    "subtitleListFirst": "<0> - Easy Task Management: </0> Add, edit, and delete tasks with ease.",
+    "subtitleListSecond": "<0> - Reminders: </0> Never miss a deadline with automatic reminders.",
+    "subtitleListThird": "<0> - Prioritize: </0> Focus on what matters most.",
+    "finalWord": "Join thousands of users taking control of their tasks today!"
+  },
+  "loginForm": {
+    "loginTitle": "Log in to Your Account",
+    "loginPassword": "Password",
+    "loginBtn": "Log in",
+    "forgotPassword": "Forgot Password?"
+  },
+  "loginFormValidation": {
+    "emailRequired": "Email is required.",
+    "emailValid": "Please provide a valid email address.",
+    "passwordRequired": "Password is required."
+  },
+  "signupForm": {
+    "signupTitle": "Sign up today!",
+    "signupName": "Name",
+    "signupPassword": "Password",
+    "signupConfirmPassword": "Confirm Password",
+    "signupBtn": "Register",
+    "successMessage": "Please check your inbox for verification email."
+  },
+  "signupFormValidation": {
+    "nameRequired": "Name is required.",
+    "nameLength": "Name must be at least 5 characters long.",
+    "emailRequired": "Email is required.",
+    "emailValid": "Please provide a valid email address.",
+    "invalidEmailWord": "Invalid email address, please provide valid email to create an account.",
+    "passwordRequired": "Password is required.",
+    "passwordLength": "Password must be at least 8 characters long.",
+    "passwordWeakness": "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+    "confirmPasswordRequired": "Confirm password is required.",
+    "passwordsMustMatch": "Passwords must match."
+  },
+  "forgotPasswordForm": {
+    "forgotPasswordTitle": "Forgot Your Password?",
+    "forgotPasswordBtn": "Submit",
+    "forgotPasswordBackBtn": "Back to Log In page",
+    "successMessage": "Check your email inbox to proceed with restarting your password."
+  },
+  "forgotPasswordFormValidation": {
+    "emailRequired": "Email is required.",
+    "emailValid": "Please provide a valid email address."
+  },
+  "forgotPasswordInfo": {
+    "infoSubtitle": "Forgot Password Instructions",
+    "instructions": "Enter the email address associated with your account and we'll send you a link to reset your password."
+  },
+  "resetPassword": {
+    "subtitle": "Reset Password",
+    "firstSentence": "Create a new password that you don't use on any other site,",
+    "secondSentence": "Strong password contains letters, numbers and special characters"
+  },
+  "resetPasswordFormValidation": {
+    "passwordRequired": "Password is required.",
+    "passwordLength": "Password must be at least 8 characters long.",
+    "passwordWeakness": "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+    "confirmNewPasswordRequired": "Confirm password is required.",
+    "passwordsMustMatch": "Passwords must match."
+  },
+  "resetPasswordForm": {
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm Password",
+    "submitBtn": "Submit",
+    "successMessage": "Password successfully changed."
+  },
+  "verifyEmail": {
+    "subtitle": "Verify your email address",
+    "text": "By verifying your email, you will confirm that you want to use this as your TaskMaster account email address. Once it's done you will be able to start with creating and achieving your daily goals.",
+    "successMessage": "Successfully verified email address."
+  },
+  "homePage": {
+    "addTaskBtn": "Add task",
+    "noDataAvailable": "No data available.",
+    "clearBtn": "Clear"
+  },
+  "appNavbar": {
+    "me": "Me",
+    "home": "Home",
+    "profile": "Profile",
+    "logOut": "Log out"
+  },
+  "appSidebar": {
+    "tasks": "Tasks",
+    "profile": "Profile",
+    "addANewTask": "Add a new task"
+  },
+  "tabNavigation": {
+    "tasks": "Zadaci",
+    "add": "Dodaj",
+    "profile": "Profil"
+  },
+  "headerOptions": {
+    "makeFinished": "Make finished",
+    "removeSelected": "Remove selected",
+    "removeAll": "Remove all"
+  },
+  "searchHeader": "Search",
+  "addTask": {
+    "title": "Add a new Task",
+    "successMessage": "Successfully created a new task."
+  },
+  "editTask": {
+    "title": "Edit task",
+    "successMessage": "Task successfully updated."
+  },
+  "taskForm": {
+    "title": "Title",
+    "dueDateAndTime": "Due Date and Time",
+    "description": "Description",
+    "priority": {
+      "label": "Priority",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "status": {
+      "label": "Status",
+      "open": "Open",
+      "completed": "Completed",
+      "failed": "Failed"
+    },
+    "goBackBtn": "Back",
+    "deleteTaskBtn": "Delete Task",
+    "saveBtn": "Save"
+  },
+  "taskFormValidation": {
+    "titleRequired": "Title is required.",
+    "titleLength": "Title must be at least 10 characters long.",
+    "invalidDate": "Invalid date!",
+    "dueDateRequired": "Due date is required.",
+    "dueDatePast": "Date can not be in the past!",
+    "priorityValid": "Please choose valid priority for your task.",
+    "priorityRequired": "Priority is required.",
+    "priorityValidOption": "Priority must be: Low, Medium or High.",
+    "statusValid": "Please choose valid status for your task.",
+    "statusRequired": "Status is required.",
+    "statusValidOption": "Status must be: Open, Failed or Completed."
+  },
+  "deleteTaskModal": {
+    "title": "Are you sure you want to delete your task: ",
+    "closeBtn": "Close",
+    "confirmBtn": "Confirm",
+    "successMessage": "Task successfully deleted."
+  },
+  "profileLinks": {
+    "overview": "Overview",
+    "edit": "Edit",
+    "changePassword": "Change Password"
+  },
+  "profileOverview": {
+    "title": "Overview",
+    "name": "Name/Username:",
+    "joined": "Joined:",
+    "deleteAccountBtn": "Delete Account",
+    "tasks": "Tasks",
+    "average": "Average",
+    "tasksCount": {
+      "open": "Open",
+      "completed": "Completed",
+      "failed": "Failed",
+      "total": "Total"
+    },
+    "deleteAccountModal": {
+      "title": "Are you sure you want to delete your profile?",
+      "text": "By deleting your profile, you will:",
+      "firstRow": "lose your profile forever,",
+      "secondRow": "your tasks will be deleted",
+      "closeBtn": "Close",
+      "confirmBtn": "Confirm"
+    }
+  },
+  "editProfile": {
+    "title": "Edit Profile",
+    "name": "Name/Username",
+    "saveBtn": "Save changes"
+  },
+  "editProfileFormValidation": {
+    "nameRequired": "Name is required.",
+    "nameLength": "Name must be at least 5 characters long.",
+    "emailRequired": "Email is required.",
+    "emailValid": "Please provide a valid email address.",
+    "invalidEmailWord": "Invalid email address, please provide valid email to create an account.",
+    "successMessage": "Profile successfully updated."
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "password": "Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "saveBtn": "Save changes"
+  },
+  "changePasswordFormValidation": {
+    "passwordRequired": "Password is required.",
+    "newPasswordRequired": "New Password is required.",
+    "newPasswordLength": "Password must be at least 8 characters long.",
+    "newPasswordWeakness": "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+    "confirmPasswordRequired": "Confirm password is required.",
+    "passwordsMustMatch": "Confirm Password must match with new password.",
+    "successMessage": "Password successfully changed."
+  },
+  "errorPage": {
+    "title": "Page not found",
+    "text": "Sorry, we couldn't find the page you're looking for.",
+    "home": "Home",
+    "contactUs": "Contact Us"
+  }
+}

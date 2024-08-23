@@ -127,7 +127,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(opt => {
+    app.UseSwaggerUI(opt =>
+    {
         opt.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDo_API_V1");
     });
 }

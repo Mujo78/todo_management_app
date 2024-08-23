@@ -29,10 +29,10 @@ namespace server.Services
 
         public async Task<UserTokenDTO> Login(LoginDTO loginDTO)
         {
-            var user = await repository.GetUser(loginDTO.Email) ?? throw new NotFoundException("Account doesn't exists.");
+            var user = await repository.GetUser(loginDTO.Email) ?? throw new NotFoundException("loginService.accountDoesntExists");
 
             bool isValid = BCrypt.Net.BCrypt.Verify(loginDTO.Password, user.Password);
-            if (!isValid || !user.EmailConfirmed) throw new BadRequestException("Incorrect email or password.");
+            if (!isValid || !user.EmailConfirmed) throw new BadRequestException("loginService.incorrectEmailOrPassword");
 
             string jwtTokenId = $"JTI{Guid.NewGuid()}";
             string refreshToken = await CreateOrFindRefreshToken(user.Id, jwtTokenId);
@@ -54,7 +54,7 @@ namespace server.Services
                 User = userDTO
             };
 
-            if (string.IsNullOrEmpty(token.RefreshToken)) throw new BadRequestException("Incorrect email or password.");
+            if (string.IsNullOrEmpty(token.RefreshToken)) throw new BadRequestException("loginService.incorrectEmailOrPassword");
 
             return token;
         }

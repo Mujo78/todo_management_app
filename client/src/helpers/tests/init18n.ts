@@ -1,12 +1,18 @@
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
-import engJSON from "../../locale/en.json";
-import bsJSON from "../../locale/bs.json";
+import engJSON from "../../locale/en/en.json";
+import enAPIJSON from "../../locale/en/en.api.json";
+import bsJSON from "../../locale/bs/bs.json";
+import bsAPIJSON from "../../locale/bs/bs.api.json";
 
 i18next.use(initReactI18next).init({
   resources: {
-    eng: { ...engJSON },
-    bs: { ...bsJSON },
+    eng: {
+      translation: { ...engJSON, ...enAPIJSON },
+    },
+    bs: {
+      translation: { ...bsJSON, ...bsAPIJSON },
+    },
   },
   interpolation: {
     escapeValue: false,

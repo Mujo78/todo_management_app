@@ -74,15 +74,15 @@ const ForgotPasswordForm: React.FC = () => {
               fullWidth
               error={!!errors.email || isErrorForKey(error, "Email")}
               helperText={
-                errors.email
-                  ? errors.email.message
+                errors.email?.message
+                  ? t(errors.email.message)
                   : !errors.email &&
                     (isErrorForKey(error, "Email") || isError) && (
                       <FormHelperText component="span" error>
                         {isErrorForKey(error, "Email")
                           ? formatErrorFieldMessage(error, "Email")
-                          : isErrorForKey(error, "reset password")
-                          ? formatErrorFieldMessage(error, "reset password")
+                          : isErrorForKey(error, "Link")
+                          ? formatErrorFieldMessage(error, "Link")
                           : formatErrorMessage(error)}
                       </FormHelperText>
                     )
@@ -92,7 +92,7 @@ const ForgotPasswordForm: React.FC = () => {
         />
 
         <SuccessAlert isSuccess={isSuccess}>
-          Please check your inbox for reset password link.
+          {t("forgotPasswordForm.successMessage")}
         </SuccessAlert>
 
         <LoadingButton isPending={isPending} fullWidth>
