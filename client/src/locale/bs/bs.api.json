@@ -28,5 +28,30 @@
     "invalidToken": "Dostavljen nevažeći token.",
     "userNotFound": "Korisnik nije pronađen."
   },
-  "verifyEmailService": "Uspješno potvrđena email adresa."
+  "verifyEmailService": "Uspješno potvrđena email adresa.",
+  "editProfileService": {
+    "editProfileValidData": "Molimo unesite važeće podatke da bi ažurirali svoj profil.",
+    "notAuthorized": "Niste ovlašteni za pristup ovim resursima.",
+    "userNotFound": "Korisnik nije pronađen.",
+    "emailAlreadyUsed": "Email se već koristi!"
+  },
+  "changePasswordService": {
+    "changePasswordValidData": "Molimo unesite važeće podatke za promjenu lozinke.",
+    "successMessage": "Lozinka uspješno promijenjena.",
+    "userNotFound": "Korisnik nije pronađen.",
+    "wrongOldPassword": "Pogrešna stara lozinka.",
+    "passwordsMustMatch": "Nova lozinka i potvrda lozinke moraju biti iste.",
+    "newPasswordSameAsOld": "Nova lozinka ne može biti ista kao stara lozinka.",
+    "oldPassword": "stara lozinka",
+    "newPassword": "nova lozinka",
+    "password": "lozinka"
+  },
+  "myInfoService": {
+    "userNotFound": "Korisnik nije pronađen."
+  },
+  "deleteProfileService": {
+    "userNotFound": "Korisnik nije pronađen.",
+    "successMessage": "Profil uspješno obrisan."
+  },
+  "Network Error": "Mrežna greška."
 }

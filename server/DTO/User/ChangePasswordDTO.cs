@@ -5,14 +5,14 @@ namespace server.DTO.User
 {
     public class ChangePasswordDTO
     {
-        [Required(ErrorMessage = "Old password is required.")]
+        [Required(ErrorMessage = "changePasswordFormValidation.passwordRequired")]
         public required string OldPassword { get; set; }
 
-        [Required(ErrorMessage = "New password is required.")]
-        [PasswordValidation("New Password")]
+        [Required(ErrorMessage = "changePasswordFormValidation.newPasswordRequired")]
+        [PasswordValidation("changePasswordFormValidation.newPasswordWeakness")]
         public required string NewPassword { get; set; }
 
-        [Required(ErrorMessage = "Confirm new password is required.")]
+        [Required(ErrorMessage = "changePasswordFormValidation.confirmPasswordRequired")]
         public required string ConfirmNewPassword { get; set; }
 
     }

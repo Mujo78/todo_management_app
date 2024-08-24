@@ -47,7 +47,7 @@ const ChangePassword = () => {
         label={t("changePassword.password")}
         error={
           !!errors.oldPassword ||
-          isErrorForKey(error, "old password") ||
+          isErrorForKey(error, t("changePasswordService.oldPassword")) ||
           isErrorForKey(error, "OldPassword")
         }
         errorMessage={
@@ -55,9 +55,9 @@ const ChangePassword = () => {
         }
       >
         {!errors.oldPassword &&
-          (isErrorForKey(error, "old password") ||
+          (isErrorForKey(error, t("changePasswordService.oldPassword")) ||
             isErrorForKey(error, "OldPassword")) &&
-          !isErrorForKey(error, "New Password") && (
+          !isErrorForKey(error, t("changePasswordService.newPassword")) && (
             <FormHelperText component="span">
               {formatErrorMessage(error) ||
                 formatErrorFieldMessage(error, "OldPassword")}
@@ -72,7 +72,7 @@ const ChangePassword = () => {
         label={t("changePassword.newPassword")}
         error={
           !!errors.newPassword ||
-          isErrorForKey(error, "new password") ||
+          isErrorForKey(error, t("changePasswordService.newPassword")) ||
           isErrorForKey(error, "NewPassword")
         }
         errorMessage={
@@ -80,7 +80,7 @@ const ChangePassword = () => {
         }
       >
         {!errors.newPassword &&
-          (isErrorForKey(error, "new password") ||
+          (isErrorForKey(error, t("changePasswordService.newPassword")) ||
             isErrorForKey(error, "NewPassword")) && (
             <FormHelperText component="span">
               {formatErrorMessage(error) ||

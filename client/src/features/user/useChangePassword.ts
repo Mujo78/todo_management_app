@@ -26,7 +26,11 @@ function useChangePassword() {
     onError: (error) => {
       const errorToShow = formatErrorMessage(error);
 
-      if (errorToShow !== undefined && !isErrorForKey(error, "password")) {
+      if (
+        errorToShow !== undefined &&
+        !isErrorForKey(error, t("changePasswordService.password")) &&
+        errorToShow
+      ) {
         toast.error(errorToShow);
       }
     },

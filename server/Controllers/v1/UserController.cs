@@ -83,7 +83,7 @@ namespace server.Controllers.v1
 
         public async Task<ActionResult> UpdateMyProfile([FromBody] UserUpdateDTO updateDTO)
         {
-            if (updateDTO == null) return BadRequest("Please provide valid user data to update your profile.");
+            if (updateDTO == null) return BadRequest("editProfileService.editProfileValidData");
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var user = await userService.UpdateUser(updateDTO);
@@ -99,11 +99,11 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
         {
-            if (changePasswordDTO == null) return BadRequest("Please provide valid data for changing password.");
+            if (changePasswordDTO == null) return BadRequest("changePasswordService.changePasswordValidData");
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             await userService.ChangePassword(changePasswordDTO);
-            return Ok("Password successfully changed.");
+            return Ok("changePasswordService.successMessage");
         }
 
         [Authorize]
@@ -131,7 +131,7 @@ namespace server.Controllers.v1
                     Secure = true,
                     SameSite = SameSiteMode.None
                 });
-                return Ok("Profile succesfully deleted.");
+                return Ok("deleteProfileService.successMessage");
             }
             catch (Exception ex)
             {

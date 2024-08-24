@@ -4,10 +4,10 @@ namespace server.DTO.Auth
 {
     public class LoginDTO
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "loginFormValidation.emailRequired")]
+        [EmailAddress(ErrorMessage = "loginFormValidation.emailValid")]
         public required string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "loginFormValidation.passwordRequired")]
         public required string Password { get; set; }
     }
 }

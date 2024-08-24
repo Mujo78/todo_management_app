@@ -6,10 +6,10 @@ namespace server.DTO.User
     {
         [Required]
         public Guid Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "editProfileFormValidation.nameRequired")]
         public required string Name { get; set; }
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "editProfileFormValidation.emailRequired")]
+        [EmailAddress(ErrorMessage = "editProfileFormValidation.emailValid")]
         public required string Email { get; set; }
         public bool EmailConfirmed { get; set; }
         public DateTime CreatedAt { get; set; }

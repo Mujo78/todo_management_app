@@ -11,7 +11,7 @@ namespace server.Utils.Validations
 
             if (value != null && !value.Equals("") && !Regex.IsMatch((string)value, regPattern))
             {
-                return new ValidationResult($"{FieldName} must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.");
+                return new ValidationResult($"{FieldName}");
             }
 
             return ValidationResult.Success;

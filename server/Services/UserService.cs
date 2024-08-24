@@ -22,7 +22,7 @@ namespace server.Services
         public async Task<MyInfoDTO> GetMyProfileInfo()
         {
             var userId = authService.GetUserId();
-            var myInfo = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
+            var myInfo = await repository.GetUser(userId) ?? throw new NotFoundException("myInfoService.userNotFound");
 
             var assignments = db.Assignments.Where(a => a.UserId.Equals(userId)).ToList();
             var total = assignments.Count;
@@ -50,14 +50,14 @@ namespace server.Services
         public async Task ChangePassword(ChangePasswordDTO changePasswordDTO)
         {
             var userId = authService.GetUserId();
-            var user = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
+            var user = await repository.GetUser(userId) ?? throw new NotFoundException("changePasswordService.userNotFound");
 
             if (!BCrypt.Net.BCrypt.Verify(changePasswordDTO.OldPassword, user.Password))
-                throw new BadRequestException("Wrong old password.");
+                throw new BadRequestException("changePasswordService.wrongOldPassword");
             if (!changePasswordDTO.NewPassword.Equals(changePasswordDTO.ConfirmNewPassword))
-                throw new BadRequestException("New password and confirm password must match.");
+                throw new BadRequestException("changePasswordService.passwordsMustMatch");
             if (BCrypt.Net.BCrypt.Verify(changePasswordDTO.NewPassword, user.Password))
-                throw new BadRequestException("New password cannot be the same as the old password.");
+                throw new BadRequestException("changePasswordService.newPasswordSameAsOld");
 
             try
             {
@@ -106,12 +106,12 @@ namespace server.Services
         public async Task<UserDTO> UpdateUser(UserUpdateDTO updateDTO)
         {
             var userId = authService.GetUserId();
-            if (!updateDTO.Id.Equals(userId)) throw new ForbidException("You are not authorize to access these resources.");
+            if (!updateDTO.Id.Equals(userId)) throw new ForbidException("editProfileService.notAuthorized");
 
-            var userFound = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
+            var userFound = await repository.GetUser(userId) ?? throw new NotFoundException("editProfileService.userNotFound");
 
             bool emailTaken = repository.EmailAlreadyUsed(updateDTO.Email, userId);
-            if (emailTaken) throw new ConflictException("Email is already used!");
+            if (emailTaken) throw new ConflictException("editProfileService.emailAlreadyUsed");
 
             userFound.Email = updateDTO.Email;
             userFound.Name = updateDTO.Name;
@@ -159,7 +159,7 @@ namespace server.Services
         public async Task DeleteMyProfile()
         {
             var userId = authService.GetUserId();
-            var user = await repository.GetUser(userId) ?? throw new NotFoundException("User not found.");
+            var user = await repository.GetUser(userId) ?? throw new NotFoundException("deleteProfileService.userNotFound");
 
             using var transaction = db.Database.BeginTransaction();
 

@@ -21,7 +21,7 @@ function useDeleteProfile() {
     onError: (error) => {
       const errorToShow = formatErrorMessage(error);
 
-      if (errorToShow !== undefined) {
+      if (errorToShow !== undefined && errorToShow) {
         toast.error(errorToShow);
       }
     },

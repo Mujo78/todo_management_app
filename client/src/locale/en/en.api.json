@@ -28,5 +28,30 @@
     "invalidToken": "Invalid token provided.",
     "userNotFound": "User not found."
   },
-  "verifyEmailService": "Successfully verified email address."
+  "verifyEmailService": "Successfully verified email address.",
+  "editProfileService": {
+    "editProfileValidData": "Please provide valid user data to update your profile.",
+    "notAuthorized": "You are not authorized to access these resources.",
+    "userNotFound": "User not found.",
+    "emailAlreadyUsed": "Email is already used!"
+  },
+  "changePasswordService": {
+    "changePasswordValidData": "Please provide valid data for changing password.",
+    "successMessage": "Password successfully changed.",
+    "userNotFound": "User not found.",
+    "wrongOldPassword": "Wrong old password.",
+    "passwordsMustMatch": "New password and confirm password must match.",
+    "newPasswordSameAsOld": "New password cannot be the same as the old password.",
+    "oldPassword": "old password",
+    "newPassword": "new password",
+    "password": "password"
+  },
+  "myInfoService": {
+    "userNotFound": "User not found."
+  },
+  "deleteProfileService": {
+    "userNotFound": "User not found.",
+    "successMessage": "Profile successfully deleted."
+  },
+  "Network Error": "Network Error"
 }

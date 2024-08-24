@@ -5,20 +5,20 @@ namespace server.DTO.User
 {
     public class RegistrationDTO
     {
-        [Required]
-        [MinLength(5, ErrorMessage = "Name must be at least 5 characters long.")]
+        [Required(ErrorMessage = "signupFormValidation.nameRequired")]
+        [MinLength(5, ErrorMessage = "signupFormValidation.nameLength")]
         public required string Name { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "signupFormValidation.emailRequired")]
+        [EmailAddress(ErrorMessage = "signupFormValidation.emailValid")]
         public required string Email { get; set; }
 
-        [Required]
-        [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
-        [PasswordValidation("Password")]
+        [Required(ErrorMessage = "signupFormValidation.passwordRequired")]
+        [MinLength(8, ErrorMessage = "signupFormValidation.passwordLength")]
+        [PasswordValidation("signupFormValidation.passwordWeakness")]
         public required string Password { get; set; }
 
-        [Required(ErrorMessage = "The Confirm Password field is required.")]
+        [Required(ErrorMessage = "signupFormValidation.confirmPasswordRequired")]
         public required string ConfirmPassword { get; set; }
     }
 }
