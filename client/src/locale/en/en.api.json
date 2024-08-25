@@ -29,6 +29,39 @@
     "userNotFound": "User not found."
   },
   "verifyEmailService": "Successfully verified email address.",
+  "taskService": {
+    "invalidID": "Invalid ID sent.",
+    "taskNotFound": "Assignment not found."
+  },
+  "addTaskService": {
+    "notAuthorized": "You are not authorized.",
+    "alreadyExists": "Assignment with this title already exists."
+  },
+  "editTaskService": {
+    "invalidID": "Invalid ID sent.",
+    "forbidden": "You do not have permission to access this resource.",
+    "taskNotFound": "Assignment not found.",
+    "alreadyExists": "Assignment with this title already exists.",
+    "idRequired": "ID is required.",
+    "userIdRequired": "UserID is required."
+  },
+  "taskFormService": {
+    "title": "Title",
+    "titleRequired": "Title is required.",
+    "titleLength": "Title must be at least 10 characters long.",
+    "dueDateRequired": "Due date is required.",
+    "invalidDate": "Invalid date!",
+    "dueDatePast": "Due Date can not be in the past!",
+    "priorityValid": "Please choose valid priority for your task.",
+    "statusValid": "Please choose valid status for your task.",
+    "priorityValidOption": "Priority must be: Low, Medium or High.",
+    "statusValidOption": "Status must be: Open, Failed or Completed."
+  },
+  "deleteTaskService": {
+    "invalidId": "Invalid ID sent.",
+    "taskNotFound": "Assignment not found.",
+    "forbidden": "You do not have permission to access this resource."
+  },
   "editProfileService": {
     "editProfileValidData": "Please provide valid user data to update your profile.",
     "notAuthorized": "You are not authorized to access these resources.",
@@ -52,6 +85,11 @@
   "deleteProfileService": {
     "userNotFound": "User not found.",
     "successMessage": "Profile successfully deleted."
+  },
+  "logoutService": {
+    "invalidToken": "Invalid token provided.",
+    "invalidTokenNotFound": "Invalid token provided. Token not found.",
+    "successMessage": "Logged out successfully."
   },
   "Network Error": "Network Error"
 }

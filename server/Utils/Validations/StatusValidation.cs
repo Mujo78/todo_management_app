@@ -11,12 +11,12 @@ namespace server.Utils.Validations
 
             if (value == null || value is not Status)
             {
-                return new ValidationResult("Please choose valid status for assignment.");
+                return new ValidationResult("taskFormService.statusValid");
             }
 
             if (!Enum.IsDefined(typeof(Status), value))
             {
-                return new ValidationResult("Status must be: Open, Completed or Failed.");
+                return new ValidationResult("taskFormService.statusValidOption");
             }
 
             return ValidationResult.Success;

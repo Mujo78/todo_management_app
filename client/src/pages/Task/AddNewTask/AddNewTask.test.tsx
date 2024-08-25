@@ -34,7 +34,7 @@ describe("Add New Task component testing", () => {
       },
     ],
     [
-      "Date can not be in the past!",
+      "Due Date can not be in the past!",
       {
         title: "Title New Here Goes",
         dueDate: subDays(new Date(), 1),

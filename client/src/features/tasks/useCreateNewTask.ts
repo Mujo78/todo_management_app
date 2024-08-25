@@ -4,8 +4,10 @@ import { AxiosError } from "axios";
 import { CreateUpdateTaskType, TaskType } from "../../app/taskSlice";
 import toast from "react-hot-toast";
 import { formatErrorMessage } from "../../utils/user/userUtils";
+import { useTranslation } from "react-i18next";
 
 function useCreateTask() {
+  const { t } = useTranslation();
   const {
     mutate: createTask,
     isPending,
@@ -18,7 +20,11 @@ function useCreateTask() {
     onError: (error) => {
       const errorToShow = formatErrorMessage(error);
 
-      if (errorToShow !== undefined && !errorToShow.includes("title")) {
+      if (
+        errorToShow !== undefined &&
+        !errorToShow.includes(t("taskFormService.title")) &&
+        errorToShow
+      ) {
         toast.error(errorToShow);
       }
     },

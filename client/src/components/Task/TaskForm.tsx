@@ -122,13 +122,18 @@ const TaskForm = <TFieldValues extends FieldValues>({
                   flexGrow: 1,
                 }}
                 autoComplete="true"
-                error={!!errors.title || isErrorForKey(error, "Title")}
+                error={
+                  !!errors.title ||
+                  isErrorForKey(error, t("taskFormService.title")) ||
+                  isErrorForKey(error, "Title")
+                }
                 helperText={
                   errors.title?.message
                     ? t(errors.title.message as string)
-                    : isError &&
-                      !errors.title &&
-                      formatErrorFieldMessage(error, "Title")
+                    : (isError &&
+                        !errors.title &&
+                        formatErrorFieldMessage(error, "Title")) ||
+                      formatErrorFieldMessage(error, t("taskFormService.title"))
                 }
               />
             )}

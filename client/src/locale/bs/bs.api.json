@@ -29,6 +29,39 @@
     "userNotFound": "Korisnik nije pronađen."
   },
   "verifyEmailService": "Uspješno potvrđena email adresa.",
+  "taskService": {
+    "invalidID": "Nevažeći ID.",
+    "taskNotFound": "Zadatak nije pronađen."
+  },
+  "addTaskService": {
+    "notAuthorized": "Niste ovlašteni.",
+    "alreadyExists": "Zadatak sa ovim nazivom već postoji."
+  },
+  "editTaskService": {
+    "invalidID": "Nevažeći ID.",
+    "forbidden": "Nemate dozvolu za pristup ovim resursima.",
+    "taskNotFound": "Zadatak nije pronađen.",
+    "alreadyExists": "Zadatak sa ovim nazivom već postoji.",
+    "idRequired": "ID je obavezan.",
+    "userIdRequired": "UserID je obavezan."
+  },
+  "taskFormService": {
+    "title": "Naziv",
+    "titleRequired": "Naziv je obavezan.",
+    "titleLength": "Naziv mora mora sadržavati najmanje 10 znakova.",
+    "dueDateRequired": "Rok je obavezan.",
+    "invalidDate": "Nevažeći datum!",
+    "dueDatePast": "Rok ne može biti u prošlosti!",
+    "priorityValid": "Molimo izaberite važeći prioritet za zadatak.",
+    "statusValid": "Molimo izaberite važeći status za zadatak.",
+    "priorityValidOption": "Prioritet mora biti: Nizak, Srednji ili Visok.",
+    "statusValidOption": "Status mora biti: Otvoren, Neuspješan ili Završen."
+  },
+  "deleteTaskService": {
+    "invalidId": "Nevažeći ID.",
+    "taskNotFound": "Zadatak nije pronađen.",
+    "forbidden": "Nemate dozvolu za pristup ovim resursima."
+  },
   "editProfileService": {
     "editProfileValidData": "Molimo unesite važeće podatke da bi ažurirali svoj profil.",
     "notAuthorized": "Niste ovlašteni za pristup ovim resursima.",
@@ -52,6 +85,11 @@
   "deleteProfileService": {
     "userNotFound": "Korisnik nije pronađen.",
     "successMessage": "Profil uspješno obrisan."
+  },
+  "logoutService": {
+    "invalidToken": "Dostavljen nevažeći token.",
+    "invalidTokenNotFound": "Dostavljen nevažeći token. Token nije pronađen.",
+    "successMessage": "Uspješno odjavljen."
   },
   "Network Error": "Mrežna greška."
 }

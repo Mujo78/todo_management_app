@@ -35,16 +35,16 @@ namespace server.Services
         public async Task<AssignmentDTO?> GetAssignmentAsync(Guid taskId)
         {
             var userId = authService.GetUserId();
-            var assignment = await repository.GetAssignmentById(taskId, userId) ?? throw new NotFoundException("Assignment not found.");
+            var assignment = await repository.GetAssignmentById(taskId, userId) ?? throw new NotFoundException("taskService.taskNotFound");
 
             return mapper.Map<AssignmentDTO>(assignment);
         }
 
         public async Task<AssignmentDTO> CreateAssignmentAsync(AssignmentCreateDTO assignmentDTO)
         {
-            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");
+            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("addTaskService.notAuthorized");
             bool isExists = repository.AssignmentExists(assignmentDTO.Title, userId);
-            if (isExists) throw new ConflictException($"Assignment with title: '{assignmentDTO.Title}' already exists.");
+            if (isExists) throw new ConflictException("addTaskService.alreadyExists");
 
             assignmentDTO.DueDate = assignmentDTO.DueDate.ToLocalTime();
 
@@ -82,8 +82,8 @@ namespace server.Services
         public async Task DeleteAssignmentAsync(Guid Id)
         {
             var userId = authService.GetUserId();
-            var assignment = await repository.GetAssignmentById(Id, userId) ?? throw new NotFoundException("Assignment not found.");
-            if (!assignment.UserId.Equals(userId)) throw new ForbidException("You do not have permission to access this resource.");
+            var assignment = await repository.GetAssignmentById(Id, userId) ?? throw new NotFoundException("deleteTaskService.taskNotFound");
+            if (!assignment.UserId.Equals(userId)) throw new ForbidException("deleteTaskService.forbidden");
 
             try
             {
@@ -98,15 +98,15 @@ namespace server.Services
         public async Task<AssignmentDTO> UpdateAssignmentAsync(Guid taskId, AssignmentUpdateDTO updateDTO)
         {
             var userId = authService.GetUserId();
-            
-            if (taskId.Equals("") || updateDTO == null || !updateDTO.Id.Equals(taskId)) throw new BadRequestException("Invalid ID sent.");
-            if (!updateDTO.UserId.Equals(userId)) throw new ForbidException("You do not have permission to access this resource.");
+
+            if (taskId.Equals("") || updateDTO == null || !updateDTO.Id.Equals(taskId)) throw new BadRequestException("editTaskService.invalidID");
+            if (!updateDTO.UserId.Equals(userId)) throw new ForbidException("editTaskService.forbidden");
 
             bool isExists = repository.AssignmentExists(taskId, userId);
-            if (!isExists) throw new NotFoundException("Assignment not found.");
+            if (!isExists) throw new NotFoundException("editTaskService.taskNotFound");
 
             bool isExistsName = repository.AssignmentExists(updateDTO.Title, updateDTO.Id, userId);
-            if (isExistsName) throw new ConflictException($"Assignment with title: '{updateDTO.Title}' already exists.");
+            if (isExistsName) throw new ConflictException("editTaskService.alreadyExists");
 
             updateDTO.DueDate = updateDTO.DueDate.ToLocalTime();
 

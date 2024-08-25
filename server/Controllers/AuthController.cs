@@ -66,7 +66,7 @@ namespace server.Controllers
             string accessToken = Request.Headers.Authorization!;
             string accessTokenModified = accessToken.Replace("Bearer ", string.Empty);
             string refreshToken = Request.Cookies["refreshToken"]!;
-            if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessTokenModified)) throw new BadRequestException("Invalid token provided.");
+            if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessTokenModified)) throw new BadRequestException("validateUserTokenService.invalidToken");
 
             var tokenResponse = await authService.RefreshAccessToken(refreshToken, accessTokenModified);
             return Ok(tokenResponse);
@@ -81,7 +81,7 @@ namespace server.Controllers
         public async Task<ActionResult> RefreshAccessTokenWithRefreshAction()
         {
             string refreshToken = Request.Cookies["refreshToken"]!;
-            if (string.IsNullOrEmpty(refreshToken)) throw new BadRequestException("Invalid token provided.");
+            if (string.IsNullOrEmpty(refreshToken)) throw new BadRequestException("validateUserTokenService.invalidToken");
 
             var tokenResponse = await authService.GetAccessTokenWithRefresh(refreshToken);
             return Ok(tokenResponse);
@@ -97,7 +97,7 @@ namespace server.Controllers
         public async Task<ActionResult> Logout()
         {
             string refreshToken = Request.Cookies["refreshToken"]!;
-            if (string.IsNullOrEmpty(refreshToken)) throw new BadRequestException("Invalid token provided.");
+            if (string.IsNullOrEmpty(refreshToken)) throw new BadRequestException("logoutService.invalidToken");
 
             await authService.Logout(refreshToken);
             Response.Cookies.Delete("refreshToken", new CookieOptions
@@ -111,7 +111,7 @@ namespace server.Controllers
                 Secure = true,
                 SameSite = SameSiteMode.None
             });
-            return Ok("Logged out successfully.");
+            return Ok("logoutService.successMessage");
         }
 
         [HttpDelete("/reset-database")]

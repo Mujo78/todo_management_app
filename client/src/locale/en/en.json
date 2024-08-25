@@ -145,7 +145,7 @@
     "titleLength": "Title must be at least 10 characters long.",
     "invalidDate": "Invalid date!",
     "dueDateRequired": "Due date is required.",
-    "dueDatePast": "Date can not be in the past!",
+    "dueDatePast": "Due Date can not be in the past!",
     "priorityValid": "Please choose valid priority for your task.",
     "priorityRequired": "Priority is required.",
     "priorityValidOption": "Priority must be: Low, Medium or High.",

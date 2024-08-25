@@ -61,7 +61,7 @@ namespace server.Services
 
         public async Task Logout(string refreshToken)
         {
-            var refreshTokenFounded = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided. Token not found.");
+            var refreshTokenFounded = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("logoutService.invalidTokenNotFound");
             try
             {
                 await repository.Logout(refreshTokenFounded);
@@ -105,8 +105,8 @@ namespace server.Services
 
         public async Task<AccessTokenDTO> RefreshAccessToken(string refreshToken, string accessToken)
         {
-            var existingRefreshToken = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided.");
-            var user = await repository.GetUser(existingRefreshToken.UserId) ?? throw new NotFoundException("User not found.");
+            var existingRefreshToken = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("validateUserTokenService.invalidTokenNotFound");
+            var user = await repository.GetUser(existingRefreshToken.UserId) ?? throw new NotFoundException("validateUserTokenService.userNotFound");
 
             if (!existingRefreshToken.IsValid)
             {
@@ -125,7 +125,7 @@ namespace server.Services
             }
 
             bool isTokenValid = IsAccessTokenValid(accessToken, existingRefreshToken.UserId, existingRefreshToken.JwtTokenId);
-            if (!isTokenValid) throw new BadRequestException("Invalid token provided.");
+            if (!isTokenValid) throw new BadRequestException("validateUserTokenService.invalidToken");
 
             var newAccessToken = CreateAccessToken(user, existingRefreshToken.JwtTokenId);
 
@@ -136,8 +136,8 @@ namespace server.Services
         }
         public async Task<LoginDataDTO> GetAccessTokenWithRefresh(string refreshToken)
         {
-            var existingRefreshToken = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("Invalid token provided.");
-            var user = await repository.GetUser(existingRefreshToken.UserId) ?? throw new NotFoundException("User not found.");
+            var existingRefreshToken = await repository.GetRefreshToken(refreshToken) ?? throw new NotFoundException("validateUserTokenService.invalidTokenNotFound");
+            var user = await repository.GetUser(existingRefreshToken.UserId) ?? throw new NotFoundException("validateUserTokenService.userNotFound");
 
             if (!existingRefreshToken.IsValid)
             {

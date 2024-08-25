@@ -35,7 +35,7 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetAssignment([FromRoute] Guid Id)
         {
-            if (Id.Equals("") || Id.Equals(Guid.Empty)) throw new BadRequestException("Invalid ID sent.");
+            if (Id.Equals("") || Id.Equals(Guid.Empty)) throw new BadRequestException("taskService.invalidID");
 
             var assignment = await assignmentService.GetAssignmentAsync(Id);
             return Ok(assignment);
@@ -50,7 +50,7 @@ namespace server.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> DeleteAssignment([FromRoute] Guid Id)
         {
-            if (Id.Equals("") || Id.Equals(Guid.Empty)) throw new BadRequestException("Invalid ID sent.");
+            if (Id.Equals("") || Id.Equals(Guid.Empty)) throw new BadRequestException("deleteTaskService.invalidId");
 
             await assignmentService.DeleteAssignmentAsync(Id);
             return Ok(Id);

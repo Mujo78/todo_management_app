@@ -10,12 +10,12 @@ namespace server.Utils.Validations
 
             if (value == null || value is not Priority)
             {
-                return new ValidationResult("Please choose valid priority for assignment.");
+                return new ValidationResult("taskFormService.priorityValid");
             }
 
             if(!Enum.IsDefined(typeof(Priority), value)) 
             {
-                return new ValidationResult("Priority must be: Low, Medium or High.");
+                return new ValidationResult("taskFormService.priorityValidOption");
             }
 
             return ValidationResult.Success;

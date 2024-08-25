@@ -6,12 +6,12 @@ namespace server.DTO.Assignment
 {
     public class AssignmentCreateDTO
     {
-        [Required]
-        [MinLength(10, ErrorMessage = "Title must be at least 10 characters long.")]
+        [Required(ErrorMessage = "taskFormService.titleRequired")]
+        [MinLength(10, ErrorMessage = "taskFormService.titleLength")]
         public required string Title { get; set; }
         public string Description { get; set; } = string.Empty;
-        [Required]
-        [DataType(DataType.DateTime, ErrorMessage = "Invalid date!")]
+        [Required(ErrorMessage = "taskFormService.dueDateRequired")]
+        [DataType(DataType.DateTime, ErrorMessage = "taskFormService.invalidDate")]
         [PastDueDateValidation]
         public DateTime DueDate { get; set; }
         [PriorityValidation]
