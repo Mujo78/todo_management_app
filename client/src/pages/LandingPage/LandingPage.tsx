@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Box, Stack, Tab, Tabs, Tooltip } from "@mui/material";
 import { Login, HowToReg } from "@mui/icons-material";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import Info from "../../components/Landing/Info";
+import Info from "../../components/Landing/Info/Info";
 import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
 import { useTranslation } from "react-i18next";
 

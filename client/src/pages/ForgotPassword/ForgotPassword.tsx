@@ -1,5 +1,5 @@
 import { Box, Stack } from "@mui/material";
-import ForgotPasswordInfo from "../../components/Landing/ForgotPasswordInfo";
+import ForgotPasswordInfo from "../../components/Landing/ForgotPasswordInfo/ForgotPasswordInfo";
 import ForgotPasswordForm from "../../components/Landing/ForgotPasswordForm/ForgotPasswordForm";
 import LanguageSwitch from "../../components/UI/LanguageSwitch/LanguageSwitch";
 

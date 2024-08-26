@@ -1,5 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { render } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import queryClient from "../../queryClient";
 import LandingPage from "../../pages/LandingPage/LandingPage";
@@ -54,4 +54,20 @@ export const renderWithRouter = (initialEntries: string[]) => {
       </QueryClientProvider>
     </MemoryRouter>
   );
+};
+
+export const chooseLngFromDropdown = (lng: string) => {
+  const lngBtn = screen.getByLabelText("LanguageBtn");
+  expect(lngBtn).toBeInTheDocument();
+
+  fireEvent.click(lngBtn);
+
+  const lngItem = screen.getByLabelText(lng);
+  expect(lngItem).toBeVisible();
+
+  fireEvent.click(lngItem);
+};
+
+export const changeLng = async (lng: "bs" | "eng") => {
+  await in18n.changeLanguage(lng);
 };

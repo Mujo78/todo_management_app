@@ -41,40 +41,40 @@ const TaskOptionsHeader: React.FC = () => {
     <Stack direction="row" gap={2}>
       {tasksToAction.length > 0 && (
         <Stack flexDirection="row" flexGrow={1} justifyContent="space-between">
-          <Button
-            aria-label="MakeTasksFinished"
-            color="success"
-            variant="contained"
-            onClick={makeTasksCompleted}
-          >
-            <Tooltip title={t("headerOptions.makeFinished")}>
+          <Tooltip title={t("headerOptions.makeFinished")}>
+            <Button
+              aria-label="MakeTasksFinished"
+              color="success"
+              variant="contained"
+              onClick={makeTasksCompleted}
+            >
               <Check />
-            </Tooltip>
-          </Button>
-          <Button
-            color="error"
-            aria-label="RemoveSelectedTasks"
-            onClick={removeSelectedTasks}
-            variant="contained"
-          >
-            <Tooltip title={t("headerOptions.removeSelected")}>
+            </Button>
+          </Tooltip>
+          <Tooltip title={t("headerOptions.removeSelected")}>
+            <Button
+              color="error"
+              aria-label="RemoveSelectedTasks"
+              onClick={removeSelectedTasks}
+              variant="contained"
+            >
               <Delete />
-            </Tooltip>
-          </Button>
+            </Button>
+          </Tooltip>
         </Stack>
       )}
       {tasks && tasks?.data.length > 0 && (
-        <Button
-          aria-label="RemoveAllTasks"
-          color="error"
-          onClick={removeAllTasks}
-          sx={{ marginLeft: "auto" }}
-          variant="contained"
-        >
-          <Tooltip title={t("headerOptions.removeAll")}>
+        <Tooltip title={t("headerOptions.removeAll")}>
+          <Button
+            aria-label="RemoveAllTasks"
+            color="error"
+            onClick={removeAllTasks}
+            sx={{ marginLeft: "auto" }}
+            variant="contained"
+          >
             <DeleteSweep />
-          </Tooltip>
-        </Button>
+          </Button>
+        </Tooltip>
       )}
     </Stack>
   );

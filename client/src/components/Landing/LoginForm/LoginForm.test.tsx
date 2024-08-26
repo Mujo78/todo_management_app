@@ -1,6 +1,9 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
-import { describe, it } from "vitest";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import { beforeEach, describe, it } from "vitest";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 
 const loginWithErrors = async (
   expectedMessage: string,
@@ -33,11 +36,32 @@ const loginWithErrors = async (
 };
 
 describe("LoginFrom component tests", () => {
-  it("Should render", () => {
+  beforeEach(async () => {
+    changeLng("eng");
+  });
+  it("Should render and display on english language", () => {
     renderWithRouter(["/"]);
 
     const loginFormTitle = screen.getByText("Log in to Your Account");
+    const submitBtn = screen.getByLabelText("loginBtn");
+    const forgotPasswordLink = screen.getByRole("link");
+
     expect(loginFormTitle).toBeInTheDocument();
+    expect(submitBtn).toBeInTheDocument();
+    expect(forgotPasswordLink).toHaveTextContent("Forgot Password?");
+  });
+
+  it("Should display on bosnian language", async () => {
+    await changeLng("bs");
+    renderWithRouter(["/"]);
+
+    const loginFormTitle = screen.getByText("Prijavite se na Vaš račun");
+    const submitBtn = screen.getByLabelText("loginBtn");
+    const forgotPasswordLink = screen.getByRole("link");
+
+    expect(loginFormTitle).toBeInTheDocument();
+    expect(submitBtn).toHaveTextContent("Prijava");
+    expect(forgotPasswordLink).toHaveTextContent("Zaboravljena lozinka?");
   });
 
   it("Should navigate to the forgot password page", () => {

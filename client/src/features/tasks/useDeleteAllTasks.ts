@@ -4,8 +4,10 @@ import { AxiosError } from "axios";
 import useTaskStore from "../../app/taskSlice";
 import toast from "react-hot-toast";
 import { formatErrorMessage } from "../../utils/user/userUtils";
+import { useTranslation } from "react-i18next";
 
 function useDeleteAllTasks() {
+  const { t } = useTranslation();
   const { initialize } = useTaskStore();
 
   const { mutate: deleteAllTasks, isPending } = useMutation<
@@ -16,11 +18,15 @@ function useDeleteAllTasks() {
     mutationKey: ["deleteAllTasks"],
     mutationFn: DeleteAllTaskFn,
     onSuccess: () => {
-      toast.success("Tasks successfully deleted.");
+      toast.success(t("deleteTasksService"));
       initialize();
     },
     onError: (error) => {
-      toast.error(formatErrorMessage(error));
+      const errorToShow = formatErrorMessage(error);
+
+      if (errorToShow !== undefined && errorToShow) {
+        toast.error(errorToShow);
+      }
     },
   });
 

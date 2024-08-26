@@ -164,11 +164,11 @@ namespace server.Services
 
         public async Task<AssignmentDTO> MakeAssignmentExpiredAndFailed(Guid Id)
         {
-            if (Id.Equals(null) || Id.Equals(Guid.Empty)) throw new BadRequestException("Please provide valid ID for assignment.");
-            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");
+            if (Id.Equals(null) || Id.Equals(Guid.Empty)) throw new BadRequestException("taskExpiredAndFailed.invalidId");
+            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("taskExpiredAndFailed.notAuthorized");
 
-            var assignment = await repository.GetTrackingAssignmentById(Id, userId) ?? throw new NotFoundException("Task not found.");
-            if (assignment.Status != Status.Open) throw new BadRequestException("Task is already failed or completed.");
+            var assignment = await repository.GetTrackingAssignmentById(Id, userId) ?? throw new NotFoundException("taskExpiredAndFailed.taskNotFound");
+            if (assignment.Status != Status.Open) throw new BadRequestException("taskExpiredAndFailed.taskAlreadyFailed");
 
             assignment.Status = Status.Failed;
             assignment.UpdatedAt = DateTime.Now;
@@ -196,11 +196,11 @@ namespace server.Services
 
         public async Task<IEnumerable<Assignment>> FindAssignmentsByIds(List<Guid> assignmentsIds)
         {
-            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("You are not authorized.");
-            if (assignmentsIds == null || assignmentsIds.Count == 0) throw new BadRequestException("No assignments provided.");
+            var userId = authService.GetUserId() ?? throw new UnauthorizedAccessException("findAndValidateTasksService.notAuthorized");
+            if (assignmentsIds == null || assignmentsIds.Count == 0) throw new BadRequestException("findAndValidateTasksService.noTasksProvided");
 
             var assignments = await repository.GetAssignmentsById(assignmentsIds, userId);
-            if (assignments == null || !assignments.Any()) throw new NotFoundException("One or more assignments not found with the provided data.");
+            if (assignments == null || !assignments.Any()) throw new NotFoundException("findAndValidateTasksService.oneOrMoreTasksNotFound");
 
             return assignments;
         }

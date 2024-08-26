@@ -16,11 +16,9 @@ function useUpdateTask() {
     mutationKey: ["updateTask"],
     mutationFn: UpdateTaskFn,
     onError: (error) => {
-      if (
-        formatErrorMessage(error) !== undefined &&
-        !isErrorForKey(error, "Title")
-      ) {
-        toast.error(formatErrorMessage(error));
+      const errorToShow = formatErrorMessage(error);
+      if (errorToShow !== undefined && !isErrorForKey(error, "Title")) {
+        toast.error(errorToShow);
       }
     },
   });

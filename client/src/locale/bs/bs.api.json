@@ -62,6 +62,19 @@
     "taskNotFound": "Zadatak nije pronađen.",
     "forbidden": "Nemate dozvolu za pristup ovim resursima."
   },
+  "deleteTasksService": "Zadaci uspješno izbrisani.",
+  "findAndValidateTasksService": {
+    "notAuthorized": "Niste ovlašteni.",
+    "noTasksProvided": "Nijedan zadatak nije izabran.",
+    "oneOrMoreTasksNotFound": "Jedan ili više zadataka nije pronađeno sa datim podacima."
+  },
+  "finishTasksService": "Zadaci uspješno završeni.",
+  "taskExpiredAndFailed": {
+    "invalidId": "Molimo proslijedite važeći ID za zadatak.",
+    "notAuthorized": "Niste ovlašteni.",
+    "taskNotFound": "Zadatak nije pronađen.",
+    "taskAlreadyFailed": "Zadatak je već neuspješan ili završen."
+  },
   "editProfileService": {
     "editProfileValidData": "Molimo unesite važeće podatke da bi ažurirali svoj profil.",
     "notAuthorized": "Niste ovlašteni za pristup ovim resursima.",

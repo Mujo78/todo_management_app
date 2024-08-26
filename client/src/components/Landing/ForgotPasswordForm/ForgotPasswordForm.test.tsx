@@ -1,6 +1,9 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { describe, it } from "vitest";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 
 const forgotPasswordBaseFn = async (email: string, expected: string) => {
   renderWithRouter(["/forgot-password"]);
@@ -57,5 +60,19 @@ describe("Forgot Password Form component testing", () => {
       "correct@gmail.com",
       "Check your email inbox to proceed with restarting your password."
     );
+  });
+
+  it("Should display component on bosnian language", async () => {
+    await changeLng("bs");
+
+    renderWithRouter(["/forgot-password"]);
+
+    const title = screen.getByText("Zaboravili ste lozinku?");
+    const submitButton = screen.getByRole("button", { name: "Submit" });
+    const goBackButton = screen.getByLabelText("goBackBtn");
+
+    expect(title).toBeInTheDocument();
+    expect(submitButton).toBeInTheDocument();
+    expect(goBackButton).toHaveTextContent("Nazad na stranicu za prijavu");
   });
 });

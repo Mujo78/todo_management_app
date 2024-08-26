@@ -1,6 +1,9 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
-import { describe, it } from "vitest";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import { beforeEach, describe, it } from "vitest";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 
 const signupBaseFn = async (
   email: string,
@@ -45,11 +48,31 @@ const signupBaseFn = async (
 };
 
 describe("SignupForm component tests", () => {
-  it("Should render", () => {
+  beforeEach(async () => {
+    await changeLng("eng");
+  });
+
+  it("Should render and display on english language", () => {
     renderWithRouter(["/signup"]);
 
     const signupFormTitle = screen.getByText("Sign up today!");
+    const signupBtn = screen.getByLabelText("signupBtn");
+
     expect(signupFormTitle).toBeInTheDocument();
+    expect(signupBtn).toBeInTheDocument();
+    expect(signupBtn).toHaveTextContent("Register");
+  });
+
+  it("Should render and display on bosnian language", async () => {
+    await changeLng("bs");
+    renderWithRouter(["/signup"]);
+
+    const signupFormTitle = screen.getByText("Registrujte se danas!");
+    const signupBtn = screen.getByLabelText("signupBtn");
+
+    expect(signupFormTitle).toBeInTheDocument();
+    expect(signupBtn).toBeInTheDocument();
+    expect(signupBtn).toHaveTextContent("Registracija");
   });
 
   it.each([

@@ -62,6 +62,19 @@
     "taskNotFound": "Assignment not found.",
     "forbidden": "You do not have permission to access this resource."
   },
+  "deleteTasksService": "Assignments successfully deleted.",
+  "findAndValidateTasksService": {
+    "notAuthorized": "You are not authorized.",
+    "noTasksProvided": "No assignments provided.",
+    "oneOrMoreTasksNotFound": "One or more assignments not found with the provided data."
+  },
+  "finishTasksService": "Assignments successfully finished.",
+  "taskExpiredAndFailed": {
+    "invalidId": "Please provide valid ID for assignment.",
+    "notAuthorized": "You are not authorized.",
+    "taskNotFound": "Assignment not found.",
+    "taskAlreadyFailed": "Assignment is already failed or completed."
+  },
   "editProfileService": {
     "editProfileValidData": "Please provide valid user data to update your profile.",
     "notAuthorized": "You are not authorized to access these resources.",

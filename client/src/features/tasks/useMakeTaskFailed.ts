@@ -18,7 +18,11 @@ function useMakeTaskFailed() {
       updateExpiredTask(data);
     },
     onError: (error) => {
-      toast.error(formatErrorMessage(error));
+      const errorToShow = formatErrorMessage(error);
+
+      if (errorToShow !== undefined && errorToShow) {
+        toast.error(errorToShow);
+      }
     },
   });
 

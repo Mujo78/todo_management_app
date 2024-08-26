@@ -66,7 +66,7 @@ namespace server.Controllers.v1
         public async Task<ActionResult> DeleteMyAssignments()
         {
             await assignmentService.DeleteAllAssignmentsAsync();
-            return Ok("Assignments successfully deleted.");
+            return Ok("deleteTasksService");
         }
 
         [HttpDelete("selected")]
@@ -79,7 +79,7 @@ namespace server.Controllers.v1
         public async Task<ActionResult> DeleteSelectedAssignemnts([FromBody] List<Guid> assignmentIds)
         {
             await assignmentService.DeleteSelectedAssignmentsAsync(assignmentIds);
-            return Ok("Assignments successfully deleted.");
+            return Ok("deleteTasksService");
         }
 
         [HttpPost]
@@ -137,7 +137,7 @@ namespace server.Controllers.v1
         public async Task<ActionResult> MakeAssignemntsFinished([FromBody] List<Guid> assignmentIds)
         {
             await assignmentService.MakeAssignmentsCompleted(assignmentIds);
-            return Ok("Assignments successfully finished.");
+            return Ok("finishTasksService");
         }
 
         [AllowAnonymous]

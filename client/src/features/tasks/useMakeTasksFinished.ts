@@ -4,8 +4,10 @@ import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { formatErrorMessage } from "../../utils/user/userUtils";
 import useTaskStore from "../../app/taskSlice";
+import { useTranslation } from "react-i18next";
 
 function useMakeTasksFinished() {
+  const { t } = useTranslation();
   const { makeTasksFinished } = useTaskStore();
   const {
     mutate: finishTasks,
@@ -17,11 +19,15 @@ function useMakeTasksFinished() {
     mutationKey: ["makeTasksFinished"],
     mutationFn: MakeTaskFinishedFn,
     onSuccess: () => {
-      toast.success("Tasks successfully completed.");
+      toast.success(t("finishTasksService"));
       makeTasksFinished();
     },
     onError: (error) => {
-      toast.error(formatErrorMessage(error));
+      const errorToShow = formatErrorMessage(error);
+
+      if (errorToShow !== undefined && errorToShow) {
+        toast.error(errorToShow);
+      }
     },
   });
 

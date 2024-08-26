@@ -1,5 +1,8 @@
-import { describe } from "vitest";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import { beforeEach, describe } from "vitest";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { serviceWorker } from "../../../msw/Worker";
 import {
@@ -35,13 +38,30 @@ const resetPasswordBaseFn = (
 };
 
 describe("Reset Password Form component testing", () => {
-  it("Should render", () => {
+  beforeEach(async () => {
+    await changeLng("eng");
+  });
+  it("Should render and display on english language", () => {
     renderWithRouter(["/password-reset/:token"]);
 
-    const newPasswordField = screen
-      .getByTestId("New Password")
-      .querySelector("input");
-    expect(newPasswordField).toBeInTheDocument();
+    const newPasswordFieldLabel = screen.getByLabelText("New Password");
+    const confirmNewPasswordFieldLabel =
+      screen.getByLabelText("Confirm Password");
+
+    expect(newPasswordFieldLabel).toBeInTheDocument();
+    expect(confirmNewPasswordFieldLabel).toBeInTheDocument();
+  });
+
+  it("Should render and display on bosnian language", async () => {
+    await changeLng("bs");
+    renderWithRouter(["/password-reset/:token"]);
+
+    const newPasswordFieldLabel = screen.getByLabelText("Nova Lozinka");
+    const confirmNewPasswordFieldLabel =
+      screen.getByLabelText("Potvrdi Lozinku");
+
+    expect(newPasswordFieldLabel).toBeInTheDocument();
+    expect(confirmNewPasswordFieldLabel).toBeInTheDocument();
   });
 
   it.each([
