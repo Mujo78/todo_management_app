@@ -102,9 +102,9 @@
     "addANewTask": "Add a new task"
   },
   "tabNavigation": {
-    "tasks": "Zadaci",
-    "add": "Dodaj",
-    "profile": "Profil"
+    "tasks": "Tasks",
+    "add": "Add",
+    "profile": "Profile"
   },
   "headerOptions": {
     "makeFinished": "Make finished",

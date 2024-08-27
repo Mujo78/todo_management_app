@@ -1,7 +1,10 @@
 import { beforeEach, describe } from "vitest";
 import useAuthStore from "../../../app/authSlice";
 import { mockStore, serviceWorker } from "../../../msw/Worker";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import { changePasswordUserNotFoundRequest } from "../../../msw/authHandlers";
 
@@ -47,16 +50,62 @@ const baseChangePasswordFn = async (
 };
 
 describe("Change Password component testing", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     (useAuthStore as unknown as jest.Mock).mockReturnValue(mockStore);
+    await changeLng("eng");
   });
 
-  it("Should render", () => {
+  it("Should render and display component on english language", () => {
     renderWithRouter(["/profile/change-password"]);
+
+    const oldPasswordElement = screen
+      .getByLabelText("Password")
+      .querySelector("input");
+    expect(oldPasswordElement).toBeInTheDocument();
+    expect(oldPasswordElement).toBeVisible();
+
     const newPasswordElement = screen
-      .getByTestId("New Password")
+      .getByLabelText("New Password")
       .querySelector("input");
     expect(newPasswordElement).toBeInTheDocument();
+    expect(newPasswordElement).toBeVisible();
+
+    const confirmNewPasswordElement = screen
+      .getByLabelText("Confirm New Password")
+      .querySelector("input");
+    expect(confirmNewPasswordElement).toBeInTheDocument();
+    expect(confirmNewPasswordElement).toBeVisible();
+
+    const saveBtn = screen.getByRole("button", { name: /Save changes/ });
+    expect(saveBtn).toBeInTheDocument();
+    expect(saveBtn).toBeVisible();
+  });
+
+  it("Should render and display component on english language", async () => {
+    await changeLng("bs");
+    renderWithRouter(["/profile/change-password"]);
+
+    const oldPasswordElement = screen
+      .getByLabelText("Lozinka")
+      .querySelector("input");
+    expect(oldPasswordElement).toBeInTheDocument();
+    expect(oldPasswordElement).toBeVisible();
+
+    const newPasswordElement = screen
+      .getByLabelText("Nova Lozinka")
+      .querySelector("input");
+    expect(newPasswordElement).toBeInTheDocument();
+    expect(newPasswordElement).toBeVisible();
+
+    const confirmNewPasswordElement = screen
+      .getByLabelText("Potvrdi Lozinku")
+      .querySelector("input");
+    expect(confirmNewPasswordElement).toBeInTheDocument();
+    expect(confirmNewPasswordElement).toBeVisible();
+
+    const saveBtn = screen.getByRole("button", { name: /Spremi/ });
+    expect(saveBtn).toBeInTheDocument();
+    expect(saveBtn).toBeVisible();
   });
 
   it.each([

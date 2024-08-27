@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Box, Stack, Typography, useMediaQuery } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import AppLink from "../../UI/AppLink";
 import {
@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 const ProfileLayout: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation().pathname;
-  const matches = useMediaQuery("(max-width:600px)");
 
   return (
     <Stack flexGrow={1}>
@@ -43,19 +42,72 @@ const ProfileLayout: React.FC = () => {
           gap={4}
         >
           <AppLink to="/profile" underline>
-            {matches ? (
-              <DashboardCustomizeOutlined />
-            ) : (
-              t("profileLinks.overview")
-            )}
+            <DashboardCustomizeOutlined
+              sx={{
+                display: {
+                  xs: "block",
+                  sm: "none",
+                },
+              }}
+            />
+            <Typography
+              component="span"
+              sx={{
+                font: "inherit",
+                display: {
+                  xs: "none",
+                  sm: "block",
+                },
+              }}
+            >
+              {t("profileLinks.overview")}
+            </Typography>
           </AppLink>
 
           <AppLink to="/profile/edit" underline>
-            {matches ? <EditOutlined /> : t("profileLinks.edit")}
+            <EditOutlined
+              sx={{
+                display: {
+                  xs: "block",
+                  sm: "none",
+                },
+              }}
+            />
+            <Typography
+              component="span"
+              sx={{
+                font: "inherit",
+                display: {
+                  xs: "none",
+                  sm: "block",
+                },
+              }}
+            >
+              {t("profileLinks.edit")}
+            </Typography>
           </AppLink>
 
           <AppLink to="/profile/change-password" underline>
-            {matches ? <HttpsOutlined /> : t("profileLinks.changePassword")}
+            <HttpsOutlined
+              sx={{
+                display: {
+                  xs: "block",
+                  sm: "none",
+                },
+              }}
+            />
+            <Typography
+              component="span"
+              sx={{
+                font: "inherit",
+                display: {
+                  xs: "none",
+                  sm: "block",
+                },
+              }}
+            >
+              {t("profileLinks.changePassword")}
+            </Typography>
           </AppLink>
         </Box>
 

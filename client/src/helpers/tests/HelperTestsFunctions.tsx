@@ -68,6 +68,15 @@ export const chooseLngFromDropdown = (lng: string) => {
   fireEvent.click(lngItem);
 };
 
+export const openDropdownAndChooseLng = (lng: string) => {
+  const btnMe = screen.getByLabelText("account of current user");
+  expect(btnMe).toBeInTheDocument();
+
+  fireEvent.click(btnMe);
+
+  chooseLngFromDropdown(lng);
+};
+
 export const changeLng = async (lng: "bs" | "eng") => {
   await in18n.changeLanguage(lng);
 };

@@ -2,7 +2,10 @@ import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import { describe, expect } from "vitest";
 import useAuthStore from "../../../app/authSlice";
 import { mockStore, serviceWorker } from "../../../msw/Worker";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 import { updateProfileForbiddenRequest } from "../../../msw/authHandlers";
 
 vi.mock("../../../app/authSlice.ts", () => ({
@@ -10,16 +13,45 @@ vi.mock("../../../app/authSlice.ts", () => ({
 }));
 
 describe("Edit Profile component testing", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     (useAuthStore as unknown as jest.Mock).mockReturnValue(mockStore);
+    await changeLng("eng");
     renderWithRouter(["/profile/edit"]);
   });
 
-  it("Should render", () => {
-    const userEmailInput = screen
-      .getByLabelText("Email")
-      .querySelector("input");
+  it("Should render and display text on english language", () => {
+    const userEmailInput = screen.getByLabelText("Email");
+
     expect(userEmailInput).toBeInTheDocument();
+    expect(userEmailInput).toBeVisible();
+
+    const userNameInput = screen.getByLabelText(/name\/username/i);
+
+    expect(userNameInput).toBeInTheDocument();
+    expect(userNameInput).toBeVisible();
+
+    const saveBtn = screen.getByRole("button", { name: /Save changes/ });
+    expect(saveBtn).toBeInTheDocument();
+    expect(saveBtn).toBeVisible();
+  });
+
+  it("Should render and display text on bosnian language", async () => {
+    await changeLng("bs");
+    renderWithRouter(["/profile/edit"]);
+
+    const userEmailEl = screen.getAllByLabelText("Email")[0];
+
+    expect(userEmailEl.querySelector("input")).toBeInTheDocument();
+    expect(userEmailEl.querySelector("input")).toBeVisible();
+
+    const userNameInput = screen.getByLabelText(/ime\/korisničko ime/i);
+
+    expect(userNameInput).toBeInTheDocument();
+    expect(userNameInput).toBeVisible();
+
+    const saveBtn = screen.getByRole("button", { name: /Spremi/ });
+    expect(saveBtn).toBeInTheDocument();
+    expect(saveBtn).toBeVisible();
   });
 
   it("Should return email already used", async () => {

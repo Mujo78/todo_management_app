@@ -1,7 +1,10 @@
 import { describe, it } from "vitest";
 import useAuthStore from "../../../app/authSlice";
 import { mockStore } from "../../../msw/Worker";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 import { fireEvent, screen } from "@testing-library/react";
 
 vi.mock("../../../app/authSlice.ts", () => ({
@@ -22,8 +25,9 @@ const makeToMobileScreen = () => {
 };
 
 describe("TabNavigation component testing", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     (useAuthStore as unknown as jest.Mock).mockReturnValue(mockStore);
+    await changeLng("eng");
     makeToMobileScreen();
   });
 
@@ -32,6 +36,45 @@ describe("TabNavigation component testing", () => {
 
     const tabNavigation = await screen.findByLabelText("bottomNavigation");
     expect(tabNavigation).toBeInTheDocument();
+  });
+
+  it("Should display labels on english language", async () => {
+    renderWithRouter(["/home"]);
+
+    const tasksTabNavigation = await screen.findByLabelText("TabNavBtnTasks");
+    const addTabNavigation = await screen.findByLabelText("TabNavBtnAdd");
+    const profileTabNavigation = await screen.findByLabelText(
+      "TabNavBtnProfile"
+    );
+
+    expect(tasksTabNavigation).toBeInTheDocument();
+    expect(tasksTabNavigation).toHaveTextContent("Tasks");
+
+    expect(addTabNavigation).toBeInTheDocument();
+    expect(addTabNavigation).toHaveTextContent("Add");
+
+    expect(profileTabNavigation).toBeInTheDocument();
+    expect(profileTabNavigation).toHaveTextContent("Profile");
+  });
+
+  it("Should display labels on bosnian language", async () => {
+    await changeLng("bs");
+    renderWithRouter(["/home"]);
+
+    const tasksTabNavigation = await screen.findByLabelText("TabNavBtnTasks");
+    const addTabNavigation = await screen.findByLabelText("TabNavBtnAdd");
+    const profileTabNavigation = await screen.findByLabelText(
+      "TabNavBtnProfile"
+    );
+
+    expect(tasksTabNavigation).toBeInTheDocument();
+    expect(tasksTabNavigation).toHaveTextContent("Zadaci");
+
+    expect(addTabNavigation).toBeInTheDocument();
+    expect(addTabNavigation).toHaveTextContent("Dodaj");
+
+    expect(profileTabNavigation).toBeInTheDocument();
+    expect(profileTabNavigation).toHaveTextContent("Profil");
   });
 
   it("Should navigate to the add new task page", async () => {

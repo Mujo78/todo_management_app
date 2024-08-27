@@ -10,7 +10,6 @@ import {
   ListItemText,
   Stack,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
 import useAuthStore from "../../../app/authSlice";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -18,7 +17,6 @@ import { useTranslation } from "react-i18next";
 
 const AppSidebar: React.FC = () => {
   const { t } = useTranslation();
-  const matches = useMediaQuery("(min-width:900px)");
   const navigate = useNavigate();
   const location = useLocation().pathname;
   const { auth } = useAuthStore();
@@ -82,7 +80,17 @@ const AppSidebar: React.FC = () => {
               >
                 <Assignment />
               </ListItemIcon>
-              {matches && <ListItemText primary={t("appSidebar.tasks")} />}
+
+              <ListItemText
+                sx={{
+                  display: {
+                    xs: "none",
+                    md: "block",
+                  },
+                }}
+                aria-label="tasks-text"
+                primary={t("appSidebar.tasks")}
+              />
             </ListItemButton>
           </ListItem>
           <ListItem
@@ -99,7 +107,17 @@ const AppSidebar: React.FC = () => {
               >
                 <PersonOutline />
               </ListItemIcon>
-              {matches && <ListItemText primary={t("appSidebar.profile")} />}
+
+              <ListItemText
+                sx={{
+                  display: {
+                    xs: "none",
+                    md: "block",
+                  },
+                }}
+                aria-label="profile-text"
+                primary={t("appSidebar.profile")}
+              />
             </ListItemButton>
           </ListItem>
         </List>
@@ -111,7 +129,18 @@ const AppSidebar: React.FC = () => {
         startIcon={<AddTask />}
         sx={{ borderRadius: 5, py: 1.5 }}
       >
-        {matches && t("appSidebar.addANewTask")}
+        <Typography
+          component="span"
+          sx={{
+            font: "inherit",
+            display: {
+              xs: "none",
+              md: "block",
+            },
+          }}
+        >
+          {t("appSidebar.addANewTask")}
+        </Typography>
       </Button>
     </Stack>
   );

@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   changeLng,
@@ -27,25 +27,27 @@ describe("Error Page component testing", () => {
   });
 
   it("Should render not found page error on bosnian language", async () => {
-    await changeLng("bs");
+    await act(async () => {
+      await changeLng("bs");
+    });
     renderWithRouter(["/****"]);
 
-    const errorTitle = screen.getByText("Stranica nije pronađena", {
+    const errorTitle = screen.getAllByText("Stranica nije pronađena", {
       selector: "h4",
     });
-    const errorMessage = screen.getByText(
+    const errorMessage = screen.getAllByText(
       "Žao nam je, nismo mogli pronaći stranicu koju tražite.",
       { selector: "p" }
     );
-    const homeLink = screen.getByText("Početna", { selector: "a" });
-    const contactUsLink = screen.getByText("Kontaktirajte nas", {
+    const homeLink = screen.getAllByText("Početna", { selector: "a" });
+    const contactUsLink = screen.getAllByText("Kontaktirajte nas", {
       selector: "a",
     });
 
-    expect(errorTitle).toBeInTheDocument();
-    expect(errorMessage).toBeInTheDocument();
-    expect(homeLink).toBeInTheDocument();
-    expect(contactUsLink).toBeInTheDocument();
+    expect(errorTitle[0]).toBeInTheDocument();
+    expect(errorMessage[0]).toBeInTheDocument();
+    expect(homeLink[0]).toBeInTheDocument();
+    expect(contactUsLink[0]).toBeInTheDocument();
   });
 
   it("Should navigate to the home/login page", async () => {

@@ -2,11 +2,15 @@ import { describe, it } from "vitest";
 import useAuthStore from "../../../app/authSlice";
 import { mockStore, serviceWorker } from "../../../msw/Worker";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import {
+  changeLng,
+  openDropdownAndChooseLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 import { invalidTokenLogoutHandler } from "../../../msw/handlers";
 import { format } from "date-fns";
 
-vi.mock("../../../app//authSlice.ts", () => ({
+vi.mock("../../../app/authSlice.ts", () => ({
   default: vi.fn(),
 }));
 
@@ -25,15 +29,123 @@ const navigateTo = (labelName: string) => {
 };
 
 describe("AppNavbar component testing", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     (useAuthStore as unknown as jest.Mock).mockReturnValue(mockStore);
+    await changeLng("eng");
   });
 
-  it("Should render", () => {
+  it("Should render and display elements on english language", () => {
     renderWithRouter(["/home"]);
     const nameOfTheApp = screen.getByText("TaskMaster", { selector: "a" });
+    const dropDownBtn = screen.getByLabelText("account of current user");
+
+    openDropdown();
+
+    const profileNavLink = screen.getByLabelText("ProfileLink");
+    const homeNavLink = screen.getByLabelText("HomeLink");
+    const lngBtn = screen.getByLabelText("LanguageBtn");
+    const logoutBtn = screen.getByLabelText("LogoutBtnLink");
 
     expect(nameOfTheApp).toBeInTheDocument();
+    expect(dropDownBtn).toHaveTextContent("Me");
+
+    expect(profileNavLink).toBeInTheDocument();
+    expect(profileNavLink).toHaveTextContent("Profile");
+
+    expect(homeNavLink).toBeInTheDocument();
+    expect(homeNavLink).toHaveTextContent("Home");
+
+    expect(lngBtn).toBeInTheDocument();
+    expect(lngBtn).toHaveTextContent("Language");
+
+    expect(logoutBtn).toBeInTheDocument();
+    expect(logoutBtn).toHaveTextContent("Log out");
+  });
+
+  it("Should open language dropdown and show options on english language", () => {
+    renderWithRouter(["/home"]);
+    openDropdown();
+
+    const lngBtn = screen.getByLabelText("LanguageBtn");
+
+    expect(lngBtn).toBeInTheDocument();
+    expect(lngBtn).toHaveTextContent("Language");
+
+    fireEvent.click(lngBtn);
+
+    const englishNavBtn = screen.getByLabelText("EnglishLngItem");
+    const bosnianNavBtn = screen.getByLabelText("BosnianLngItem");
+
+    expect(englishNavBtn).toBeInTheDocument();
+    expect(englishNavBtn).toHaveTextContent("English");
+    expect(bosnianNavBtn).toBeInTheDocument();
+    expect(bosnianNavBtn).toHaveTextContent("Bosnian");
+  });
+
+  it("Should render, open dropdown and display text on bosnian language", async () => {
+    await changeLng("bs");
+
+    renderWithRouter(["/home"]);
+    const nameOfTheApp = screen.getByText("TaskMaster", { selector: "a" });
+    const dropDownBtn = screen.getByLabelText("account of current user");
+
+    openDropdown();
+
+    const profileNavLink = screen.getByLabelText("ProfileLink");
+    const homeNavLink = screen.getByLabelText("HomeLink");
+    const lngBtn = screen.getByLabelText("LanguageBtn");
+    const logoutBtn = screen.getByLabelText("LogoutBtnLink");
+
+    expect(nameOfTheApp).toBeInTheDocument();
+    expect(dropDownBtn).toHaveTextContent("Ja");
+
+    expect(profileNavLink).toBeInTheDocument();
+    expect(profileNavLink).toHaveTextContent("Profil");
+
+    expect(homeNavLink).toBeInTheDocument();
+    expect(homeNavLink).toHaveTextContent("Početna");
+
+    expect(lngBtn).toBeInTheDocument();
+    expect(lngBtn).toHaveTextContent("Jezik");
+
+    expect(logoutBtn).toBeInTheDocument();
+    expect(logoutBtn).toHaveTextContent("Odjava");
+  });
+
+  it("Should open language dropdown and display options on bosnian language", async () => {
+    await changeLng("bs");
+
+    renderWithRouter(["/home"]);
+    openDropdown();
+
+    const lngBtn = screen.getByLabelText("LanguageBtn");
+
+    expect(lngBtn).toBeInTheDocument();
+    expect(lngBtn).toHaveTextContent("Jezik");
+
+    fireEvent.click(lngBtn);
+
+    const englishNavBtn = screen.getByLabelText("EnglishLngItem");
+    const bosnianNavBtn = screen.getByLabelText("BosnianLngItem");
+
+    expect(englishNavBtn).toBeInTheDocument();
+    expect(englishNavBtn).toHaveTextContent("Engleski");
+    expect(bosnianNavBtn).toBeInTheDocument();
+    expect(bosnianNavBtn).toHaveTextContent("Bosanski");
+  });
+
+  it("Should change language to bosnian", async () => {
+    renderWithRouter(["/home"]);
+    openDropdown();
+
+    openDropdownAndChooseLng("BosnianLngItem");
+
+    await waitFor(() => {
+      const homeNavLink = screen.getByLabelText("HomeLink");
+
+      expect(homeNavLink).toBeInTheDocument();
+      expect(homeNavLink).toHaveTextContent("Početna");
+    });
   });
 
   it("Should navigate when click navbar name of the app", () => {
