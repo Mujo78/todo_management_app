@@ -1,6 +1,9 @@
 import { afterEach, beforeEach, describe, expect, vi } from "vitest";
 import useAuthStore from "../../app/authSlice";
-import { renderWithRouter } from "../../helpers/tests/HelperTestsFunctions";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../helpers/tests/HelperTestsFunctions";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { mockStore, serviceWorker } from "../../msw/Worker";
 import { shouldReturnEmptyArrayForTasksData } from "../../msw/taskHandlers";
@@ -26,8 +29,9 @@ const searchFor = (name: string) => {
 };
 
 describe("Home Page component testing", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     (useAuthStore as unknown as jest.Mock).mockReturnValue(mockStore);
+    await changeLng("eng");
   });
 
   it("Should render", async () => {
@@ -89,6 +93,18 @@ describe("Home Page component testing", () => {
 
     await waitFor(() => {
       const alertInfo = screen.getByText("No data available.");
+      expect(alertInfo).toBeInTheDocument();
+    });
+  });
+
+  it("Should display no data available when there are no tasks available - bosnian language", async () => {
+    serviceWorker.use(shouldReturnEmptyArrayForTasksData);
+    await changeLng("bs");
+
+    renderWithRouter(["/home"]);
+
+    await waitFor(() => {
+      const alertInfo = screen.getByText("Nema dostupnih podataka.");
       expect(alertInfo).toBeInTheDocument();
     });
   });

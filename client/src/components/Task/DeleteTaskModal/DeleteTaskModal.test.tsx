@@ -2,7 +2,10 @@ import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { describe } from "vitest";
 import useAuthStore from "../../../app/authSlice";
 import { mockStore, serviceWorker } from "../../../msw/Worker";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 import {
   notAuthorizedDeletingTaskHandler,
   notFoundDeletingTaskHandler,
@@ -22,8 +25,64 @@ const baseModalFn = async () => {
 };
 
 describe("Delete task modal component testing", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     (useAuthStore as unknown as jest.Mock).mockReturnValue(mockStore);
+    await changeLng("eng");
+  });
+
+  it("Should open and display text on english language", async () => {
+    renderWithRouter(["/edit-task/:taskId"]);
+
+    await baseModalFn();
+
+    await waitFor(async () => {
+      const taskTitle = screen.getByText(
+        "Are you sure you want to delete your task: Test Assignment Four?",
+        { selector: "h2" }
+      );
+      expect(taskTitle).toBeInTheDocument();
+      expect(taskTitle).toBeVisible();
+
+      const closeButton = screen.getByLabelText("CloseDeleteTaskModalBtn");
+
+      expect(closeButton).toBeInTheDocument();
+      expect(closeButton).toBeVisible();
+      expect(closeButton).toHaveTextContent("Close");
+
+      const confirmButton = screen.getByLabelText("ConfirmDeleteTaskModalBtn");
+
+      expect(confirmButton).toBeInTheDocument();
+      expect(confirmButton).toBeVisible();
+      expect(confirmButton).toHaveTextContent("Confirm");
+    });
+  });
+
+  it("Should open and display text on bosnian language", async () => {
+    await changeLng("bs");
+    renderWithRouter(["/edit-task/:taskId"]);
+
+    await baseModalFn();
+
+    await waitFor(async () => {
+      const taskTitle = screen.getByText(
+        "Jeste li sigurni da želite izbrisati zadatak: Test Assignment Four?",
+        { selector: "h2" }
+      );
+      expect(taskTitle).toBeInTheDocument();
+      expect(taskTitle).toBeVisible();
+
+      const closeButton = screen.getByLabelText("CloseDeleteTaskModalBtn");
+
+      expect(closeButton).toBeInTheDocument();
+      expect(closeButton).toBeVisible();
+      expect(closeButton).toHaveTextContent("Zatvori");
+
+      const confirmButton = screen.getByLabelText("ConfirmDeleteTaskModalBtn");
+
+      expect(confirmButton).toBeInTheDocument();
+      expect(confirmButton).toBeVisible();
+      expect(confirmButton).toHaveTextContent("Potvrdi");
+    });
   });
 
   it("Should open, show and close modal", async () => {

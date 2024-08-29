@@ -1,7 +1,10 @@
 import { describe, expect } from "vitest";
 import useAuthStore from "../../../app/authSlice";
 import { mockStore } from "../../../msw/Worker";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 import { screen, waitFor } from "@testing-library/react";
 import { addDays, subDays } from "date-fns";
 import { baseChangeTaskFormFn } from "../../../msw/taskHandlers";
@@ -11,15 +14,26 @@ vi.mock("../../../app//authSlice.ts", () => ({
 }));
 
 describe("Add New Task component testing", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     (useAuthStore as unknown as jest.Mock).mockReturnValue(mockStore);
+    await changeLng("eng");
   });
 
-  it("Should render", () => {
+  it("Should display on english language", () => {
     renderWithRouter(["/add-task"]);
 
     const title = screen.getByText("Add a new Task", { selector: "h5" });
     expect(title).toBeInTheDocument();
+    expect(title).toBeVisible();
+  });
+
+  it("Should display on english language", async () => {
+    await changeLng("bs");
+    renderWithRouter(["/add-task"]);
+
+    const title = screen.getByText("Dodaj novi zadatak", { selector: "h5" });
+    expect(title).toBeInTheDocument();
+    expect(title).toBeVisible();
   });
 
   it.each([

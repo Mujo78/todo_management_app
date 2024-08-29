@@ -1,5 +1,8 @@
 import { describe, expect } from "vitest";
-import { renderWithRouter } from "../../../helpers/tests/HelperTestsFunctions";
+import {
+  changeLng,
+  renderWithRouter,
+} from "../../../helpers/tests/HelperTestsFunctions";
 import { screen, waitFor } from "@testing-library/react";
 import useAuthStore from "../../../app/authSlice";
 import { mockStore, serviceWorker } from "../../../msw/Worker";
@@ -40,12 +43,34 @@ const baseCheckForGetMethodOnFormFields = async () => {
 };
 
 describe("Edit Task component testing", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     (useAuthStore as unknown as jest.Mock).mockReturnValue(mockStore);
+    await changeLng("eng");
   });
 
   it("Should render and get data", async () => {
     await baseCheckForGetMethodOnFormFields();
+  });
+
+  it("Should display on english language", async () => {
+    renderWithRouter(["/edit-task/:taskId"]);
+
+    await waitFor(() => {
+      const title = screen.getByText("Edit task", { selector: "h5" });
+      expect(title).toBeInTheDocument();
+      expect(title).toBeVisible();
+    });
+  });
+
+  it("Should display on bosnian language", async () => {
+    await changeLng("bs");
+    renderWithRouter(["/edit-task/:taskId"]);
+
+    await waitFor(() => {
+      const title = screen.getByText("Uređivanje zadatka", { selector: "h5" });
+      expect(title).toBeInTheDocument();
+      expect(title).toBeVisible();
+    });
   });
 
   it("Should display Assignment not found", async () => {

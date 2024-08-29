@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateUpdateTaskType } from "../../../app/taskSlice";
 import useCreateTask from "../../../features/tasks/useCreateNewTask";
 import SuccessAlert from "../../../components/UI/SuccessAlert";
-import TaskForm from "../../../components/Task/TaskForm";
+import TaskForm from "../../../components/Task/TaskForm/TaskForm";
 import { useTranslation } from "react-i18next";
 
 const AddNewTask = () => {

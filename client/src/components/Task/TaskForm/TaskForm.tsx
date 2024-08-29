@@ -27,7 +27,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   formatErrorFieldMessage,
   isErrorForKey,
-} from "../../utils/user/userUtils";
+} from "../../../utils/user/userUtils";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";

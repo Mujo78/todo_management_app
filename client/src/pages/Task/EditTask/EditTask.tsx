@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { CreateUpdateTaskType, TaskType } from "../../../app/taskSlice";
 import { addTaskValidationSchema } from "../../../validations/task/addNewTaskValidation";
 import { useEffect, useState } from "react";
-import TaskForm from "../../../components/Task/TaskForm";
+import TaskForm from "../../../components/Task/TaskForm/TaskForm";
 import useUpdateTask from "../../../features/tasks/useUpdateTask";
 import SuccessAlert from "../../../components/UI/SuccessAlert";
 import { Alert, CircularProgress, Stack } from "@mui/material";
