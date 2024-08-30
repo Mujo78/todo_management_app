@@ -24,7 +24,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Password and Confirm password must match.", content.Detail);
+            Assert.Equal("registrationService.passwordsMustMatch", content.Detail);
 
         }
 
@@ -45,7 +45,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Email is already used!", content.Detail);
+            Assert.Equal("registrationService.emailAlreadyUsed", content.Detail);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace server.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Equal("Please check your inbox, for verification email.", content);
+            Assert.Equal("registrationService.successMessage", content);
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("User not found.", content.Detail);
+            Assert.Equal("forgotPasswordService.userNotFound", content.Detail);
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Reset password link already created. Please check your inbox.", content.Detail);
+            Assert.Equal("forgotPasswordService.resetLinkAlreadyCreated", content.Detail);
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace server.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Equal("Check your email inbox to proceede with restarting your password.", content);
+            Assert.Equal("forgotPasswordService.successMessage", content);
         }
 
 
@@ -130,7 +130,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("New password and confirm password must match.", content.Detail);
+            Assert.Equal("resetPasswordService.passwordsMustMatch", content.Detail);
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Invalid token provided. Token not found.", content.Detail);
+            Assert.Equal("validateUserTokenService.invalidTokenNotFound", content.Detail);
         }
 
         [Fact]
@@ -164,7 +164,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Invalid token provided.", content.Detail);
+            Assert.Equal("validateUserTokenService.invalidToken", content.Detail);
         }
 
         [Fact]
@@ -181,7 +181,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("New password cannot be the same as the old password.", content.Detail);
+            Assert.Equal("resetPasswordService.newPasswordSameAsOld", content.Detail);
         }
 
         [Fact]
@@ -199,7 +199,7 @@ namespace server.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Equal("Password successfully changed.", content);
+            Assert.Equal("resetPasswordService.successMessage", content);
         }
 
         [Fact]
@@ -211,7 +211,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Invalid token provided. Token not found.", content.Detail);
+            Assert.Equal("validateUserTokenService.invalidTokenNotFound", content.Detail);
         }
 
         [Fact]
@@ -223,7 +223,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Invalid token provided.", content.Detail);
+            Assert.Equal("validateUserTokenService.invalidToken", content.Detail);
         }
         
         [Fact]
@@ -235,7 +235,7 @@ namespace server.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Equal("Successfully verified email address.", content);
+            Assert.Equal("verifyEmailService", content);
         }
     }
 }

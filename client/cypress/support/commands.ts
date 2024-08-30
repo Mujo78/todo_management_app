@@ -26,6 +26,7 @@ declare namespace Cypress {
     addTask(data: CreateUpdateTaskType): Chainable<void>;
     editTask(data: CreateUpdateTaskType): Chainable<void>;
     chooseTaskToAction(title?: string): Chainable<void>;
+    changeLng(lng: "eng" | "bs"): Chainable<void>;
   }
 }
 
@@ -119,4 +120,12 @@ Cypress.Commands.add("chooseTaskToAction", (title) => {
     .click();
 
   cy.wait(1000);
+});
+
+Cypress.Commands.add("changeLng", (lng) => {
+  const language = lng === "eng" ? "EnglishLngItem" : "BosnianLngItem";
+  cy.get('button[aria-label="LanguageBtn"]').should("be.visible").click();
+
+  cy.get(`li[aria-label="${language}"`).should("be.visible").click();
+  cy.wait(1500);
 });

@@ -18,7 +18,7 @@ namespace server.Tests.Utils.Validations
             ValidationResult result = attribute.GetValidationResult(value, context)!;
 
             result.Should().NotBe(ValidationResult.Success);
-            result.ErrorMessage.Should().Be("Please choose valid priority for assignment.");
+            result.ErrorMessage.Should().Be("taskFormService.priorityValid");
         }
 
         [Theory]
@@ -33,7 +33,7 @@ namespace server.Tests.Utils.Validations
             ValidationResult result = attribute.GetValidationResult(value, context)!;
 
             result.Should().NotBe(ValidationResult.Success);
-            result.ErrorMessage.Should().Be("Priority must be: Low, Medium or High.");
+            result.ErrorMessage.Should().Be("taskFormService.priorityValidOption");
         }
 
         [Theory]

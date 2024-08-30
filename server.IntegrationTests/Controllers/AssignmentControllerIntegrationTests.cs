@@ -42,7 +42,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Assignment not found.", content.Detail);
+            Assert.Equal("taskService.taskNotFound", content.Detail);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal($"Assignment with title: '{createDTO.Title}' already exists.", content.Detail);
+            Assert.Equal("addTaskService.alreadyExists", content.Detail);
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace server.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Equal("Assignments successfully deleted.", content);
+            Assert.Equal("deleteTasksService", content);
         }
 
         [Fact]
@@ -128,7 +128,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Assignment not found.", content.Detail);
+            Assert.Equal("deleteTaskService.taskNotFound", content.Detail);
         }
 
         [Fact]
@@ -165,7 +165,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Invalid ID sent.", content.Detail);
+            Assert.Equal("editTaskService.invalidID", content.Detail);
         }
 
         [Fact]
@@ -189,7 +189,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("You do not have permission to access this resource.", content.Detail);
+            Assert.Equal("editTaskService.forbidden", content.Detail);
         }
 
         [Fact]
@@ -214,7 +214,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Assignment not found.", content.Detail);
+            Assert.Equal("editTaskService.taskNotFound", content.Detail);
         }
 
         [Fact]
@@ -240,7 +240,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal($"Assignment with title: '{updateDTO.Title}' already exists.", content.Detail);
+            Assert.Equal("editTaskService.alreadyExists", content.Detail);
         }
 
         [Fact]
@@ -272,74 +272,80 @@ namespace server.IntegrationTests.Controllers
         [Fact]
         public async Task DeleteSelectedAssignments_ShouldReturnBadRequest_WhenNoAssignemntProvidedInArray()
         {
-            List<Guid> assignmentIds = new();
+            List<Guid> assignmentIds = [];
 
-            var request = new HttpRequestMessage(HttpMethod.Delete, "/api/v1/assignments/selected");
-            request.Content = new StringContent(JsonConvert.SerializeObject(assignmentIds), Encoding.UTF8, "application/json");
-            
+            var request = new HttpRequestMessage(HttpMethod.Delete, "/api/v1/assignments/selected")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(assignmentIds), Encoding.UTF8, "application/json")
+            };
+
             var response = await _authorizedClient.SendAsync(request);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("No assignments provided.", content.Detail);
+            Assert.Equal("findAndValidateTasksService.noTasksProvided", content.Detail);
         }
 
         [Fact]
         public async Task DeleteSelectedAssignments_ShouldReturnNotFound_WhenNoAssignemntProvidedInArrayNotFounded()
         {
-            List<Guid> assignmentIds = new()
-            {
+            List<Guid> assignmentIds =
+            [
                 Guid.NewGuid(),
                 Guid.NewGuid()
-            };
+            ];
 
-            var request = new HttpRequestMessage(HttpMethod.Delete, "/api/v1/assignments/selected");
-            request.Content = new StringContent(JsonConvert.SerializeObject(assignmentIds), Encoding.UTF8, "application/json");
+            var request = new HttpRequestMessage(HttpMethod.Delete, "/api/v1/assignments/selected")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(assignmentIds), Encoding.UTF8, "application/json")
+            };
 
             var response = await _authorizedClient.SendAsync(request);
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("One or more assignments not found with the provided data.", content.Detail);
+            Assert.Equal("findAndValidateTasksService.oneOrMoreTasksNotFound", content.Detail);
         }
 
         [Fact]
         public async Task DeleteSelectedAssignments_ShouldBeSuccess()
         {
             Guid assignmentId = Guid.Parse("d2bcc9c5-1540-4d2a-a815-f5fc8ad0706e");
-            List<Guid> assignmentIds = new()
-            {
+            List<Guid> assignmentIds =
+            [
                 assignmentId
-            };
+            ];
 
-            var request = new HttpRequestMessage(HttpMethod.Delete, "/api/v1/assignments/selected");
-            request.Content = new StringContent(JsonConvert.SerializeObject(assignmentIds), Encoding.UTF8, "application/json");
+            var request = new HttpRequestMessage(HttpMethod.Delete, "/api/v1/assignments/selected")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(assignmentIds), Encoding.UTF8, "application/json")
+            };
 
             var response = await _authorizedClient.SendAsync(request);
 
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Equal("Assignments successfully deleted.", content);
+            Assert.Equal("deleteTasksService", content);
         }
 
         [Fact]
         public async Task MakeAssignmentsFinished_ShouldBeSuccess()
         {
             Guid assignmentId = Guid.Parse("d2bcc9c5-1540-4d2a-a815-f5fc8ad0706e");
-            List<Guid> assignmentIds = new()
-            {
+            List<Guid> assignmentIds =
+            [
                 assignmentId
-            };
+            ];
 
             var response = await _authorizedClient.PatchAsJsonAsync("/api/v1/assignments/", assignmentIds);
 
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Equal("Assignments successfully finished.", content);
+            Assert.Equal("finishTasksService", content);
         }
 
         [Fact]
@@ -352,7 +358,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Please provide valid ID for assignment.", content.Detail);
+            Assert.Equal("taskExpiredAndFailed.invalidId", content.Detail);
         }
 
         [Fact]
@@ -365,7 +371,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Please provide valid ID for assignment.", content.Detail);
+            Assert.Equal("taskExpiredAndFailed.invalidId", content.Detail);
         }
 
         [Fact]
@@ -378,7 +384,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Task is already failed or completed.", content.Detail);
+            Assert.Equal("taskExpiredAndFailed.taskAlreadyFailed", content.Detail);
         }
 
         [Fact]

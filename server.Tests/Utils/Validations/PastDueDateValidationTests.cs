@@ -16,7 +16,7 @@ namespace server.Tests.Utils.Validations
             ValidationResult result = attribute.GetValidationResult(value, context)!;
 
             result.Should().NotBe(ValidationResult.Success);
-            result.ErrorMessage.Should().Be("Invalid date!");
+            result.ErrorMessage.Should().Be("taskFormService.invalidDate");
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace server.Tests.Utils.Validations
             ValidationResult result = attribute.GetValidationResult(value, context)!;
 
             result.Should().NotBe(ValidationResult.Success);
-            result.ErrorMessage.Should().Be("Date can not be in the past!");
+            result.ErrorMessage.Should().Be("taskFormService.dueDatePast");
         }
 
         [Fact]

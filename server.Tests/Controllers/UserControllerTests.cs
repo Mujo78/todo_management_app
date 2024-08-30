@@ -35,7 +35,7 @@ namespace server.Tests.Controllers
             var result = await _controller.Registration(registrationDTO);
 
             var isSuccess = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal("Please check your inbox, for verification email.", isSuccess.Value);
+            Assert.Equal("registrationService.successMessage", isSuccess.Value);
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace server.Tests.Controllers
             var result = await _controller.Registration(registrationDTO!);
             
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Please provide valid data for registration.", badRequestResult.Value);
+            Assert.Equal("registrationService.registrationValidData", badRequestResult.Value);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace server.Tests.Controllers
             var result = await _controller.ForgotPassword(forgotPasswordDTO);
 
             var isSuccess = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal("Check your email inbox to proceede with restarting your password.", isSuccess.Value);
+            Assert.Equal("forgotPasswordService.successMessage", isSuccess.Value);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace server.Tests.Controllers
             var result = await _controller.ForgotPassword(forgotPasswordDTO!);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Please provide valid email address.", badRequestResult.Value);
+            Assert.Equal("forgotPasswordService.forgotPasswordValidData", badRequestResult.Value);
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace server.Tests.Controllers
             var result = await _controller.ResetPassword(token, resetPasswordDTO!);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Please provide valid data to change password.", badRequestResult.Value);
+            Assert.Equal("resetPasswordService.resetPasswordValidData", badRequestResult.Value);
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace server.Tests.Controllers
             var result = await _controller.ResetPassword(token, resetPasswordDTO);
 
             var isSuccess = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal("Password successfully changed.", isSuccess.Value);
+            Assert.Equal("resetPasswordService.successMessage", isSuccess.Value);
         }
 
         [Fact]
@@ -211,7 +211,7 @@ namespace server.Tests.Controllers
             var result = await _controller.UpdateMyProfile(userUpdateDTO!);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Please provide valid user data to update your profile.", badRequestResult.Value);
+            Assert.Equal("editProfileService.editProfileValidData", badRequestResult.Value);
         }
 
 
@@ -282,7 +282,7 @@ namespace server.Tests.Controllers
             var result = await _controller.ChangePassword(changePasswordDTO);
 
             var isSuccess = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal("Password successfully changed.", isSuccess.Value);
+            Assert.Equal("changePasswordService.successMessage", isSuccess.Value);
         }
 
         [Fact]
@@ -314,7 +314,7 @@ namespace server.Tests.Controllers
             var result = await _controller.ChangePassword(changePasswordDTO!);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Please provide valid data for changing password.", badRequestResult.Value);
+            Assert.Equal("changePasswordService.changePasswordValidData", badRequestResult.Value);
         }
 
         [Fact]
@@ -326,7 +326,7 @@ namespace server.Tests.Controllers
             var result = await _controller.VerifyEmail(token);
 
             var isSuccess = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal("Successfully verified email address.", isSuccess.Value);
+            Assert.Equal("verifyEmailService", isSuccess.Value);
         }
 
     }

@@ -42,7 +42,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("You are not authorize to access these resources.", content!.Detail);
+            Assert.Equal("editProfileService.notAuthorized", content!.Detail);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Email is already used!", content!.Detail);
+            Assert.Equal("editProfileService.emailAlreadyUsed", content!.Detail);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Wrong old password.", content!.Detail);
+            Assert.Equal("changePasswordService.wrongOldPassword", content!.Detail);
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("New password and confirm password must match.", content!.Detail);
+            Assert.Equal("changePasswordService.passwordsMustMatch", content!.Detail);
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("New password cannot be the same as the old password.", content!.Detail);
+            Assert.Equal("changePasswordService.newPasswordSameAsOld", content!.Detail);
         }
 
         [Fact]
@@ -154,7 +154,7 @@ namespace server.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Equal("Password successfully changed.", content);
+            Assert.Equal("changePasswordService.successMessage", content);
         }
 
         [Fact]
@@ -172,7 +172,7 @@ namespace server.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Equal("Profile succesfully deleted.", content);
+            Assert.Equal("deleteProfileService.successMessage", content);
         }
     }
 }

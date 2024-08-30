@@ -1,12 +1,29 @@
 describe("Error Page functionality testing", () => {
-  it("Should return not found page", () => {
+  it("Should return not found page and display text on english language", () => {
     cy.visit("/home-page-dont-exist");
 
-    cy.contains("404");
-    cy.contains("Page not found");
+    cy.contains("404").should("be.visible");
+    cy.contains("Page not found").should("be.visible");
+    cy.contains("Sorry, we couldn't find the page you're looking for.").should(
+      "be.visible"
+    );
 
-    cy.get('a[href="/"]').should("be.visible");
+    cy.get('a[href="/"]').should("be.visible").should("have.text", "Home");
     cy.contains("Contact Us").should("be.visible");
+  });
+
+  it("Should return not found page and display text on bosnian language", () => {
+    cy.visit("/home-page-dont-exist");
+    cy.changeLng("bs");
+
+    cy.contains("404").should("be.visible");
+    cy.contains("Stranica nije pronađena").should("be.visible");
+    cy.contains(
+      "Žao nam je, nismo mogli pronaći stranicu koju tražite."
+    ).should("be.visible");
+
+    cy.get('a[href="/"]').should("be.visible").should("have.text", "Početna");
+    cy.contains("Kontaktirajte nas").should("be.visible");
   });
 
   it("Should return on login page when user is not auth", () => {

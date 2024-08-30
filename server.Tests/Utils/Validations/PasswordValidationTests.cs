@@ -12,12 +12,12 @@ namespace server.Tests.Utils.Validations
         public void PasswordValidation_TestShouldFail_WhenValueIsNotMatchingRegEx(object value)
         {
             ValidationContext context = new(value);
-            PasswordValidation attribute = new("Password");
+            PasswordValidation attribute = new("signupFormValidation.passwordWeakness");
 
             ValidationResult result = attribute.GetValidationResult(value, context)!;
 
             result.Should().NotBe(ValidationResult.Success);
-            result.ErrorMessage.Should().Be("Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.");
+            result.ErrorMessage.Should().Be("signupFormValidation.passwordWeakness");
         }
 
         [Theory]

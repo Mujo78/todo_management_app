@@ -18,7 +18,7 @@ namespace server.Tests.Utils.Validations
             ValidationResult result = attribute.GetValidationResult(value, context)!;
 
             result.Should().NotBe(ValidationResult.Success);
-            result.ErrorMessage.Should().Be("Please choose valid status for assignment.");
+            result.ErrorMessage.Should().Be("taskFormService.statusValid");
         }
 
         [Theory]
@@ -33,7 +33,7 @@ namespace server.Tests.Utils.Validations
             ValidationResult result = attribute.GetValidationResult(value, context)!;
 
             result.Should().NotBe(ValidationResult.Success);
-            result.ErrorMessage.Should().Be("Status must be: Open, Completed or Failed.");
+            result.ErrorMessage.Should().Be("taskFormService.statusValidOption");
         }
 
         [Theory]

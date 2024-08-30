@@ -59,7 +59,7 @@ namespace server.Tests.Controllers
             var taskId = Guid.Empty;
 
             var result = await Assert.ThrowsAsync<BadRequestException>(() => _controller.GetAssignment(taskId));
-            Assert.Equal("Invalid ID sent.", result.Message);
+            Assert.Equal("taskService.invalidID", result.Message);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace server.Tests.Controllers
             var taskId = Guid.Empty;
 
             var result = await Assert.ThrowsAsync<BadRequestException>(() => _controller.DeleteAssignment(taskId));
-            Assert.Equal("Invalid ID sent.", result.Message);
+            Assert.Equal("deleteTaskService.invalidId", result.Message);
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace server.Tests.Controllers
 
             var isSuccess = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsType<string>(isSuccess.Value);
-            Assert.Equal("Assignments successfully deleted.", value);
+            Assert.Equal("deleteTasksService", value);
         }
 
         [Fact]
@@ -132,7 +132,7 @@ namespace server.Tests.Controllers
 
             var isSuccess = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsType<string>(isSuccess.Value);
-            Assert.Equal("Assignments successfully deleted.", value);
+            Assert.Equal("deleteTasksService", value);
         }
 
         [Fact]
@@ -299,7 +299,7 @@ namespace server.Tests.Controllers
 
             var isSuccess = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsType<string>(isSuccess.Value);
-            Assert.Equal("Assignments successfully finished.", value);
+            Assert.Equal("finishTasksService", value);
         }
     }
 }

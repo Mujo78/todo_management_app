@@ -48,7 +48,7 @@ namespace server.Tests.Controllers
             var result = await _controller.Login(loginDTO!);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Please provide valid data to login.", badRequestResult.Value);
+            Assert.Equal("loginService.loginValidData", badRequestResult.Value);
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace server.Tests.Controllers
             };
 
             var result = await Assert.ThrowsAsync<BadRequestException>(() => _controller.GetAccessTokenWithRefreshAction());
-            Assert.Equal("Invalid token provided.", result.Message);
+            Assert.Equal("validateUserTokenService.invalidToken", result.Message);
         }
 
         [Fact]
@@ -171,7 +171,7 @@ namespace server.Tests.Controllers
             };
 
             var result = await Assert.ThrowsAsync<BadRequestException>(() => _controller.Logout());
-            Assert.Equal("Invalid token provided.", result.Message);
+            Assert.Equal("logoutService.invalidToken", result.Message);
         }
 
         [Fact]
@@ -198,7 +198,7 @@ namespace server.Tests.Controllers
             var result = await _controller.Logout();
             var resultValue = Assert.IsType<OkObjectResult>(result);
 
-            Assert.Equal("Logged out successfully.", resultValue.Value);
+            Assert.Equal("logoutService.successMessage", resultValue.Value);
             Assert.DoesNotContain(httpContext.Response.Headers["refreshToken"], cookie => cookie!.Contains("refreshToken"));
         }
 

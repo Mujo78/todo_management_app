@@ -20,7 +20,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Account doesn't exists.", content.Detail);
+            Assert.Equal("loginService.accountDoesntExists", content.Detail);
         }
 
 
@@ -39,7 +39,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Incorrect email or password.", content.Detail);
+            Assert.Equal("loginService.incorrectEmailOrPassword", content.Detail);
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Invalid token provided.", content.Detail);
+            Assert.Equal("validateUserTokenService.invalidTokenNotFound", content.Detail);
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Invalid token provided.", content.Detail);
+            Assert.Equal("validateUserTokenService.invalidToken", content.Detail);
         }
 
         [Fact]
@@ -128,7 +128,7 @@ namespace server.IntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadFromJsonAsync<ProblemDetails>();
             Assert.NotNull(content);
-            Assert.Equal("Invalid token provided.", content!.Detail);
+            Assert.Equal("logoutService.invalidTokenNotFound", content!.Detail);
         }
 
         [Fact]
@@ -139,7 +139,7 @@ namespace server.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Equal("Logged out successfully.", content);
+            Assert.Equal("logoutService.successMessage", content);
         }
     }
 }
