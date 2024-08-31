@@ -5,11 +5,42 @@ describe("Edit Profile functionality testing", () => {
     cy.visit("/profile/edit");
   });
 
-  it("Should show form for editing profile", () => {
-    cy.get('input[name="name"]').should("be.visible");
-    cy.get('input[name="email"]').should("be.visible");
+  it("Should display form for editing profile - english language", () => {
+    cy.changeLngDropdown("bs");
 
-    cy.get('button[type="submit"]').should("be.visible");
+    cy.contains("Uređivanje profila").should("be.visible");
+
+    cy.get('input[name="name"]')
+      .should("be.visible")
+      .should("have.value", "User Testing One");
+    cy.contains("Ime/Korisničko ime").should("be.visible");
+
+    cy.get('input[name="email"]')
+      .should("be.visible")
+      .should("have.value", "user-testing@example.com");
+    cy.contains("Email").should("be.visible");
+
+    cy.get('button[type="submit"]')
+      .should("be.visible")
+      .should("have.text", "Spremi");
+  });
+
+  it("Should display form for editing profile - bosnian language", () => {
+    cy.contains("Edit Profile").should("be.visible");
+
+    cy.get('input[name="name"]')
+      .should("be.visible")
+      .should("have.value", "User Testing One");
+    cy.contains("Name/Username").should("be.visible");
+
+    cy.get('input[name="email"]')
+      .should("be.visible")
+      .should("have.value", "user-testing@example.com");
+    cy.contains("Email").should("be.visible");
+
+    cy.get('button[type="submit"]')
+      .should("be.visible")
+      .should("have.text", "Save changes");
   });
 
   it("Should show form validation error messages", () => {

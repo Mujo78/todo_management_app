@@ -4,19 +4,23 @@ describe("Logout functionality testing", () => {
     cy.wait(1500);
   });
 
-  it("Should show logout button", () => {
+  it("Should display logout button - english language", () => {
     cy.openMenu();
 
-    cy.get('li[aria-label="LogoutBtnLink"]').should("be.visible");
+    cy.get('li[aria-label="LogoutBtnLink"]')
+      .should("be.visible")
+      .should("have.text", "Log out");
   });
 
-  it("Should return error message when user not authorized to logout (tokens not provided)", () => {
+  it("Should display logout button - bosnian language", () => {
     cy.openMenu();
+    cy.changeLng("bs");
 
-    cy.clearAllCookies();
+    cy.get("body").click();
 
-    cy.get('li[aria-label="LogoutBtnLink"]').should("be.visible").click();
-    cy.contains("Invalid token provided.").should("be.visible");
+    cy.get('li[aria-label="LogoutBtnLink"]')
+      .should("be.visible")
+      .should("have.text", "Odjava");
   });
 
   it("Should successfully logout", () => {

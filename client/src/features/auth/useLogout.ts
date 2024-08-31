@@ -1,10 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { UserLogoutFn } from "./api";
-import { AxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
 import useAuthStore from "../../app/authSlice";
 import toast from "react-hot-toast";
 import { formatErrorMessage } from "../../utils/user/userUtils";
+import Cookies from "js-cookie";
 
 function useLogout() {
   const navigate = useNavigate();
@@ -21,6 +22,15 @@ function useLogout() {
       navigate("/");
     },
     onError: (error) => {
+      if (
+        isAxiosError(error) &&
+        error.response?.data.detail.includes("invalidToken")
+      ) {
+        logout();
+        Cookies.remove("checkToken");
+        navigate("/");
+      }
+
       const errorToShow = formatErrorMessage(error);
 
       if (errorToShow !== undefined && errorToShow) {

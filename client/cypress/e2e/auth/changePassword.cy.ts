@@ -5,9 +5,64 @@ describe("Change Password functionality testing", () => {
     cy.visit("/profile/change-password");
   });
 
-  it("Should show title and form", () => {
-    cy.get('input[name="oldPassword"]').should("be.visible");
-    cy.get('button[type="submit"]').should("be.visible");
+  it("Should display form and title - english language", () => {
+    cy.contains("Change Password").should("be.visible");
+
+    cy.get("#Password-label")
+      .should("be.visible")
+      .should("have.text", "Password *");
+    cy.get('input[name="oldPassword"]')
+      .should("be.visible")
+      .should("have.value", "");
+
+    cy.get("#New\\ Password-label")
+      .should("be.visible")
+      .should("have.text", "New Password *");
+    cy.get('input[name="newPassword"]')
+      .should("be.visible")
+      .should("have.value", "");
+
+    cy.get("#Confirm\\ New\\ Password-label")
+      .should("be.visible")
+      .should("have.text", "Confirm New Password *");
+    cy.get('input[name="confirmNewPassword"]')
+      .should("be.visible")
+      .should("have.value", "");
+
+    cy.get('button[type="submit"]')
+      .should("be.visible")
+      .should("have.text", "Save changes");
+  });
+
+  it("Should display form and title - english language", () => {
+    cy.changeLngDropdown("bs");
+
+    cy.contains("Promjena lozinke").should("be.visible");
+
+    cy.get("#Lozinka-label")
+      .should("be.visible")
+      .should("have.text", "Lozinka *");
+    cy.get('input[name="oldPassword"]')
+      .should("be.visible")
+      .should("have.value", "");
+
+    cy.get("#Nova\\ Lozinka-label")
+      .should("be.visible")
+      .should("have.text", "Nova Lozinka *");
+    cy.get('input[name="newPassword"]')
+      .should("be.visible")
+      .should("have.value", "");
+
+    cy.get("#Potvrdi\\ Lozinku-label")
+      .should("be.visible")
+      .should("have.text", "Potvrdi Lozinku *");
+    cy.get('input[name="confirmNewPassword"]')
+      .should("be.visible")
+      .should("have.value", "");
+
+    cy.get('button[type="submit"]')
+      .should("be.visible")
+      .should("have.text", "Spremi");
   });
 
   it("Should show form validation error message for new password", () => {

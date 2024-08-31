@@ -9,7 +9,6 @@ describe("Login functionality testing", () => {
     cy.get('input[name="email"]').should("be.visible");
     cy.get('label[id="Password-label"]')
       .should("be.visible")
-
       .should("have.text", "Password *");
     cy.get('button[type="submit"]')
       .should("be.visible")
