@@ -231,6 +231,48 @@ namespace server.Services
             return (user, userToken);
         }
 
+        public async Task SeedDatabaseWithUserToken(TokenType tokenType)
+        {
+            if (tokenType == TokenType.EmailVerification)
+            {
+                var token = new UserToken
+                {
+                    TokenType = TokenType.EmailVerification,
+                    CreatedAt = DateTime.Now,
+                    ExpiresAt = DateTime.Now.AddDays(2),
+                    Id = Guid.NewGuid(),
+                    Token = "25f78624-0c9b-4b63-b61e-d5b297e56f82",
+                    UserId = Guid.Parse("6fe71ee1-830f-4e00-8257-cd3591423505")
+                };
+
+                var user = await repository.GetUser(token.UserId) ?? throw new NotFoundException("User not found.");
+                user.EmailConfirmed = false;
+
+                await repository.SeedTestingDatabaseUserToken(token, user);
+            }
+            else if (tokenType == TokenType.PasswordReset)
+            {
+                var token = new UserToken
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedAt = DateTime.Now,
+                    ExpiresAt = DateTime.Now.AddDays(2),
+                    UserId = Guid.Parse("8d3716ab-ae98-473f-9a6b-5d53b8d46682"),
+                    TokenType = TokenType.PasswordReset,
+                    Token = "5508116c-f287-4e54-8e9d-b556fdc9eeeb",
+                };
+
+                var user = await repository.GetUser(token.UserId) ?? throw new NotFoundException("User not found.");
+                user.Password = BCrypt.Net.BCrypt.HashPassword("Password&123456", 12);
+
+                await repository.SeedTestingDatabaseUserToken(token, user);
+            }
+            else
+            {
+                throw new BadRequestException("Invalid token type sent.");
+            }
+        }
+
         public async Task SeedDatabaseWithUser()
         {
             var userExist = await repository.GetUser("user-testing-to-delete@example.com");
@@ -247,7 +289,6 @@ namespace server.Services
                 Password = BCrypt.Net.BCrypt.HashPassword("Password&123456")
             };
             await repository.SeedTestingDatabaseUser(user);
-
         }
     }
 }

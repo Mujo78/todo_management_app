@@ -23,10 +23,6 @@ namespace server.Data
                 Guid secondUserId = Guid.Parse("6fe71ee1-830f-4e00-8257-cd3591423505");
                 Guid thirdUserId = Guid.Parse("8d3716ab-ae98-473f-9a6b-5d53b8d46682");
 
-                //Guid openTaskId = Guid.Parse("c4b62272-2cdb-436b-a1b3-d770e6f11b44");
-                //Guid failedTaskId = Guid.Parse("876e65d2-eb5c-4ab7-ad46-fe9c4a8884f7");
-                //Guid completedTaskId = Guid.Parse("27884557-1ed9-4429-abb5-d2588e5d4e59");
-
                 string verificationToken = "25f78624-0c9b-4b63-b61e-d5b297e56f82";
                 string resetPasswordToken = "5508116c-f287-4e54-8e9d-b556fdc9eeeb";
 

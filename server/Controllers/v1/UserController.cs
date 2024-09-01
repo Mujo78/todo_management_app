@@ -6,6 +6,7 @@ using server.DTO.User;
 using server.Filters;
 using server.Services;
 using server.Services.IService;
+using server.Utils.Enums;
 
 namespace server.Controllers.v1
 {
@@ -152,12 +153,23 @@ namespace server.Controllers.v1
         }
 
         [AllowAnonymous]
+        [HttpPost("/seed-database-user-token/{tokenType}")]
+        [TypeFilter(typeof(TestingOnly))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task SeedDatabaseUserTokens([FromRoute] TokenType tokenType)
+        {
+            await userService.SeedDatabaseWithUserToken(tokenType);
+        }
+
+        [AllowAnonymous]
         [HttpPost("/seed-database-user")]
         [TypeFilter(typeof(TestingOnly))]
         [ApiExplorerSettings(IgnoreApi = true)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task SeedDatabaseWithAssignments()
+        public async Task SeedDatabaseUser()
         {
             await userService.SeedDatabaseWithUser();
         }

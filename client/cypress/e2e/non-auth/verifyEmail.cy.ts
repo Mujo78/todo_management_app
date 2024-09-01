@@ -33,4 +33,9 @@ describe("Verify Email functionality testing", () => {
       timeout: 10000,
     }).should("be.visible");
   });
+
+  after(() => {
+    cy.wait(1000);
+    cy.request("POST", "https://localhost:7196/seed-database-user-token/0");
+  });
 });

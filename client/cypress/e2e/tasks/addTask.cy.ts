@@ -10,12 +10,89 @@ describe("Add Task functionality testing", () => {
     cy.visit("/add-task");
   });
 
-  it("Should show add task form", () => {
-    cy.get('input[name="title"]').should("be.visible");
-    cy.get('textarea[name="description"]').should("be.visible");
-
+  it("Should show add task form - english", () => {
     cy.contains("Add a new Task").should("be.visible");
+
+    cy.get('input[name="title"]').should("be.visible").should("have.value", "");
+    cy.get('div[aria-label="Title"]')
+      .should("be.visible")
+      .find("label")
+      .should("be.visible")
+      .should("have.text", "Title *");
+
+    cy.get('input[name="dueDate"]').should("be.visible");
+    cy.contains("Due Date and Time").should("be.visible");
+
+    cy.get('textarea[name="description"]')
+      .should("be.visible")
+      .should("have.value", "");
+    cy.get('div[aria-label="Description"]')
+      .should("be.visible")
+      .find("label")
+      .should("be.visible")
+      .should("have.text", "Description");
+
+    cy.get("#select-priority").should("be.visible").should("have.text", "Low");
+    cy.get("#select-priority-label")
+      .should("be.visible")
+      .should("have.text", "Priority *");
+
+    cy.get("#select-status").should("be.visible").should("have.text", "Open");
+    cy.get("#select-status-label")
+      .should("be.visible")
+      .should("have.text", "Status *");
+
     cy.get('button[aria-label="BackButton"]').should("be.visible");
+    cy.get('button[type="submit"]')
+      .should("be.visible")
+      .should("have.text", "Save");
+  });
+
+  it("Should show add task form - bosnian", () => {
+    cy.changeLngDropdown("bs");
+    cy.get("body").click();
+    cy.wait(1000);
+    cy.get("body").click();
+
+    cy.contains("Dodaj novi zadatak").should("be.visible");
+
+    cy.get('input[name="title"]').should("be.visible").should("have.value", "");
+    cy.get('div[aria-label="Title"]')
+      .should("be.visible")
+      .find("label")
+      .should("be.visible")
+      .should("have.text", "Naziv *");
+
+    cy.get('input[name="dueDate"]').should("be.visible");
+    cy.contains("Rok (datum i vrijeme)").should("be.visible");
+
+    cy.get('textarea[name="description"]')
+      .should("be.visible")
+      .should("have.value", "");
+    cy.get('div[aria-label="Description"]')
+      .should("be.visible")
+      .find("label")
+      .should("be.visible")
+      .should("have.text", "Opis");
+
+    cy.get("#select-priority")
+      .should("be.visible")
+      .should("have.text", "Nisko");
+    cy.get("#select-priority-label")
+      .should("be.visible")
+      .should("have.text", "Prioritet *");
+
+    cy.get("#select-status")
+      .should("be.visible")
+      .should("have.text", "Otvoren");
+    cy.get("#select-status-label")
+      .should("be.visible")
+      .should("have.text", "Status *");
+
+    cy.get('button[aria-label="BackButton"]').should("be.visible");
+    cy.get('button[type="submit"]')
+      .should("be.visible")
+      .should("have.text", "Spremi");
   });
 
   it("Should navigate back to the home page", () => {
@@ -48,9 +125,9 @@ describe("Add Task functionality testing", () => {
       description: "Description goes here!",
     });
 
-    cy.contains(
-      "Assignment with title: 'First Task Created' already exists."
-    ).should("be.visible");
+    cy.contains("Assignment with this title already exists.").should(
+      "be.visible"
+    );
   });
 
   it("Should create new task successfully", () => {

@@ -2,7 +2,7 @@
 
 namespace server.Repository.IRepository
 {
-    public interface IUserRepository: IRepository<User>
+    public interface IUserRepository : IRepository<User>
     {
         Task CreateUserAsync(User user, string verificationToken);
         Task<User?> GetUser(Guid? userId);
@@ -16,6 +16,8 @@ namespace server.Repository.IRepository
         bool EmailAlreadyUsed(string email, Guid? userId);
         bool IsUserTokenValid(UserToken token);
         bool ResetPasswordTokenIsValidAndExists(User user);
+
+        Task SeedTestingDatabaseUserToken(UserToken userToken, User user);
         Task SeedTestingDatabaseUser(User user);
     }
 }

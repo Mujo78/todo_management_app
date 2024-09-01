@@ -1,9 +1,17 @@
 describe("template spec", () => {
-  it("Should return no data available.", () => {
+  it("Should return no data available - english", () => {
     cy.login("user-testing-third@example.com");
     cy.wait(1500);
 
     cy.contains("No data available.").should("be.visible");
+  });
+
+  it("Should return no data available - bosnian", () => {
+    cy.login("user-testing-third@example.com");
+    cy.wait(1500);
+    cy.changeLngDropdown("bs");
+
+    cy.contains("Nema dostupnih podataka.").should("be.visible");
   });
 
   it("Should show few tasks on home page, search input and pagination", () => {
@@ -78,7 +86,7 @@ describe("template spec", () => {
     cy.location("search").should("eq", "?pageNum=2");
   });
 
-  it("Should search for a task - return no data available, and then clear/return to all tasks", () => {
+  it("Should search for a task, return no data available, and then clear/return to all tasks - english", () => {
     cy.login();
     cy.wait(1500);
 
@@ -90,7 +98,34 @@ describe("template spec", () => {
     cy.wait(1500);
 
     cy.contains("No data available.").should("be.visible");
-    cy.get('button[aria-label="ClearSearchBtn"]').should("be.visible").click();
+    cy.get('button[aria-label="ClearSearchBtn"]')
+      .should("be.visible")
+      .should("have.text", "Clear")
+      .click();
+
+    cy.location("pathname").should("eq", "/home");
+    cy.location("search").should("eq", "?pageNum=1");
+  });
+
+  it("Should search for a task, return no data available, and then clear/return to all tasks - bosnian", () => {
+    cy.login();
+    cy.changeLngDropdown("bs");
+    cy.get("body").click();
+    cy.wait(1000);
+    cy.get("body").click();
+
+    cy.get('input[name="taskName"]')
+      .should("be.visible")
+      .type("Find me task now")
+      .type("{enter}");
+
+    cy.wait(1500);
+
+    cy.contains("Nema dostupnih podataka.").should("be.visible");
+    cy.get('button[aria-label="ClearSearchBtn"]')
+      .should("be.visible")
+      .should("have.text", "Izbriši")
+      .click();
 
     cy.location("pathname").should("eq", "/home");
     cy.location("search").should("eq", "?pageNum=1");

@@ -82,7 +82,7 @@ namespace server.Repository
 
         public async Task<UserToken?> GetUserToken(string token)
         {
-           return await db.UserTokens.FirstOrDefaultAsync(n => n.Token.Equals(token));
+            return await db.UserTokens.FirstOrDefaultAsync(n => n.Token.Equals(token));
         }
 
         public async Task VerifyEmailAddress(User user, UserToken token)
@@ -99,6 +99,14 @@ namespace server.Repository
         public bool ResetPasswordTokenIsValidAndExists(User user)
         {
             return db.UserTokens.Any(n => n.UserId.Equals(user.Id) && n.TokenType.Equals(TokenType.PasswordReset) && n.ExpiresAt > DateTime.Now);
+        }
+
+        public async Task SeedTestingDatabaseUserToken(UserToken userToken, User user)
+        {
+            await db.UserTokens.AddAsync(userToken);
+            db.Users.Update(user);
+
+            await db.SaveChangesAsync();
         }
 
         public async Task SeedTestingDatabaseUser(User user)

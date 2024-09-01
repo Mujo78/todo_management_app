@@ -111,4 +111,9 @@ describe("Reset Password functionality testing", () => {
     cy.resetPassword("Password&12345", "Password&12345");
     cy.contains("Password successfully changed.").should("be.visible");
   });
+
+  after(() => {
+    cy.wait(1000);
+    cy.request("POST", "https://localhost:7196/seed-database-user-token/1");
+  });
 });
