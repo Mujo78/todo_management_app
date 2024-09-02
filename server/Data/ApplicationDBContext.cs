@@ -25,6 +25,7 @@ namespace server.Data
 
                 string verificationToken = "25f78624-0c9b-4b63-b61e-d5b297e56f82";
                 string resetPasswordToken = "5508116c-f287-4e54-8e9d-b556fdc9eeeb";
+                Guid verificationTokenId = Guid.Parse("0c9a678a-54d8-4ce5-96fe-159ffac076c0");
 
                 modelBuilder.Entity<User>().HasData(
                     new User
@@ -67,7 +68,7 @@ namespace server.Data
                 modelBuilder.Entity<UserToken>().HasData(
                     new UserToken
                     {
-                        Id = Guid.NewGuid(),
+                        Id = verificationTokenId,
                         CreatedAt = DateTime.Now,
                         ExpiresAt = DateTime.Now.AddDays(2),
                         UserId = secondUserId,

@@ -183,6 +183,7 @@ namespace server.Services
 
             try
             {
+                user.EmailConfirmed = true;
                 await repository.VerifyEmailAddress(user, userToken);
                 await mailService.SendWelcomeMailAsync(user.Email, user.Name);
                 await transaction.CommitAsync();
@@ -240,7 +241,7 @@ namespace server.Services
                     TokenType = TokenType.EmailVerification,
                     CreatedAt = DateTime.Now,
                     ExpiresAt = DateTime.Now.AddDays(2),
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("0c9a678a-54d8-4ce5-96fe-159ffac076c0"),
                     Token = "25f78624-0c9b-4b63-b61e-d5b297e56f82",
                     UserId = Guid.Parse("6fe71ee1-830f-4e00-8257-cd3591423505")
                 };

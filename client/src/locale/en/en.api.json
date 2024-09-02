@@ -62,13 +62,13 @@
     "taskNotFound": "Assignment not found.",
     "forbidden": "You do not have permission to access this resource."
   },
-  "deleteTasksService": "Assignments successfully deleted.",
+  "deleteTasksService": "Tasks successfully deleted.",
   "findAndValidateTasksService": {
     "notAuthorized": "You are not authorized.",
     "noTasksProvided": "No assignments provided.",
     "oneOrMoreTasksNotFound": "One or more assignments not found with the provided data."
   },
-  "finishTasksService": "Assignments successfully finished.",
+  "finishTasksService": "Tasks successfully completed.",
   "taskExpiredAndFailed": {
     "invalidId": "Please provide valid ID for assignment.",
     "notAuthorized": "You are not authorized.",
