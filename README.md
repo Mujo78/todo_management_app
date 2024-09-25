@@ -3,13 +3,13 @@
 Todo Management App is an intuitive and efficient application designed for managing tasks (todos) and user profiles. It provides users with an easy way to add, edit, delete, and organize tasks, helping them stay productive and organized. The app also offers options for customizing user profiles, including managing user data and preferences.
 
 ## Overview
-### - Login Page
+### Login Page
 ![Screenshot 2024-09-02 125617](https://github.com/user-attachments/assets/925c3947-181a-4439-90bd-09d06cd806c6)
 
-### - Profile Page
+### Profile Page
 ![Screenshot 2024-09-02 124947](https://github.com/user-attachments/assets/808a5889-3cde-4c99-9057-67bc4be13cb5)
 
-### - Home Page
+### Home Page
 ![Screenshot 2024-09-02 125445](https://github.com/user-attachments/assets/499ee5bb-ad90-4ed5-8793-9d25c3c1ec16)
 
 ## Table of Contents
@@ -23,6 +23,7 @@ Todo Management App is an intuitive and efficient application designed for manag
 # Project Overview
 
 # Schema Diagram
+![Screenshot 2024-09-05 114334](https://github.com/user-attachments/assets/db8a24ec-1381-4f14-a744-5deb52eeabb1)
 
 # Technologies
 - MSSQL
