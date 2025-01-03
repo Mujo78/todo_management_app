@@ -62,3 +62,44 @@ Todo Management App is an intuitive and efficient application designed for manag
 - [x] Make Selected Tasks Completed
 
 # Getting Started
+
+## Prerequisites
+Before running the application and start using (development), makse sure you have following installed:
++ Node.js
++ npm
++ .NET 8 SDK
++ Running SQL Server instance
+
+## Step-by-Step Guide
+1. Clone the Repository
+```
+git clone https://github.com/Mujo78/todo_management_app.git
+```
+2. Go to the project directory
+
+### Server
+1. Go to the project directory `server`
+```
+cd server
+```
+2. Start the `server`
+```
+dotnet run --launch-profile "https"
+```
+3. `server` is ready
+
+### Client
+1. Go to the project directory `client`
+```
+cd client
+```
+2. Install dependencies
+```
+npm install
+```
+3. Create a `.env` file in the root of the `client` directory, and add the environment variables as specified in the `.env.example` file
+4. Start the `client`
+```
+npm run dev
+```
+5. `client` is ready, open [http://localhost:5173/](http://localhost:5173/) with your browser to see the application in action
